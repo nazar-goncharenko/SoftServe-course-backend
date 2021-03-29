@@ -1,4 +1,4 @@
-package com.softserve.app.Models;
+package com.softserve.app.models;
 
 import javax.persistence.*;
 
@@ -18,7 +18,7 @@ public class Banner {
     @Column(name = "link", nullable = false)
     private String  link;
 
-    private enum Priority {
+    public enum Priority {
         LOW, MID, HIGH;
     }
     @Enumerated(EnumType.STRING)

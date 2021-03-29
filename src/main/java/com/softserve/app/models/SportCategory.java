@@ -1,4 +1,4 @@
-package com.softserve.app.Models;
+package com.softserve.app.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "sport_category")
 public class SportCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,14 +17,12 @@ public class SportCategory {
 
 
     // я parent, і маю багатьох children
-    @OneToMany(mappedBy = "parent_id",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<SportCategory> children = new HashSet<>();
 
 
     // я один з багатьох children і маю одного parent
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory parent;
 
 
@@ -38,7 +37,7 @@ public class SportCategory {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "favourites",fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private Set<User> favouriteBy = new HashSet<>();
 
     public SportCategory() {
@@ -55,20 +54,20 @@ public class SportCategory {
     //////////////////////////
 
 
-    public Set<Article> getChildren() {
+    public Set<SportCategory> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Article> children) {
+    public void setChildren(Set<SportCategory> children) {
         this.children = children;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public SportCategory getParent_id() {
+        return this.parent;
     }
 
-    public void setParent_id(Long parent_id) {
-        this.parent_id = parent_id;
+    public void setParent_id(SportCategory sportCategory) {
+        this.parent = sportCategory;
     }
 
     //////////////////////////

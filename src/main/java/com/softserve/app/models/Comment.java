@@ -1,4 +1,4 @@
-package com.softserve.app.Models;
+package com.softserve.app.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

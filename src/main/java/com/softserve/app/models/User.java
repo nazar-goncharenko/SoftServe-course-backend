@@ -1,4 +1,4 @@
-package com.softserve.app.Models;
+package com.softserve.app.models;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -34,7 +34,10 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> userComments = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinTable(name = "users_sportCategoties",
+            joinColumns = { @JoinColumn(name = "user_id")},
+    inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
 
     public User() {
