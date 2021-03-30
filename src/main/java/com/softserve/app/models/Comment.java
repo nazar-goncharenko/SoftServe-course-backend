@@ -1,8 +1,15 @@
 package com.softserve.app.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Comment {
     @Id
@@ -10,13 +17,13 @@ public class Comment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    User author;
+    private User author;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    Article article;
+    private Article article;
 
     @Column(name = "comment", nullable = false)
-    private String  comment;
+    private String comment;
 
     @Column(name = "time", nullable = false)
     private Timestamp time;
@@ -26,57 +33,4 @@ public class Comment {
 
     @Column(name = "dislikes", nullable = false)
     private Long dislikes;
-
-    public Comment() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    public Long getLikes() {
-        return likes;
-    }
-
-    // addlikes: likes += 1            ?????
-    public void setLikes(Long likes) {
-        this.likes = likes;
-    }
-
-    public Long getDislikes() {
-        return dislikes;
-    }
-
-    // addDislike: dislikes += 1            ?????
-    public void setDislikes(Long dislikes) {
-        this.dislikes = dislikes;
-    }
 }
