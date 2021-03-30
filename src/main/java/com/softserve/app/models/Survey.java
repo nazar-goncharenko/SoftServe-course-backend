@@ -12,8 +12,8 @@ public class Survey {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     User author;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Option> options;
+    @OneToMany(mappedBy = "survey",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<CheckBox> checkBoxes;
 
     @Column(name = "isShown", nullable = false)
     private Boolean isShown = false;
@@ -37,12 +37,12 @@ public class Survey {
         this.author = author;
     }
 
-    public Set<Option> getOptions() {
-        return options;
+    public Set<CheckBox> getOptions() {
+        return checkBoxes;
     }
 
-    public void setOptions(Set<Option> options) {
-        this.options = options;
+    public void setOptions(Set<CheckBox> checkBoxes) {
+        this.checkBoxes = checkBoxes;
     }
 
     public Boolean getShown() {

@@ -22,22 +22,23 @@ public class User {
     private enum Role {
         ADMIN, USER;
     }
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Survey> userSurveys = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Banner> userBanners = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> userComments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinTable(name = "users_sportCategoties",
-            joinColumns = { @JoinColumn(name = "user_id")},
-    inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
 
     public User() {

@@ -3,7 +3,7 @@ package com.softserve.app.models;
 import javax.persistence.*;
 
 @Entity
-public class Option {
+public class CheckBox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +17,7 @@ public class Option {
     @Column(name = "responses_count", nullable = false)
     private Long responses_count;
 
-    public Option() {
+    public CheckBox() {
     }
 
     public Long getId() {
