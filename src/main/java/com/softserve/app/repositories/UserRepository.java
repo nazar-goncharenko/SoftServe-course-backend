@@ -1,4 +1,4 @@
-package com.softserve.app.repositories.UserRepository;
+package com.softserve.app.repositories;
 
 import com.softserve.app.models.User;
 import org.springframework.data.repository.CrudRepository;
@@ -11,8 +11,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     Optional<User> findById(Long id);
     Optional<User> findByEmail(String email);
-
-    Optional<User> createUser(User user);
-    Optional<User> updateUser(User user);
 }
 

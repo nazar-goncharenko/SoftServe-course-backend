@@ -1,7 +1,7 @@
 package com.softserve.app.services.userService;
 
 import com.softserve.app.models.User;
-import com.softserve.app.repositories.UserRepository.UserRepository;
+import com.softserve.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class UserServiceImpl implements UserDetailsService{
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository){
@@ -40,7 +40,12 @@ public abstract class UserServiceImpl implements UserDetailsService{
     }
 
     public boolean update(User user) {
-        User curUser = userRepository.findById(user.getId()).get();
+        User curUser;
+        if (userRepository.findById(user.getId()).isPresent()) {
+            curUser =  userRepository.findById(user.getId()).get();
+        } else {
+            return false;
+        }
 
         // Username
         if (user.getUsername() != null) {

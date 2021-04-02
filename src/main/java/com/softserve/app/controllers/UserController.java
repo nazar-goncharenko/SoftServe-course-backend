@@ -20,12 +20,7 @@ import java.util.Objects;
 @RequestMapping("/profile")
 public class UserController {
 
-    private final UserService userService;
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
+    UserService userService;
 
     private User getCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -45,7 +40,7 @@ public class UserController {
     }
 
 
-    // update 'Personal'        ! NOT PASSWORD ! // todo: update PASSWORD
+    // update 'Personal'         NOT PASSWORD  // todo: update PASSWORD
     @PostMapping("/personal")
     public String updateProfile(Model model,
                                 @ModelAttribute User user,
