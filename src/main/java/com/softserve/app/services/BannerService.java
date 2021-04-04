@@ -1,6 +1,6 @@
-package com.softserve.services;
+package com.softserve.app.services;
 
-import com.softserve.Repositories.BannerRepository;
+import com.softserve.app.repositories.BannerRepository;
 import com.softserve.app.models.Banner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

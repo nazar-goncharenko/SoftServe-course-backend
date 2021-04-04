@@ -1,4 +1,4 @@
-package com.softserve.Repositories;
+package com.softserve.app.repositories;
 
 import com.softserve.app.models.Banner;
 import org.springframework.data.jpa.repository.JpaRepository;
