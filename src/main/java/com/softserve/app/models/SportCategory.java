@@ -1,5 +1,6 @@
 package com.softserve.app.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,10 +36,11 @@ public class SportCategory {
 
     // я parent, і маю багатьох children
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private final Set<SportCategory> children = new HashSet<>();
+    private final List<SportCategory> children = new ArrayList<>();
 
 
     // я один з багатьох children і маю одного parent
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory parent;
 
