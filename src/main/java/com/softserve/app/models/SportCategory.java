@@ -52,6 +52,9 @@ public class SportCategory {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Banner> banners = new HashSet<>();
+
     @ManyToMany(mappedBy = "favourites", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private Set<User> favouriteBy = new HashSet<>();
 }

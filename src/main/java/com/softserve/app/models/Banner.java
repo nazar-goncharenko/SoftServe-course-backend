@@ -27,22 +27,62 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "image", nullable = false)
+    private String imgPath;
+
+    @Column(name ="isOpen", nullable = false)
+    private boolean isOpen;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    private User admin;
+    private SportCategory category;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "link", nullable = false)
-    private String link;
-
-    public enum Priority {
-        LOW, MID, HIGH;
+    public enum Status {
+        PUBLISHED, NOT_PUBLISHED;
     }
 
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Status status;
 
-    @Column(name = "isShown", nullable = false)
-    private Boolean isShown;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public SportCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(SportCategory category) {
+        this.category = category;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

@@ -50,8 +50,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Survey> userSurveys = new HashSet<>();
 
-    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Banner> userBanners = new HashSet<>();
+//    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> userComments = new HashSet<>();
