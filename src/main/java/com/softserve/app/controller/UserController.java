@@ -1,8 +1,7 @@
-package com.softserve.app.controllers;
+package com.softserve.app.controller;
 
 import com.softserve.app.models.User;
-import com.softserve.app.services.userService.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.softserve.app.service.userService.UserService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +19,10 @@ import java.util.Objects;
 @RequestMapping("/profile")
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     private User getCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -29,6 +31,8 @@ public class UserController {
         }
         return userService.findById(((User) auth.getPrincipal()).getId());
     }
+
+    // todo: user registration and login
 
 
     // show Personal
@@ -45,7 +49,6 @@ public class UserController {
     public String updateProfile(Model model,
                                 @ModelAttribute User user,
                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-            // user id cannot be Null
             user.setId(Objects.requireNonNull(getCurrentUser()).getId());
 
             // user avatar

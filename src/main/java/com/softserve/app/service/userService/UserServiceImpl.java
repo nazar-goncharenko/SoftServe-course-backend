@@ -1,15 +1,14 @@
-package com.softserve.app.services.userService;
+package com.softserve.app.service.userService;
 
 import com.softserve.app.models.User;
-import com.softserve.app.repositories.UserRepository;
+import com.softserve.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public abstract class UserServiceImpl implements UserDetailsService{
+public abstract class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
