@@ -61,7 +61,7 @@ public class SportCategory {
     private Set<Article> articles = new HashSet<>();
 
     @ManyToMany(mappedBy = "favourites", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    private Set<User> favouriteBy = new HashSet<>();
+    private Set<User> favourite = new HashSet<>();
 
     public SportCategoryDTO ofDTO(){
         return SportCategoryDTO.builder()
@@ -72,7 +72,7 @@ public class SportCategory {
                         .collect(Collectors.toList())
                 )
                 .articles(new ArrayList<>(this.articles))//add stream map ArticleDTO
-                .favouriteBy(this.favouriteBy)
+                .favourite(new ArrayList<>(this.favourite))//add stream map UserDTO
                 .description(this.description)
                 .build();
     }

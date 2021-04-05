@@ -18,7 +18,7 @@ public class SportCategoryService {
 
 
 
-    public List<SportCategoryDTO> getNullParent() {
+    public List<SportCategoryDTO> getBasicNavigationList() {
         return sportCategoryRepo.getAllByParentEquals(null).stream()
                 .map(SportCategory::ofDTO)
                 .collect(Collectors.toList());

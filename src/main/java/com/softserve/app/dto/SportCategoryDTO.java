@@ -30,5 +30,5 @@ public class SportCategoryDTO implements Serializable {
 
     private List<Article> articles = new ArrayList<>();
 
-    private Set<User> favouriteBy = new HashSet<>();
+    private List<User> favourite = new ArrayList<>();
 }
