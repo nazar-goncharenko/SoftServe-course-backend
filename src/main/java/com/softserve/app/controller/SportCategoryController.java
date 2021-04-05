@@ -1,13 +1,12 @@
 package com.softserve.app.controller;
 
-import com.softserve.app.models.SportCategory;
+import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.service.SportCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class SportCategoryController {
 
 
     @GetMapping("/nullParent")
-    public List<SportCategory> getAll(){
+    public List<SportCategoryDTO> getAll(){
         return sportCategoryService.getNullParent();
     }
 }
