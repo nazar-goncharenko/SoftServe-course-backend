@@ -45,44 +45,4 @@ public class Banner {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
-    }
-
-    public SportCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(SportCategory category) {
-        this.category = category;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 }
