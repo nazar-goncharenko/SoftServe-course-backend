@@ -14,7 +14,7 @@ public class SportCategoryService {
     SportCategoryRepository sportCategoryRepo;
 
 
-    public List<SportCategory> getParent(){
+    public List<SportCategory> getNullParent(){
         return sportCategoryRepo.getAllByParentEquals(null);
     }
 }

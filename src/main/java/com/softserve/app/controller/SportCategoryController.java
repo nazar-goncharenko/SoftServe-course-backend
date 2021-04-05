@@ -21,6 +21,6 @@ public class SportCategoryController {
 
     @GetMapping("/nullParent")
     public List<SportCategory> getAll(){
-        return sportCategoryService.getParent();
+        return sportCategoryService.getNullParent();
     }
 }
