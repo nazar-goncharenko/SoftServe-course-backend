@@ -12,25 +12,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public abstract class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
     @Autowired
-    private UserRepository userRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+
+    @Override
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return findByEmail(auth.getName());
     }
 
+
+    @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new SportHubException(
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
     }
 
+    @Override
     public User findByEmail(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
             return userRepository.findByEmail(email).get();
@@ -39,6 +48,7 @@ public abstract class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public boolean updateUser(User user) {
         User curUser = userRepository.findById(user.getId()).orElseThrow(() -> new SportHubException(
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
