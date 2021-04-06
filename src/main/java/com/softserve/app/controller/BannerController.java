@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.models.Banner;
-import com.softserve.app.services.BannerService;
+import com.softserve.app.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +46,8 @@ public class BannerController {
 
     // TODO should be available only for admins
     @DeleteMapping("/delete/{bannerId}")
-    public String deleteBanner(@PathVariable Long bannerId){
-        return bannerService.delete(bannerId);
+    public void deleteBanner(@PathVariable Long bannerId){
+        bannerService.delete(bannerId);
     }
 
 }
