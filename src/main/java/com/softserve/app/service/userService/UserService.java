@@ -11,6 +11,7 @@ public interface UserService {
 
     public User findByEmail(String  email);
 
-    public boolean update(User user);
+    public boolean updateUser(User user);
 
+    public User getCurrentUser();
 }
