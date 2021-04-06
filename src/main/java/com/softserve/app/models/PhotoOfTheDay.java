@@ -17,14 +17,14 @@ public class PhotoOfTheDay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "photoUrl")
+    @Column(name = "photo_url")
     private String photoUrl;
 
     @Column(name = "alt", nullable = false)
     private String alt;
 
     @Column(name = "photo_title", nullable = false)
-    private String photo_title;
+    private String photoTitle;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -32,6 +32,7 @@ public class PhotoOfTheDay {
     @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name = "isShown", nullable = false)
+    @Column(name = "is_shown", nullable = false)
     private Boolean isShown;
+
 }

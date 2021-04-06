@@ -1,5 +1,6 @@
 package com.softserve.app.controllers;
 
+import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class PhotoController {
     private PhotoService photoService;
 
     @PostMapping("/photo")
-    public PhotoOfTheDay updatePhoto(@RequestPart("photo")PhotoOfTheDay photo, @RequestPart("img")MultipartFile image) throws IOException {
+    public PhotoOfTheDay updatePhoto(@RequestPart("photo_info")PhotoDTO photo, @RequestPart("img")MultipartFile image) throws IOException {
 
         return photoService.savePhoto(photo, image);
     }

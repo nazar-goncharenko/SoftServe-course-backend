@@ -1,5 +1,6 @@
 package com.softserve.app.services;
 
+import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.repositories.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class PhotoService {
     @Autowired
     PhotoRepository photoRepository;
 
-    public PhotoOfTheDay savePhoto(PhotoOfTheDay photo, MultipartFile image) throws IOException {
+    public PhotoOfTheDay savePhoto(PhotoDTO photo, MultipartFile image) throws IOException {
 
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         photo.setPhotoUrl(fileName);
@@ -29,7 +30,15 @@ public class PhotoService {
 
         saveFile(uploadDir, fileName, image);
 
-        return photoRepository.save(photo);
+        PhotoOfTheDay newPhoto = new PhotoOfTheDay();
+        newPhoto.setPhotoUrl(photo.getPhotoUrl());
+        newPhoto.setAlt(photo.getAlt());
+        newPhoto.setPhotoTitle(photo.getPhotoTitle());
+        newPhoto.setDescription(photo.getDescription());
+        newPhoto.setAuthor(photo.getAuthor());
+        newPhoto.setIsShown(photo.getIsShown());
+
+        return photoRepository.save(newPhoto);
     }
 
     public void saveFile(String uploadDir, String fileName,
