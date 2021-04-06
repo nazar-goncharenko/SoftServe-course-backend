@@ -1,7 +1,9 @@
 package com.softserve.app.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softserve.app.dto.SportCategoryDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -57,5 +61,19 @@ public class SportCategory {
     private Set<Article> articles = new HashSet<>();
 
     @ManyToMany(mappedBy = "favourites", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    private Set<User> favouriteBy = new HashSet<>();
+    private Set<User> favourite = new HashSet<>();
+
+    public SportCategoryDTO ofDTO(){
+        return SportCategoryDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .children(this.children.stream()
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList())
+                )
+                .articles(new ArrayList<>(this.articles))//add stream map ArticleDTO
+                .favourite(new ArrayList<>(this.favourite))//add stream map UserDTO
+                .description(this.description)
+                .build();
+    }
 }
