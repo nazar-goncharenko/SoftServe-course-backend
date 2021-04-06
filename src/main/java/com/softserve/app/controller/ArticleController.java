@@ -53,13 +53,11 @@ public class ArticleController {
 
     @GetMapping("/search")
     public List<Article> search(@RequestParam String q) {
-        System.out.println(q);
         return articleService.searchArticles(q);
     }
 
     @GetMapping("/filter_by")
     public List<Article> filterArticlesByCategory(@RequestParam String category) {
-        System.out.println("Filter param is " + category);
         return articleService.searchArticlesByCategory(category);
     }
     

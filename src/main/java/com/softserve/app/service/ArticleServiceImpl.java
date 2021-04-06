@@ -6,11 +6,13 @@ import com.softserve.app.exception.ArticleNotFoundException;
 import com.softserve.app.models.Article;
 import com.softserve.app.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor // Required arguments are final fields and fields with constraints such as @NonNull
 public class ArticleServiceImpl implements ArticleService {
 
@@ -34,8 +36,9 @@ public class ArticleServiceImpl implements ArticleService {
     public void updateArticle(Long id, ArticleDTO articleDto) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
-        System.out.println(article + "was found");
-        System.out.println("changing " + article.getTitle() + " to " + articleDto.getTitle());
+        log.info(article + "was found");
+        log.info("Changing " + article.getTitle() + " to " + articleDto.getTitle());
+
         article.setTitle(articleDto.getTitle());
         article.setText(articleDto.getText());
         article.setCategory(articleDto.getCategory());
@@ -44,7 +47,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteArticle(Long id) {
-        /* не кидає ексепшна у разі якщо не знаходить */
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
         articleRepository.delete(article);
@@ -55,25 +57,24 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
         return article;
-        /*Optional<Article> article = articleRepository.findById(id);
-        if (article.isPresent()) {
-            return article.get();
-        } else {
-            return null;
-        }*/
     }
 
     @Override
     public List<Article> searchArticles(String searchQuery) {
-        return articleRepository.findByKeywords(searchQuery);
+        log.info("ArticleServiceImpl searchQuery: " + searchQuery);
+        List<Article> articles = articleRepository.findArticleByTitleContainsOrTextContainsIgnoreCase(searchQuery, searchQuery);
+        log.info(articles.toString());
+
+        return articleRepository.findArticleByTitleContainsOrTextContainsIgnoreCase(searchQuery, searchQuery);
     }
 
     @Override
-    public List<Article> searchArticlesByCategory(String searchQuery) {
-        System.out.println("ArticleServiceImpl searchQuery: " + searchQuery);
-        List<Article> a = articleRepository.findByCategory(searchQuery);
-        System.out.println(a.toString());
+    public List<Article> searchArticlesByCategory(String categoryName) {
+        /* можна виловлювати, що прийшло з квері параметрів і чи виконався метод репозиторію */
+        log.info("ArticleServiceImpl categoryName: " + categoryName);
+        List<Article> articles = articleRepository.findArticleByCategoryNameIgnoreCase(categoryName);
+        log.info(articles.toString());
 
-        return articleRepository.findByCategory(searchQuery);
+        return articleRepository.findArticleByCategoryNameIgnoreCase(categoryName);
     }
 }
