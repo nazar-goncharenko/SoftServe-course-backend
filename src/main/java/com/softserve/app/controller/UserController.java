@@ -1,11 +1,8 @@
 package com.softserve.app.controller;
 
-import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
-import com.softserve.app.exception.SportHubException;
-import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
-import com.softserve.app.service.userService.UserService;
+import com.softserve.app.service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 import java.util.Objects;
 
 
