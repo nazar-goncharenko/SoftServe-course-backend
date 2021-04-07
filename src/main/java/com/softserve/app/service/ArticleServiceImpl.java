@@ -2,7 +2,7 @@ package com.softserve.app.service;
 
 import com.softserve.app.constant.ArticleConstant;
 import com.softserve.app.dto.ArticleDTO;
-import com.softserve.app.exception.ArticleNotFoundException;
+import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Article;
 import com.softserve.app.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
     public void createArticle(ArticleDTO articleDto) {
         articleRepository.save(Article.builder()
                 .title(articleDto.getTitle())
-                .text(articleDto.getText())
+                .description(articleDto.getDescription())
                 .category(articleDto.getCategory())
                 .build());
     }
@@ -35,12 +35,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void updateArticle(Long id, ArticleDTO articleDto) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
-        log.info(article + "was found");
-        log.info("Changing " + article.getTitle() + " to " + articleDto.getTitle());
-
+                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
         article.setTitle(articleDto.getTitle());
-        article.setText(articleDto.getText());
+        article.setDescription(articleDto.getDescription());
         article.setCategory(articleDto.getCategory());
         articleRepository.save(article);
     }
@@ -48,30 +45,29 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
         articleRepository.delete(article);
     }
 
     @Override
     public Article getArticleById(Long id) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage()));
-        return article;
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
     }
 
     @Override
     public List<Article> searchArticles(String searchQuery) {
-        log.info("ArticleServiceImpl searchQuery: " + searchQuery);
-        List<Article> articles = articleRepository.findArticleByTitleContainsOrTextContainsIgnoreCase(searchQuery, searchQuery);
+        log.info("ArticleServiceImpl searchQuery: {}", searchQuery);
+        List<Article> articles = articleRepository.findArticleByTitleContainsOrDescriptionContainsIgnoreCase(searchQuery, searchQuery);
         log.info(articles.toString());
 
-        return articleRepository.findArticleByTitleContainsOrTextContainsIgnoreCase(searchQuery, searchQuery);
+        return articleRepository.findArticleByTitleContainsOrDescriptionContainsIgnoreCase(searchQuery, searchQuery);
     }
 
     @Override
     public List<Article> searchArticlesByCategory(String categoryName) {
         /* можна виловлювати, що прийшло з квері параметрів і чи виконався метод репозиторію */
-        log.info("ArticleServiceImpl categoryName: " + categoryName);
+        log.info("ArticleServiceImpl categoryName: {}", categoryName);
         List<Article> articles = articleRepository.findArticleByCategoryNameIgnoreCase(categoryName);
         log.info(articles.toString());
 

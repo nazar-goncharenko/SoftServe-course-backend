@@ -24,29 +24,29 @@ public class ArticleController {
     }
 
     @GetMapping()
-    public List<Article> index() {
+    public List<Article> findAll() {
         return articleService.listArticles();
     }
 
     @PostMapping()
-    public ResponseEntity<String> newArticle(@RequestBody ArticleDTO articleDto) {
+    public ResponseEntity<String> create(@RequestBody ArticleDTO articleDto) {
         articleService.createArticle(articleDto);
         return ResponseEntity.ok(ArticleConstant.CREATED_SUCCESSFULLY.getMessage());
     }
 
     @GetMapping("/{id}")
-    public Article getArticle(@PathVariable Long id) {
+    public Article getById(@PathVariable Long id) {
         return articleService.getArticleById(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> editArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDto) {
-        articleService.updateArticle(id, articleDto);
+    @PutMapping()
+    public ResponseEntity<String> edit(@RequestBody ArticleDTO articleDto) {
+        articleService.updateArticle(articleDto.getId(), articleDto);
         return ResponseEntity.ok(ArticleConstant.UPDATED_SUCCESSFULLY.getMessage());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeArticle(@PathVariable Long id) {
+    @DeleteMapping()
+    public ResponseEntity<String> delete(@RequestParam Long id) {
         articleService.deleteArticle(id);
         return ResponseEntity.ok(ArticleConstant.DELETED_SUCCESSFULLY.getMessage());
     }
@@ -56,8 +56,8 @@ public class ArticleController {
         return articleService.searchArticles(q);
     }
 
-    @GetMapping("/filter_by")
-    public List<Article> filterArticlesByCategory(@RequestParam String category) {
+    @GetMapping("/filterBy")
+    public List<Article> filterByCategory(@RequestParam String category) {
         return articleService.searchArticlesByCategory(category);
     }
     
