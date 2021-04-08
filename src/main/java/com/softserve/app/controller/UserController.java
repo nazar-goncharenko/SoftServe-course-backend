@@ -3,35 +3,75 @@ package com.softserve.app.controller;
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.exception.SportHubException;
-import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
+import com.softserve.app.repository.UserRepository;
+import com.softserve.app.request.LoginRequest;
 import com.softserve.app.service.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
 
 
-@Controller
+@RestController
 public class UserController {
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    UserRepository userRepository;
 
-    // todo: user registration and login
-
-
+    @Autowired
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
+
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    @GetMapping("/users")
+    List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginAuth(@RequestBody LoginRequest loginrequest) {
+        User userFromDb = userRepository.findByEmail(loginrequest.getEmail()).orElseThrow(() ->
+                new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 401));
+        if (userFromDb == null) {
+            //якщо нема юзера то відповідний статус (який-ше треба почитати)
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "WRONG USER");
+        }
+        try {
+            ////checking passwords
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginrequest.getEmail(),
+                    loginrequest.getPassword()));
+
+        } catch (
+                BadCredentialsException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "WRONG CREDENTIALS", e);
+        }
+        //userDetailsService.loadUserByUsername(loginrequest.getEmail());
+        System.out.println();
+        return ResponseEntity.ok("You logged in successfully");
+    }
+    // todo: user registration and login
+
 
     // show  profile
     @RequestMapping(value = "/profile", method = RequestMethod.GET)

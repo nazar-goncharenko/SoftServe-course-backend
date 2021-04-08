@@ -5,6 +5,8 @@ public enum SportHubConstant {
     /*
     If necessary, enter more constants
      */
+    /// emailSender constants
+    EMAIL_TITLE("Here's the link to reset your password"),
 
     // negative
     AUTHORIZE_EXCEPTION("Sorry, you're not authorized to access this resource"),
