@@ -1,6 +1,8 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.UserDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,10 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -65,34 +70,21 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-    public String getPhotoUrl() {
-        return photoUrl;
+    public UserDTO ofDTO(){
+        return UserDTO.builder()
+                .email(this.email)
+                .id(this.id)
+                .favourites(this.favourites.stream()
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList()))
+                .password(this.password)
+                .photoUrl(this.photoUrl)
+                .role(this.role)
+                .userBanners(new ArrayList<>(this.userBanners))
+                .userComments(new ArrayList<>(this.userComments))
+                .username(this.username)
+                .userSurveys(new ArrayList<>(this.userSurveys))
+                .build();
     }
 }
