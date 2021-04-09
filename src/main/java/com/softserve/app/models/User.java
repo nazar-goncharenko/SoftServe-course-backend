@@ -18,15 +18,15 @@ public class User implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String username;
 
     @NonNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @NonNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "photoUrl")
