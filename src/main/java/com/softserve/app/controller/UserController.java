@@ -25,7 +25,6 @@ public class UserController {
 
 
     @GetMapping
-    @ResponseBody
     public ResponseEntity<Object> showProfile(
             @PathVariable Long user_id) {
 

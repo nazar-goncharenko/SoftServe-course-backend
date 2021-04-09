@@ -1,7 +1,11 @@
 package com.softserve.app.models;
 
 import com.softserve.app.dto.UserDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
