@@ -4,7 +4,7 @@ import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.models.User;
 import com.softserve.app.service.UserService.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@AllArgsConstructor
 @RequestMapping("/user/{user_id}")
 public class UserController {
 
@@ -22,14 +23,8 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
-
-    // show  profile
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseBody
     public ResponseEntity<Object> showProfile(
             @PathVariable Long user_id) {
@@ -45,8 +40,7 @@ public class UserController {
     }
 
 
-    // update profile
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Object> updatePersonal(
             @RequestBody UserDTO userDto, @PathVariable Long user_id) {
 
@@ -61,7 +55,6 @@ public class UserController {
     }
 
 
-    // update avatar
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public ResponseEntity<Object> updateAvatar(
             @RequestParam("file") MultipartFile userAva,
