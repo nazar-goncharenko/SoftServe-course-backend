@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -89,7 +88,6 @@ public class User {
                         .collect(Collectors.toList()))
                 .password(this.password)
                 .photoUrl(this.photoUrl)
-                .role(this.role)
                 .userBanners(new ArrayList<>(this.userBanners))
                 .userComments(new ArrayList<>(this.userComments))
                 .username(this.username)
