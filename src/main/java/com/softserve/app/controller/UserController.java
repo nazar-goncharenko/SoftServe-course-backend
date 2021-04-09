@@ -3,7 +3,7 @@ package com.softserve.app.controller;
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.models.User;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,6 @@ public class UserController {
 
 
     @GetMapping
-    @ResponseBody
     public ResponseEntity<Object> showProfile(
             @PathVariable Long user_id) {
 
