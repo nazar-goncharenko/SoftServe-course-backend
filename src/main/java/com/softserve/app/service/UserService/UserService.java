@@ -15,7 +15,7 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    boolean  updateUser(UserDTO userDTO);
+    UserDTO  updateUser(UserDTO userDTO);
 
-    boolean updateAvatar(Long user_id, MultipartFile userAva);
+    UserDTO updateAvatar(Long user_id, MultipartFile userAva);
 }

@@ -6,6 +6,7 @@ import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(UserDTO userDTO) {
+    public UserDTO updateUser(UserDTO userDTO) {
         User curUser = userRepository.findById(userDTO.getId()).orElseThrow(() -> new SportHubException(
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
 
@@ -75,33 +77,35 @@ public class UserServiceImpl implements UserService {
 
         // Surveys list
         if (userDTO.getUserSurveys() != null) {
-            curUser.setUserSurveys(userDTO.getUserSurveys());
+            curUser.setUserSurveys(new HashSet<>(userDTO.getUserSurveys()));
         }
 
         // Favourites list
         if (userDTO.getFavourites() != null) {
-            curUser.setFavourites(userDTO.getFavourites());
+            curUser.setFavourites(new HashSet<>(userDTO.getFavourites()));
         }
 
-        return true;
+        return curUser.ofDTO();
     }
 
-    public boolean updateAvatar(Long user_id, MultipartFile userAva) {
+
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    public UserDTO updateAvatar(Long user_id, MultipartFile userAva) {
         User user = userRepository.findById(user_id).orElseThrow(() -> new SportHubException(
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
 
-        String directory = "C:\\Users\\User\\Desktop\\Projects\\SoftServe-course-backend" +
-                "\\src\\main\\resources\\PhotoDirectory\\UserAvatars\\"
-                + user.getId() + "avatar.jpg";
+
+        String directory = uploadPath + "/UserAvatars/" + user.getId() + "avatar.jpg";
 
         File logo = new File(directory);
         try {
             userAva.transferTo(logo);
             user.setPhotoUrl(logo.getName());
-            // user.setPhotoUrl(directory); - ?
         } catch (Exception e) {
             throw new SportHubException(SportHubConstant.FILE_LOADING_EXCEPTION.getMessage(), 500);
         }
-        return true;
+        return user.ofDTO();
     }
 }

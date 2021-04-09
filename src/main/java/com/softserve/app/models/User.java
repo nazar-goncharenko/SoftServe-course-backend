@@ -1,9 +1,11 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,4 +56,18 @@ public class User implements Serializable {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
+
+    public UserDTO ofDTO() {
+        return UserDTO.builder()
+                .id(this.id)
+                .username(this.username)
+                .email(this.email)
+                .password(this.password)
+                .photoUrl(this.photoUrl)
+                .userSurveys(new ArrayList<>(this.userSurveys))
+                .userBanners(new ArrayList<>(this.userBanners))
+                .userComments(new ArrayList<>(this.userComments))
+                .favourites(new ArrayList<>(this.favourites))
+                .build();
+    }
 }

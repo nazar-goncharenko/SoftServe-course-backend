@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Objects;
 
 
 @RestController
-@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/user/{user_id}")
 public class UserController {
 
     // todo: user registration and login
@@ -28,21 +28,13 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> usList = userService.findAll();
-        return new ResponseEntity<>(usList, HttpStatus.OK);
-    }
-
-
     // show  profile
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Object> showProfile(
-            @RequestBody UserDTO userDto) {
+            @PathVariable Long user_id) {
 
-        User usr = userService.findByEmail(userDto.getEmail());
+        User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
             return ResponseEntity.ok(usr);
@@ -54,11 +46,11 @@ public class UserController {
 
 
     // update profile
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> updatePersonal(
-            @RequestBody UserDTO userDto) {
+            @RequestBody UserDTO userDto, @PathVariable Long user_id) {
 
-        User usr = userService.findById(userDto.getId());
+        User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
             return ResponseEntity.ok(userService.updateUser(userDto));
@@ -70,11 +62,10 @@ public class UserController {
 
 
     // update avatar
-    @RequestMapping(value = "/profile/avatar", method = RequestMethod.POST)
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public ResponseEntity<Object> updateAvatar(
-            @RequestParam("user_id") Long user_id,
-            @RequestParam("file") MultipartFile userAva
-    ) {
+            @RequestParam("file") MultipartFile userAva,
+            @PathVariable Long user_id) {
         User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {

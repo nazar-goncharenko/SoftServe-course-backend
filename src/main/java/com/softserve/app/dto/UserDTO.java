@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,8 +29,8 @@ public class UserDTO implements Serializable {
 
     private String photoUrl;
 
-    private Set<Survey> userSurveys = new HashSet<>();
-    private Set<Banner> userBanners = new HashSet<>();
-    private Set<Comment> userComments = new HashSet<>();
-    private Set<SportCategory> favourites = new HashSet<>();
+    private List<Survey> userSurveys = new ArrayList<>();
+    private List<Banner> userBanners = new ArrayList<>();
+    private List<Comment> userComments = new ArrayList<>();
+    private List<SportCategory> favourites = new ArrayList<>();
 }
