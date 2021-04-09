@@ -3,15 +3,18 @@ package com.softserve.app.service.userService;
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
 public class AuthUserDetails implements UserDetails {
-    private User user;
+    private final User user;
 
 
     @Override
@@ -47,7 +50,9 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles();
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(user.getRole());
+        return  list;
     }
 
 }
