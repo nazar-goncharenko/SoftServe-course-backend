@@ -1,9 +1,7 @@
 package com.softserve.app.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.softserve.app.dto.BannerDTO;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,28 +19,41 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Entity
 public class Banner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false, unique = true)
+    private String title;
 
     @Column(name = "image", nullable = false)
     private String imgPath;
 
-    @Column(name ="isOpen", nullable = false)
-    private boolean isOpen;
+    @Column(name = "lastUpdated", nullable = false)
+    private String lastUpdated;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory category;
 
     public enum Status {
-        PUBLISHED, NOT_PUBLISHED;
+        PUBLISHED, NOT_PUBLISHED, CLOSED;
     }
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public BannerDTO convertToDTO(){
+        return BannerDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .category(this.category)
+                .imgPath(this.imgPath)
+                .lastUpdated(this.lastUpdated)
+                .status(this.status)
+                .build();
+    }
+
 }

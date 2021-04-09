@@ -1,64 +1,149 @@
 package com.softserve.app.service;
 
 import com.softserve.app.constant.BannerConstant;
+import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.exception.SportHubException;
+import com.softserve.app.models.SportCategory;
 import com.softserve.app.repository.BannerRepository;
 import com.softserve.app.models.Banner;
 import com.softserve.app.repository.SportCategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
-public class BannerService {
+@AllArgsConstructor
+public class BannerService implements BannerServiceInterface {
 
-    @Autowired
-    BannerRepository bannerRepository;
+    private final BannerRepository bannerRepository;
 
-    @Autowired
-    FileService fileService;
+    private final SportCategoryRepository sportCategoryRepository;
 
-    @Autowired
-    SportCategoryRepository sportCategoryRepository;
+    private final FileServiceInterface fileService;
 
-    public List<Banner> bannersList(){
-        return bannerRepository.findAll();
+    // returns current date in format " 1 January 2021 "
+    public String today(){
+        String datePattern = "dd MMMM yyyy";
+        LocalDateTime lastUpdated = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern(datePattern);
+        return lastUpdated.format(myFormatObj);
     }
 
-    public Banner create(Banner banner, MultipartFile img){
-        banner.setName(banner.getName());
-        banner.setOpen(true);
-        banner.setImgPath(fileService.saveImg(img));
-        return bannerRepository.save(banner);
+    @Override
+    public List<BannerDTO> listAll(){
+        return bannerRepository.findAll().stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
     }
 
+    @Override
+    public BannerDTO findById(Long bannerId){
+        Banner bannerFromDB = bannerRepository.findById(bannerId)
+                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+        return bannerFromDB.convertToDTO();
+    }
+
+    // list of all banners in category, allowed only for admins
+    @Override
+    public List<BannerDTO> findAllByCategory(String categoryName) {
+        return bannerRepository.findAllByCategoryNameIgnoreCase(categoryName).stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // list of OPEN banners in category, which is returned only if admin has made it visible to users
+    @Override
+    public List<BannerDTO> findAllowedByCategory(String categoryName) {
+        SportCategory categoryFromDb = sportCategoryRepository.findByName(categoryName);
+        if(categoryFromDb.isShowBanners())
+            return bannerRepository.findAllByCategoryNameIgnoreCase(categoryName).stream()
+                    .filter((b)-> b.getStatus().equals(Banner.Status.NOT_PUBLISHED) || b.getStatus().equals(Banner.Status.PUBLISHED))
+                    .map(Banner::convertToDTO)
+                    .collect(Collectors.toList());
+        else
+            return null;
+    }
+
+    @Override
+    public List<BannerDTO> findByTitle(String name){
+        List<Banner> bannerFromDb = bannerRepository.findByTitleIgnoreCaseContaining(name);
+        return bannerFromDb.stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // list of open banners ( with status "PUBLISHED" or "NOT_PUBLISHED" )
+    @Override
+    public List<BannerDTO> getOpen(){
+        return bannerRepository.findAllOpen().stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // list of banners with status "CLOSED"
+    @Override
+    public List<BannerDTO> getClosed(){
+        return bannerRepository.findAllClosed().stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void showPredefined(String categoryName){
+        SportCategory categoryFromDb = sportCategoryRepository.findByName(categoryName);
+        categoryFromDb.setShowBanners(true);
+        sportCategoryRepository.save(categoryFromDb);
+    }
+
+    @Override
+    public void hidePredefined(String categoryName){
+        SportCategory categoryFromDb = sportCategoryRepository.findByName(categoryName);
+        categoryFromDb.setShowBanners(false);
+        sportCategoryRepository.save(categoryFromDb);
+    }
+
+    @Override
+    public void create(BannerDTO bannerDTO, MultipartFile img){
+        bannerRepository.save(Banner.builder()
+                .title(bannerDTO.getTitle())
+                .lastUpdated(today())
+                .imgPath(fileService.saveImg(img))
+                .build());
+    }
+
+    // "update" means changing image and banner name
+    @Override
+    public void update(BannerDTO bannerDTO, MultipartFile img){
+        Banner bannerFromDb = bannerRepository.findById(bannerDTO.getId())
+                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+        bannerFromDb.setTitle(bannerDTO.getTitle() != null ? bannerDTO.getTitle() : bannerFromDb.getTitle());
+        bannerFromDb.setImgPath(img!= null ? fileService.saveImg(img) : bannerFromDb.getImgPath());
+        bannerFromDb.setLastUpdated(today());
+        bannerRepository.save(bannerFromDb).convertToDTO();
+    }
+
+    // "configure" means status and category setting
+    @Override
+    public void configure(BannerDTO bannerDTO){
+        Banner bannerFromDb = bannerRepository.findById(bannerDTO.getId())
+                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+        bannerFromDb.setStatus(bannerDTO.getStatus() != null ? bannerDTO.getStatus() : bannerFromDb.getStatus());
+        bannerFromDb.setCategory(bannerDTO.getCategory() != null ? bannerDTO.getCategory() : bannerFromDb.getCategory());
+        bannerRepository.save(bannerFromDb).convertToDTO();
+    }
+
+    @Override
     public void delete(Long bannerId){
         if (bannerRepository.findById(bannerId).isEmpty())
             throw new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400);
         bannerRepository.deleteById(bannerId);
-        throw new SportHubException(BannerConstant.DELETED_SUCCESSFULLY.getMessage(), 200);
     }
 
-    // "update" means changing image and banner name
-    public Optional<Banner> update(Banner banner, MultipartFile img, Long bannerId){
-        return bannerRepository.findById(bannerId).map(bannerFromDB -> {
-            bannerFromDB.setName(banner.getName() != null ? banner.getName() : bannerFromDB.getName());
-            if(!img.isEmpty())
-                bannerFromDB.setImgPath(fileService.saveImg(img));
-            return bannerRepository.save(bannerFromDB);
-        });
-    }
-
-    // "configure" means status and category setting
-    // TODO fix category setting
-    public Optional<Banner> configure(Banner banner, Long bannerId){
-        return bannerRepository.findById(bannerId).map(bannerFromDB -> {
-            bannerFromDB.setStatus(banner.getStatus() != null ? banner.getStatus() : bannerFromDB.getStatus());
-            banner.setCategory(banner.getCategory() != null ? sportCategoryRepository.findByIdEquals(banner.getCategory().getId()) : bannerFromDB.getCategory());
-            return bannerRepository.save(bannerFromDB);
-        });
-    }
 }

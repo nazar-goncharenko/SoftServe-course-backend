@@ -49,6 +49,12 @@ public class SportCategory {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "isPredefined")
+    private boolean isPredefined;
+
+    @Column(name = "showBanners")
+    private boolean showBanners;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<>();
 

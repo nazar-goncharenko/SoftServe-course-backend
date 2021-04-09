@@ -7,7 +7,9 @@ public enum BannerConstant {
     CONFIGURED_SUCCESSFULLY("Banner was configured successfully"),
     DELETED_SUCCESSFULLY("Banner was deleted successfully"),
     BANNER_NOT_FOUND("Banner doesn't exist"),
-    NOT_IMAGE("Uploaded file isn't an image");
+    NOT_IMAGE("Uploaded file isn't an image"),
+    HIDDEN_SUCCESSFULLY("Banners of this category are not visible to users anymore"),
+    SHOWN_SUCCESSFULLY("Banners of this category are visible to the users now");
 
     private final String message;
 

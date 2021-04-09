@@ -1,53 +1,105 @@
 package com.softserve.app.controller;
 
-import com.softserve.app.models.Banner;
-import com.softserve.app.service.BannerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.softserve.app.constant.BannerConstant;
+import com.softserve.app.dto.BannerDTO;
+import com.softserve.app.service.BannerServiceInterface;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping (path = "/banners")
+@AllArgsConstructor
 public class BannerController {
 
-    @Autowired
-    private BannerService bannerService;
+    private final BannerServiceInterface bannerService;
 
-    @GetMapping("/list")
-    public List<Banner> allBanners() {
-        return bannerService.bannersList();
+    // TODO should be available only for admins
+    @GetMapping()
+    public List<BannerDTO> getAll() {
+        return bannerService.listAll();
     }
 
     // TODO should be available only for admins
-    @PostMapping("/create")
-    public Banner create(
-            @RequestPart("banner")Banner banner,
+    @GetMapping("/open")
+    public List<BannerDTO> getOpen(){
+        return bannerService.getOpen();
+    }
+
+    // TODO should be available only for admins
+    @GetMapping("/closed")
+    public List<BannerDTO> getClosed(){
+        return bannerService.getClosed();
+    }
+
+    @GetMapping("/{bannerId}")
+    public BannerDTO getOne(@PathVariable Long bannerId){
+        return bannerService.findById(bannerId);
+    }
+
+    // TODO should be available only for admins
+    @GetMapping("/filterAdminSide")
+    public List<BannerDTO> filterByCategory(@RequestParam("category") String categoryName){
+        return bannerService.findAllByCategory(categoryName);
+    }
+
+    @GetMapping("/filterUserSide")
+    public List<BannerDTO> filterAllowedByCategory(@RequestParam("category") String categoryName){
+        return bannerService.findAllowedByCategory(categoryName);
+    }
+
+    // TODO should be available only for admins
+    @GetMapping("/search")
+    public List<BannerDTO> searchByTitle(@RequestParam("title") String title){
+        return bannerService.findByTitle(title);
+    }
+
+    // TODO should be available only for admins
+    @PutMapping("/show")
+    public ResponseEntity<String> showPredefined(@RequestParam("category") String categoryName){
+        bannerService.showPredefined(categoryName);
+        return ResponseEntity.ok(BannerConstant.SHOWN_SUCCESSFULLY.getMessage());
+    }
+
+    // TODO should be available only for admins
+    @PutMapping("/hide")
+    public ResponseEntity<String> hidePredefined(@RequestParam("category") String categoryName){
+        bannerService.hidePredefined(categoryName);
+        return ResponseEntity.ok(BannerConstant.HIDDEN_SUCCESSFULLY.getMessage());
+    }
+
+    // TODO should be available only for admins
+    @PostMapping()
+    public ResponseEntity<String> create(
+            @RequestPart("banner") BannerDTO bannerDTO,
             @RequestPart("file")MultipartFile file){
-        return bannerService.create(banner, file);
+        bannerService.create(bannerDTO, file);
+        return ResponseEntity.ok(BannerConstant.CREATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
-    @PutMapping("/update/{bannerId}")
-    public Optional<Banner> update(@PathVariable Long bannerId,
-                                   @RequestPart("banner")Banner banner,
-                                   @RequestPart(value = "file", required = false)MultipartFile file) {
-        return bannerService.update(banner,file, bannerId);
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestPart("banner") BannerDTO bannerDTO,
+                                         @RequestPart(value = "file", required = false)MultipartFile file) {
+        bannerService.update(bannerDTO, file);
+        return ResponseEntity.ok(BannerConstant.UPDATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
-    @PutMapping("/configure/{bannerId}")
-    public Optional<Banner> configure(@PathVariable Long bannerId,
-                                      @RequestPart("banner")Banner banner){
-        return bannerService.configure(banner, bannerId);
+    @PutMapping("/configure")
+    public ResponseEntity<String> configure(@RequestBody BannerDTO bannerDTO){
+        bannerService.configure(bannerDTO);
+        return ResponseEntity.ok(BannerConstant.CONFIGURED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
-    @DeleteMapping("/delete/{bannerId}")
-    public void deleteBanner(@PathVariable Long bannerId){
+    @DeleteMapping("/{bannerId}")
+    public ResponseEntity<String> delete(@PathVariable Long bannerId){
         bannerService.delete(bannerId);
+        return ResponseEntity.ok(BannerConstant.DELETED_SUCCESSFULLY.getMessage());
     }
 
 }

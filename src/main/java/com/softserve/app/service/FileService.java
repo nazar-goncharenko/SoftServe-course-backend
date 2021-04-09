@@ -2,6 +2,8 @@ package com.softserve.app.service;
 
 import com.softserve.app.constant.BannerConstant;
 import com.softserve.app.exception.SportHubException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class FileService {
+@AllArgsConstructor
+@NoArgsConstructor
+public class FileService implements FileServiceInterface {
 
     // directory for uploaded images (you can change it in application.properties)
     @Value("${upload.path}")
