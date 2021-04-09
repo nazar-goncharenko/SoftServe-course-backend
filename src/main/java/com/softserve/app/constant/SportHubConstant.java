@@ -12,6 +12,7 @@ public enum SportHubConstant {
     AUTHENTICATION_EXCEPTION("User authentication was failed"),
     JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
     EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
+    FILE_LOADING_EXCEPTION("Could not load file"),
 
     // positive
     REGISTERED_SUCCESSFULLY("Registered Successfully %s"),

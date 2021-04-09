@@ -2,29 +2,23 @@ package com.softserve.app.controller;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
-import com.softserve.app.exception.SportHubException;
-import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
-import com.softserve.app.service.userService.UserService;
+import com.softserve.app.service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
 
 
-@Controller
+@RestController
+@RequestMapping("/user")
 public class UserController {
 
-
     // todo: user registration and login
-
 
     private final UserService userService;
 
@@ -33,75 +27,61 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> usList = userService.findAll();
+        return new ResponseEntity<>(usList, HttpStatus.OK);
+    }
+
+
     // show  profile
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Object> showProfile(
-            @RequestBody UserDTO userDto
-    ) {
+            @RequestBody UserDTO userDto) {
+
         User usr = userService.findByEmail(userDto.getEmail());
+
         if (Objects.equals(userService.getCurrentUser(), usr)) {
             return ResponseEntity.ok(usr);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(SportHubConstant.AUTHENTICATION_EXCEPTION.getMessage());
     }
 
 
-    // update profile  'Personal' tab // todo: update  avatar
+    // update profile
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
     public ResponseEntity<Object> updatePersonal(
-            @RequestBody UserDTO userDto
-    ) {
-        User usr = userService.findByEmail(userDto.getEmail());
+            @RequestBody UserDTO userDto) {
+
+        User usr = userService.findById(userDto.getId());
+
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(userService.updateUser(usr));
+            return ResponseEntity.ok(userService.updateUser(userDto));
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(SportHubConstant.AUTHENTICATION_EXCEPTION.getMessage());
     }
 
 
-    // todo: update PASSWORD
-/*
-    // show Surveys
-    @RequestMapping(value = "/profile/surveys", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<Survey>> showSurveys(
-            @RequestBody UserDTO userDto
+    // update avatar
+    @RequestMapping(value = "/profile/avatar", method = RequestMethod.POST)
+    public ResponseEntity<Object> updateAvatar(
+            @RequestParam("user_id") Long user_id,
+            @RequestParam("file") MultipartFile userAva
     ) {
-        User usr = userService.findByEmail(userDto.getEmail());
+        User usr = userService.findById(user_id);
+
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(// return list of surveys); // todo: list of surveys !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return ResponseEntity.ok(userService.updateAvatar(user_id, userAva));
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(SportHubConstant.AUTHENTICATION_EXCEPTION.getMessage());
     }
-
-    // update Survey
-    @RequestMapping(value = "/profile/surveys", method = RequestMethod.POST)
-    public ResponseEntity<List<Survey>> updateSurvey(
-            @RequestParam("id") Long id, // user id
-            @RequestParam("surveyId") Long surveyId
-    ) {
-        User usr = userService.findById(id);
-        if (Objects.equals(userService.getCurrentUser().getId(), usr.getId())) {
-            return ResponseEntity.ok(// return list of surveys); // todo: update surveys -> SurveyRepo and SurveyService!!!!!!!!!!!!!!!!!!
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-
-    // show Favourites
-    @RequestMapping(value = "/profile/favourites", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<Object>> showFavourites(
-            @RequestBody UserDTO userDto
-    ) {
-        User usr = userService.findByEmail(userDto.getEmail());
-        if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(// return list of favourites); // todo: update favourites -> list of favourites !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-    //Favourite update - on Favourite article
-*/
-
 }
