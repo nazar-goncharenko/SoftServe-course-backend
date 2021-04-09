@@ -36,6 +36,4 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
-
-
 }
