@@ -32,5 +32,5 @@ public class UserDTO implements Serializable {
     private List<Survey> userSurveys = new ArrayList<>();
     private List<Banner> userBanners = new ArrayList<>();
     private List<Comment> userComments = new ArrayList<>();
-    private List<SportCategory> favourites = new ArrayList<>();
+    private List<SportCategoryDTO> favourites = new ArrayList<>();
 }

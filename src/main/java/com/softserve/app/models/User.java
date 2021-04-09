@@ -80,7 +80,6 @@ public class User {
                         .collect(Collectors.toList()))
                 .password(this.password)
                 .photoUrl(this.photoUrl)
-                .role(this.role)
                 .userBanners(new ArrayList<>(this.userBanners))
                 .userComments(new ArrayList<>(this.userComments))
                 .username(this.username)
