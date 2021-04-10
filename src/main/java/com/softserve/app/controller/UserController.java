@@ -31,9 +31,9 @@ public class UserController {
     private final ResetService resetService;
     @PostMapping("/registration")
     @JsonView(View.UserInfo.class)
-    public User addUser(@RequestBody User user) {
-        return userService.saveUser(user);
-
+    public ResponseEntity<UserDTO> addUser(@RequestBody User user) {
+        userService.saveUser(user);
+        return new ResponseEntity<>(user.ofDTO(), HttpStatus.OK);
     }
 
     @GetMapping("/users")
@@ -42,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginAuth(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> loginAuth(@RequestBody UserDTO userDTO) {
         userService.authorize(userDTO);
-        return new ResponseEntity<>(SportHubConstant.LOGGED_SUCCESSFULLY.getMessage(), HttpStatus.OK);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
 
@@ -59,7 +59,7 @@ public class UserController {
                     example = "example@gmail.com",
                     required = true) @RequestBody UserDTO userDTO) {
         resetService.createToken(userDTO);
-        return new ResponseEntity<UserDTO>(HttpStatus.OK);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Reset password",
@@ -68,7 +68,7 @@ public class UserController {
     public ResponseEntity<UserDTO> processResetPassword(
             @RequestBody ResetPasswordRequest resetPasswordRequest) {
         resetService.resetPassword(resetPasswordRequest);
-        return new ResponseEntity<UserDTO>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // todo: user registration and login
