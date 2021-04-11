@@ -1,7 +1,6 @@
 package com.softserve.app.service;
 
 import com.softserve.app.dto.BannerDTO;
-import com.softserve.app.models.Banner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,11 +25,11 @@ public interface BannerServiceInterface {
 
     void hidePredefined(String categoryName);
 
-    void update(BannerDTO bannerDTO, MultipartFile img);
+    void update(String title, MultipartFile img, Long id);
 
     void configure(BannerDTO bannerDTO);
 
-    void create(BannerDTO bannerDTO, MultipartFile img);
+    void create(String title, MultipartFile img);
 
     void delete(Long bannerId);
 }

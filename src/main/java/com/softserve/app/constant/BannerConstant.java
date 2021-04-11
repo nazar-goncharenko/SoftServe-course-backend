@@ -8,6 +8,7 @@ public enum BannerConstant {
     DELETED_SUCCESSFULLY("Banner was deleted successfully"),
     BANNER_NOT_FOUND("Banner doesn't exist"),
     NOT_IMAGE("Uploaded file isn't an image"),
+    IMAGE_IS_NOT_UPLOADED("Can not upload the image"),
     HIDDEN_SUCCESSFULLY("Banners of this category are not visible to users anymore"),
     SHOWN_SUCCESSFULLY("Banners of this category are visible to the users now");
 

@@ -1,7 +1,12 @@
 package com.softserve.app.models;
 
 import com.softserve.app.dto.BannerDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

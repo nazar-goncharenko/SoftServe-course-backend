@@ -7,12 +7,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
 @RequestMapping (path = "/banners")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class BannerController {
 
     private final BannerServiceInterface bannerService;
@@ -74,17 +74,19 @@ public class BannerController {
     // TODO should be available only for admins
     @PostMapping()
     public ResponseEntity<String> create(
-            @RequestPart("banner") BannerDTO bannerDTO,
-            @RequestPart("file")MultipartFile file){
-        bannerService.create(bannerDTO, file);
+            @RequestParam("title") String title,
+            @RequestParam("file")MultipartFile file){
+        bannerService.create(title, file);
         return ResponseEntity.ok(BannerConstant.CREATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
-    @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestPart("banner") BannerDTO bannerDTO,
-                                         @RequestPart(value = "file", required = false)MultipartFile file) {
-        bannerService.update(bannerDTO, file);
+    @PutMapping("/update/{bannerId}")
+    public ResponseEntity<String> update(
+            @PathVariable Long bannerId,
+            @RequestParam("title") String title,
+            @RequestParam(value = "file", required = false)MultipartFile file) {
+        bannerService.update(title, file, bannerId);
         return ResponseEntity.ok(BannerConstant.UPDATED_SUCCESSFULLY.getMessage());
     }
 

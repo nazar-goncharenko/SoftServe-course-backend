@@ -82,7 +82,7 @@ public class BannerService implements BannerServiceInterface {
     // list of open banners ( with status "PUBLISHED" or "NOT_PUBLISHED" )
     @Override
     public List<BannerDTO> getOpen(){
-        return bannerRepository.findAllOpen().stream()
+        return bannerRepository.findByStatusNot(Banner.Status.CLOSED).stream()
                 .map(Banner::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -90,7 +90,7 @@ public class BannerService implements BannerServiceInterface {
     // list of banners with status "CLOSED"
     @Override
     public List<BannerDTO> getClosed(){
-        return bannerRepository.findAllClosed().stream()
+        return bannerRepository.findByStatusEquals(Banner.Status.CLOSED).stream()
                 .map(Banner::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -110,9 +110,9 @@ public class BannerService implements BannerServiceInterface {
     }
 
     @Override
-    public void create(BannerDTO bannerDTO, MultipartFile img){
+    public void create(String title, MultipartFile img){
         bannerRepository.save(Banner.builder()
-                .title(bannerDTO.getTitle())
+                .title(title)
                 .lastUpdated(today())
                 .imgPath(fileService.saveImg(img))
                 .build());
@@ -120,10 +120,10 @@ public class BannerService implements BannerServiceInterface {
 
     // "update" means changing image and banner name
     @Override
-    public void update(BannerDTO bannerDTO, MultipartFile img){
-        Banner bannerFromDb = bannerRepository.findById(bannerDTO.getId())
+    public void update(String title, MultipartFile img, Long id){
+        Banner bannerFromDb = bannerRepository.findById(id)
                 .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
-        bannerFromDb.setTitle(bannerDTO.getTitle() != null ? bannerDTO.getTitle() : bannerFromDb.getTitle());
+        bannerFromDb.setTitle(title != null ? title : bannerFromDb.getTitle());
         bannerFromDb.setImgPath(img!= null ? fileService.saveImg(img) : bannerFromDb.getImgPath());
         bannerFromDb.setLastUpdated(today());
         bannerRepository.save(bannerFromDb).convertToDTO();

@@ -4,6 +4,7 @@ import com.softserve.app.constant.BannerConstant;
 import com.softserve.app.exception.SportHubException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +25,7 @@ public class FileService implements FileServiceInterface {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Override
     public String saveImg(MultipartFile img){
         // if directory doesn't exist it will be created
         File uploadDir = new File(uploadPath);
@@ -46,7 +49,8 @@ public class FileService implements FileServiceInterface {
                         StandardCopyOption.REPLACE_EXISTING);
                 return img.getOriginalFilename();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                log.info(e.getMessage());
+                throw new SportHubException(BannerConstant.IMAGE_IS_NOT_UPLOADED.getMessage(), 400);
             }
         }
     }
