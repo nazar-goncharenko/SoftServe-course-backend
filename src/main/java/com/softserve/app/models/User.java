@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -47,13 +50,19 @@ public class User {
 
     @Column(name = "photoUrl")
     private String photoUrl;
+    public enum Role implements GrantedAuthority {
 
-    public enum Role {
-        ADMIN, USER;
+        ROLE_ADMIN,ROLE_USER;
+        @Override
+        public String getAuthority() {
+            return name();
+        }
     }
-
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String resetPasswordToken;
+
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Survey> userSurveys = new HashSet<>();
@@ -70,8 +79,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
 
-
-    public UserDTO ofDTO(){
+    public UserDTO ofDTO() {
         return UserDTO.builder()
                 .email(this.email)
                 .id(this.id)
