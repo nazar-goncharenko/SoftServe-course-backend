@@ -1,4 +1,4 @@
-package com.softserve.app.service.UserService;
+package com.softserve.app.service.userService;
 
 import com.softserve.app.models.User;
 
