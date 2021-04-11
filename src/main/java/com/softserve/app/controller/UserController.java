@@ -1,6 +1,6 @@
 package com.softserve.app.controller;
 
-import com.softserve.app.dto.UserDTO;
+import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.models.User;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Survey;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Objects;
+import java.util.List;
 
 
 @Controller
