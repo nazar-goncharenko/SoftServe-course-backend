@@ -1,4 +1,4 @@
-package com.softserve.app.service;
+package com.softserve.app.service.SportCategoryService;
 
 
 import com.softserve.app.dto.SportCategoryDTO;
@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class SportCategoryService {
 
     private final SportCategoryRepository sportCategoryRepo;
-
 
 
     public List<SportCategoryDTO> getBasicNavigationList() {
