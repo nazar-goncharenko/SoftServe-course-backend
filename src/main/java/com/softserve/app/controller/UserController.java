@@ -2,6 +2,8 @@ package com.softserve.app.controller;
 
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.models.User;
+import com.softserve.app.exception.SportHubException;
+import com.softserve.app.models.Survey;
 import com.softserve.app.service.userService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
