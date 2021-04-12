@@ -2,9 +2,6 @@ package com.softserve.app.constant;
 
 public enum SportHubConstant {
 
-    /*
-    If necessary, enter more constants
-     */
     /// emailSender constants
     EMAIL_SENT("Email sent"),
     COMPANY_EMAIL("SportHub@gmail.com"),
@@ -18,21 +15,24 @@ public enum SportHubConstant {
             + "<br>"
             + "<p>Ignore this email if you do remember your password, "
             + "or you have not made the request.</p>"),
-    // negative
+
+
     AUTHORIZE_EXCEPTION("Sorry, you're not authorized to access this resource"),
     USER_NOT_FOUND("User not found"),
-
-    AUTHENTICATION_EXCEPTION("User authentication was failed"),
     JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
     EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
-    PASSWORD_NOT_MATCH("Password did not match"),
+    PASSWORD_NOT_MATCH("Password not match"),
+
+    FILE_LOADING_EXCEPTION("Could not load file"),
+
+
     // positive
-    USER_FOUND("User found"),
     LOGGED_SUCCESSFULLY("Logged in Successfully %s"),
     REGISTERED_SUCCESSFULLY("Registered Successfully %s"),
     PASSWORD_RESTORE_MESSAGE("Hello %s, here your new password : %s"),
     PASSWORD_RESTORE_SUBJECT("Password restoration for User"),
     PASSWORD_RESET_FAILED("Password reset failed");
+
     private String message;
 
     SportHubConstant(String message) {

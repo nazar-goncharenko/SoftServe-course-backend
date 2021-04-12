@@ -1,6 +1,9 @@
 package com.softserve.app.dto;
 
-import com.softserve.app.models.*;
+import com.softserve.app.models.Banner;
+import com.softserve.app.models.Comment;
+import com.softserve.app.models.Survey;
+import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,4 +37,5 @@ public class UserDTO implements Serializable {
     private List<Banner> userBanners = new ArrayList<>();
     private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
+
 }

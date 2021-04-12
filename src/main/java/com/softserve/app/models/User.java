@@ -50,9 +50,9 @@ public class User {
 
     @Column(name = "photoUrl")
     private String photoUrl;
-    public enum Role implements GrantedAuthority {
 
-        ROLE_ADMIN,ROLE_USER;
+    public enum Role implements GrantedAuthority {
+        ROLE_ADMIN, ROLE_USER;
         @Override
         public String getAuthority() {
             return name();
@@ -81,16 +81,17 @@ public class User {
 
     public UserDTO ofDTO() {
         return UserDTO.builder()
-                .email(this.email)
                 .id(this.id)
+                .username(this.username)
+                .email(this.email)
+                .password(this.password)
+                .photoUrl(this.photoUrl)
+
                 .favourites(this.favourites.stream()
                         .map(SportCategory::ofDTO)
                         .collect(Collectors.toList()))
-                .password(this.password)
-                .photoUrl(this.photoUrl)
                 .userBanners(new ArrayList<>(this.userBanners))
                 .userComments(new ArrayList<>(this.userComments))
-                .username(this.username)
                 .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
     }

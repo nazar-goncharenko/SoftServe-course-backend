@@ -1,4 +1,6 @@
-package com.softserve.app.service.userService;
+
+package com.softserve.app.service.UserService;
+
 
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
