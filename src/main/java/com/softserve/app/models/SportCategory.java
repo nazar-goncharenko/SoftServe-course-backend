@@ -57,8 +57,17 @@ public class SportCategory {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "isPredefined")
+    private boolean isPredefined;
+
+    @Column(name = "showBanners")
+    private boolean showBanners;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Banner> banners = new HashSet<>();
 
     @ManyToMany(mappedBy = "favourites", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private Set<User> favourite = new HashSet<>();
@@ -71,6 +80,8 @@ public class SportCategory {
                         .map(SportCategory::ofDTO)
                         .collect(Collectors.toList())
                 )
+                .isPredefined(this.isPredefined)
+                .showBanners(this.showBanners)
                 .articles(new ArrayList<>(this.articles))//add stream map ArticleDTO
                 .favourite(new ArrayList<>(this.favourite))//add stream map UserDTO
                 .description(this.description)

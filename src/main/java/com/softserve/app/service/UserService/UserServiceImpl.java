@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Value("${upload.path}")
+    @Value("${img.path}")
     private String uploadPath;
 
     @Override

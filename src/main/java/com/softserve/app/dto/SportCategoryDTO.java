@@ -28,6 +28,10 @@ public class SportCategoryDTO implements Serializable {
 
     private String description;
 
+    private boolean isPredefined;
+
+    private boolean showBanners;
+
     private List<Article> articles = new ArrayList<>();
 
     private List<User> favourite = new ArrayList<>();
