@@ -23,13 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Objects;
 
 
 @RestController
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -40,9 +39,9 @@ public class UserController {
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
+
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            UserDTO userDTO = usr.ofDTO();
-            return ResponseEntity.ok(userDTO);
+            return ResponseEntity.ok(usr.ofDTO());
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
     }
@@ -50,7 +49,8 @@ public class UserController {
 
     @PostMapping("/user/{user_id}")
     public ResponseEntity<UserDTO> updatePersonal(
-            @RequestBody UserDTO userDto, @PathVariable Long user_id) {
+            @RequestBody UserDTO userDto,
+            @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
 
@@ -65,6 +65,7 @@ public class UserController {
     public ResponseEntity<UserDTO> updateAvatar(
             @RequestParam("file") MultipartFile userAva,
             @PathVariable Long user_id) {
+
         User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
@@ -85,11 +86,6 @@ public class UserController {
         return new ResponseEntity<>(user.ofDTO(), HttpStatus.OK);
     }
 
-    // just for test
-    @GetMapping("/users")
-    List<User> getAllUser() {
-        return userService.findAll();
-    }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginAuth(@RequestBody UserDTO userDTO) {
