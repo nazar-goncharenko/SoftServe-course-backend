@@ -1,11 +1,13 @@
 package com.softserve.app.service.SurveyService;
 
 import com.softserve.app.models.Survey;
+import com.softserve.app.models.User;
 import com.softserve.app.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
@@ -17,14 +19,13 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public List<Survey> findAllByAuthor() {
-        return null;
+    public List<Survey> findAllByAuthor(User author) {
+        return surveyRepository.findAllByAuthor(author);
     }
 
     @Override
-    public Survey findById(Long id) {
-        return null;
+    public Optional<Survey> findById(Long id) {
+        return surveyRepository.findById(id);
     }
-
 
 }

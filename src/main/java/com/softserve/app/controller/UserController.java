@@ -9,6 +9,8 @@ import com.softserve.app.models.User;
 import com.softserve.app.models.View;
 import com.softserve.app.service.ResetService;
 import com.softserve.app.service.UserService.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,50 +28,47 @@ import java.util.Objects;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor
-@RequestMapping("/user/{user_id}")
 public class UserController {
-
-    // todo: user registration and login
 
     private final UserService userService;
 
 
-    @GetMapping
-    public UserDTO showProfile(
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<UserDTO> showProfile(
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
         if (Objects.equals(userService.getCurrentUser(), usr)) {
             UserDTO userDTO = usr.ofDTO();
-            return userDTO;
+            return ResponseEntity.ok(userDTO);
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
     }
 
 
-    @PostMapping
-    public UserDTO updatePersonal(
+    @PostMapping("/user/{user_id}")
+    public ResponseEntity<UserDTO> updatePersonal(
             @RequestBody UserDTO userDto, @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return userService.updateUser(userDto);
+            return ResponseEntity.ok(userService.updateUser(userDto));
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
     }
 
 
-    @PostMapping("/avatar")
-    public UserDTO updateAvatar(
+    @PostMapping("/user/{user_id}/avatar")
+    public ResponseEntity<UserDTO> updateAvatar(
             @RequestParam("file") MultipartFile userAva,
             @PathVariable Long user_id) {
         User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return userService.updateAvatar(user_id, userAva);
+            return ResponseEntity.ok(userService.updateAvatar(user_id, userAva));
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
     }
