@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
 
 
-        String directory = uploadPath + "/UserAvatars/" + user.getId() + "avatar.jpg";
+        String directory = uploadPath + "UserAvatars/" + user.getId() + "avatar.jpg";
 
         File logo = new File(directory);
         try {
