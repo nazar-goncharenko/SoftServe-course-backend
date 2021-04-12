@@ -22,7 +22,7 @@ import java.nio.file.StandardCopyOption;
 public class FileService implements FileServiceInterface {
 
     // directory for uploaded images (you can change it in application.properties)
-    @Value("${upload.path}")
+    @Value("${img.path}")
     private String uploadPath;
 
     @Override

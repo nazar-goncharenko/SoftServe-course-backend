@@ -2,6 +2,7 @@ package com.softserve.app.service;
 
 import com.softserve.app.constant.BannerConstant;
 import com.softserve.app.dto.BannerDTO;
+import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.SportCategory;
 import com.softserve.app.repository.BannerRepository;
@@ -48,6 +49,13 @@ public class BannerService implements BannerServiceInterface {
         Banner bannerFromDB = bannerRepository.findById(bannerId)
                 .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
         return bannerFromDB.convertToDTO();
+    }
+
+    @Override
+    public List<SportCategoryDTO> getPredefinedCategories(){
+        return sportCategoryRepository.findByIsPredefinedTrue().stream()
+                .map(SportCategory::ofDTO)
+                .collect(Collectors.toList());
     }
 
     // list of all banners in category, allowed only for admins

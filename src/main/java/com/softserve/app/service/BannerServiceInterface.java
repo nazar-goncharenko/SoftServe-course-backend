@@ -1,6 +1,7 @@
 package com.softserve.app.service;
 
 import com.softserve.app.dto.BannerDTO;
+import com.softserve.app.dto.SportCategoryDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface BannerServiceInterface {
     List<BannerDTO> findAllByCategory(String categoryName);
 
     List<BannerDTO> findAllowedByCategory(String categoryName);
+
+    List<SportCategoryDTO> getPredefinedCategories();
 
     List<BannerDTO> getOpen();
 

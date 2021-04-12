@@ -2,6 +2,7 @@ package com.softserve.app.controller;
 
 import com.softserve.app.constant.BannerConstant;
 import com.softserve.app.dto.BannerDTO;
+import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.service.BannerServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class BannerController {
         return bannerService.findAllByCategory(categoryName);
     }
 
+    // TODO should be available only for admins
     @GetMapping("/filterUserSide")
     public List<BannerDTO> filterAllowedByCategory(@RequestParam("category") String categoryName){
         return bannerService.findAllowedByCategory(categoryName);
@@ -55,6 +57,11 @@ public class BannerController {
     @GetMapping("/search")
     public List<BannerDTO> searchByTitle(@RequestParam("title") String title){
         return bannerService.findByTitle(title);
+    }
+
+    @GetMapping("/predefinedCategories")
+    public List<SportCategoryDTO> getPredefinedCategories(){
+        return bannerService.getPredefinedCategories();
     }
 
     // TODO should be available only for admins
