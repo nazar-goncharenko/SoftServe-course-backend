@@ -25,7 +25,7 @@ public interface BannerServiceInterface {
 
     void hidePredefined(String categoryName);
 
-    void update(String title, MultipartFile img, Long id);
+    BannerDTO update(String title, MultipartFile img, Long id);
 
     void configure(BannerDTO bannerDTO);
 

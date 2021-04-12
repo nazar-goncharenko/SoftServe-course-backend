@@ -113,6 +113,7 @@ public class BannerService implements BannerServiceInterface {
     public void create(String title, MultipartFile img){
         bannerRepository.save(Banner.builder()
                 .title(title)
+                .status(Banner.Status.NOT_PUBLISHED)
                 .lastUpdated(today())
                 .imgPath(fileService.saveImg(img))
                 .build());
@@ -120,13 +121,13 @@ public class BannerService implements BannerServiceInterface {
 
     // "update" means changing image and banner name
     @Override
-    public void update(String title, MultipartFile img, Long id){
+    public BannerDTO update(String title, MultipartFile img, Long id){
         Banner bannerFromDb = bannerRepository.findById(id)
                 .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
         bannerFromDb.setTitle(title != null ? title : bannerFromDb.getTitle());
         bannerFromDb.setImgPath(img!= null ? fileService.saveImg(img) : bannerFromDb.getImgPath());
         bannerFromDb.setLastUpdated(today());
-        bannerRepository.save(bannerFromDb).convertToDTO();
+        return bannerRepository.save(bannerFromDb).convertToDTO();
     }
 
     // "configure" means status and category setting

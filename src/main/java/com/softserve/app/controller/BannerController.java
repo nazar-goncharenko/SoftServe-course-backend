@@ -82,12 +82,11 @@ public class BannerController {
 
     // TODO should be available only for admins
     @PutMapping("/update/{bannerId}")
-    public ResponseEntity<String> update(
+    public BannerDTO update(
             @PathVariable Long bannerId,
             @RequestParam("title") String title,
             @RequestParam(value = "file", required = false)MultipartFile file) {
-        bannerService.update(title, file, bannerId);
-        return ResponseEntity.ok(BannerConstant.UPDATED_SUCCESSFULLY.getMessage());
+        return bannerService.update(title, file, bannerId);
     }
 
     // TODO should be available only for admins
