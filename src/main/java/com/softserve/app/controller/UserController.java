@@ -7,7 +7,7 @@ import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
 import com.softserve.app.models.View;
-import com.softserve.app.service.ResetService;
+import com.softserve.app.service.ResetService.ResetService;
 import com.softserve.app.service.UserService.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

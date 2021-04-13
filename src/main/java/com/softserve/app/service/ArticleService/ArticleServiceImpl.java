@@ -1,11 +1,10 @@
 package com.softserve.app.service.ArticleService;
 
-import com.softserve.app.constant.ArticleConstant;
+import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Article;
 import com.softserve.app.repository.ArticleRepository;
-import com.softserve.app.service.ArticleService.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void updateArticle(Long id, ArticleDTO articleDto) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
         article.setTitle(articleDto.getTitle());
         article.setDescription(articleDto.getDescription());
         article.setCategory(articleDto.getCategory());
@@ -46,14 +45,14 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
         articleRepository.delete(article);
     }
 
     @Override
     public Article getArticleById(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new SportHubException(ArticleConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.ARTICLE_NOT_FOUND.getMessage(), 404));
     }
 
     @Override
