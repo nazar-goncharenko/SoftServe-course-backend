@@ -1,22 +1,23 @@
 package com.softserve.app.service;
 
-import com.softserve.app.constant.BannerConstant;
+import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.exception.SportHubException;
+import com.softserve.app.models.Banner;
 import com.softserve.app.models.SportCategory;
 import com.softserve.app.repository.BannerRepository;
-import com.softserve.app.models.Banner;
 import com.softserve.app.repository.SportCategoryRepository;
 import lombok.AllArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+;
 
 
 @Service
@@ -47,7 +48,7 @@ public class BannerService implements BannerServiceInterface {
     @Override
     public BannerDTO findById(Long bannerId){
         Banner bannerFromDB = bannerRepository.findById(bannerId)
-                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400));
         return bannerFromDB.convertToDTO();
     }
 
@@ -131,7 +132,7 @@ public class BannerService implements BannerServiceInterface {
     @Override
     public BannerDTO update(String title, MultipartFile img, Long id){
         Banner bannerFromDb = bannerRepository.findById(id)
-                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400));
         bannerFromDb.setTitle(title != null ? title : bannerFromDb.getTitle());
         bannerFromDb.setImgPath(img!= null ? fileService.saveImg(img) : bannerFromDb.getImgPath());
         bannerFromDb.setLastUpdated(today());
@@ -142,7 +143,7 @@ public class BannerService implements BannerServiceInterface {
     @Override
     public void configure(BannerDTO bannerDTO){
         Banner bannerFromDb = bannerRepository.findById(bannerDTO.getId())
-                .orElseThrow(() -> new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400));
+                .orElseThrow(() -> new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400));
         bannerFromDb.setStatus(bannerDTO.getStatus() != null ? bannerDTO.getStatus() : bannerFromDb.getStatus());
         bannerFromDb.setCategory(bannerDTO.getCategory() != null ? bannerDTO.getCategory() : bannerFromDb.getCategory());
         bannerRepository.save(bannerFromDb).convertToDTO();
@@ -151,7 +152,7 @@ public class BannerService implements BannerServiceInterface {
     @Override
     public void delete(Long bannerId){
         if (bannerRepository.findById(bannerId).isEmpty())
-            throw new SportHubException(BannerConstant.BANNER_NOT_FOUND.getMessage(), 400);
+            throw new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400);
         bannerRepository.deleteById(bannerId);
     }
 
