@@ -55,7 +55,7 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 /// мапінги доступні всім .permitAll()
-                .antMatchers("/", "/registration", "/login", "/forgot_password", "/reset_password", "/profile").permitAll()
+                .antMatchers("/", "/registration", "/login", "/forgot_password", "/reset_password", "/profile", "/videos").permitAll()
                 /// мапінги лише для адмінів
                 .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 /// мапінги для юзерів добавляти так само .antMatchers(HttpMethod.GET, "/mapping").hasRole("USER")
