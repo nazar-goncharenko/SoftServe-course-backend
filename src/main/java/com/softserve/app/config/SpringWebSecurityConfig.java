@@ -2,7 +2,7 @@ package com.softserve.app.config;
 
 import com.softserve.app.security.AuthenticationEntryPoint;
 import com.softserve.app.security.CustomFilter;
-import com.softserve.app.service.userService.UserDetailsServiceImpl;
+import com.softserve.app.service.UserService.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,12 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.BannerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,28 +24,41 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Entity
 public class Banner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    private User admin;
-
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    @Column(name = "link", nullable = false)
-    private String link;
+    @Column(name = "image", nullable = false)
+    private String imgPath;
 
-    public enum Priority {
-        LOW, MID, HIGH;
+    @Column(name = "lastUpdated", nullable = false)
+    private String lastUpdated;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    private SportCategory category;
+
+    public enum Status {
+        PUBLISHED, NOT_PUBLISHED, CLOSED;
     }
 
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Status status;
 
-    @Column(name = "isShown", nullable = false)
-    private Boolean isShown;
+    public BannerDTO convertToDTO(){
+        return BannerDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .category(this.category)
+                .imgPath(this.imgPath)
+                .lastUpdated(this.lastUpdated)
+                .status(this.status)
+                .build();
+    }
+
 }
