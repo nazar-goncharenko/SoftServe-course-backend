@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,10 +39,12 @@ public class FileService implements FileServiceInterface {
             uploadDir.mkdir();
         }
 
-        String filename = uploadDir + "/" + img.getOriginalFilename();
+        String filename = uploadDir + "/" + UUID.randomUUID().toString();
 
         // only image file can be uploaded
-        String mimetype= new MimetypesFileTypeMap().getContentType(filename);
+        String mimetype= new MimetypesFileTypeMap()
+                .getContentType(img.getOriginalFilename());
+
         String type = mimetype.split("/")[0];
         if(!type.equals("image"))
             throw new SportHubException(SportHubConstant.FILES_NOT_IMAGE.getMessage(), 400);
@@ -51,7 +54,7 @@ public class FileService implements FileServiceInterface {
                 Files.copy(img.getInputStream(),
                         Path.of(filename),
                         StandardCopyOption.REPLACE_EXISTING);
-                return img.getOriginalFilename();
+                return filename;
             } catch (IOException e) {
                 log.info(e.getMessage());
                 throw new SportHubException(SportHubConstant.FILES_IMAGE_IS_NOT_UPLOADED.getMessage(), 400);
