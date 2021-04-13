@@ -1,4 +1,4 @@
-package com.softserve.app.service;
+package com.softserve.app.service.BannerSevice;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.BannerDTO;
@@ -8,6 +8,7 @@ import com.softserve.app.models.Banner;
 import com.softserve.app.models.SportCategory;
 import com.softserve.app.repository.BannerRepository;
 import com.softserve.app.repository.SportCategoryRepository;
+import com.softserve.app.service.FileService.FileServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
