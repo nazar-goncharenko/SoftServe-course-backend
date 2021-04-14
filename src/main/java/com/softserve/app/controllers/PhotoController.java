@@ -3,21 +3,31 @@ package com.softserve.app.controllers;
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.services.PhotoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/admin")
+@AllArgsConstructor
 public class PhotoController {
 
-    @Autowired
-    private PhotoService photoService;
+    private final PhotoService photoService;
 
-    @PostMapping("/photo")
-    public PhotoOfTheDay updatePhoto(@RequestPart("photo_info")PhotoDTO photo, @RequestPart("img")MultipartFile image) throws IOException {
+    @PostMapping
+    public Long addPhotoDTO(@RequestBody PhotoDTO photoDTO) {
 
-        return photoService.savePhoto(photo, image);
+        PhotoOfTheDay photo = photoService.savePhotoDTO(photoDTO);
+        return photo.getId();
     }
+
+    @PutMapping
+    public PhotoDTO addPhoto(@RequestParam("id") Long id, @RequestParam("img") MultipartFile image) throws IOException {
+
+        return photoService.savePhoto(id, image);
+    }
+
 }

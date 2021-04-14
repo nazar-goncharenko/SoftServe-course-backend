@@ -1,5 +1,6 @@
 package com.softserve.app.dto;
 
+import com.softserve.app.models.PhotoOfTheDay;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +26,17 @@ public class PhotoDTO implements Serializable {
     private String author;
 
     private Boolean isShown;
+
+    public PhotoOfTheDay fromDTO() {
+        PhotoOfTheDay photo = new PhotoOfTheDay();
+        photo.setId(this.id);
+        photo.setPhotoUrl(this.photoUrl);
+        photo.setAlt(this.alt);
+        photo.setPhotoTitle(this.photoTitle);
+        photo.setDescription(this.description);
+        photo.setAuthor(this.author);
+        photo.setIsShown(this.isShown);
+
+        return photo;
+    };
 }

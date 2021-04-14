@@ -1,5 +1,6 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.PhotoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,5 +35,17 @@ public class PhotoOfTheDay {
 
     @Column(name = "is_shown", nullable = false)
     private Boolean isShown;
+
+    public PhotoDTO toDTO() {
+        return PhotoDTO.builder()
+                .id(this.id)
+                .photoUrl(this.photoUrl)
+                .alt(this.alt)
+                .photoTitle(this.photoTitle)
+                .description(this.description)
+                .author(this.author)
+                .isShown(this.isShown)
+                .build();
+    }
 
 }

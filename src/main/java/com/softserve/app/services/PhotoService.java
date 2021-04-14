@@ -3,7 +3,7 @@ package com.softserve.app.services;
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.repositories.PhotoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,29 +16,29 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
+@AllArgsConstructor
 public class PhotoService {
 
-    @Autowired
-    PhotoRepository photoRepository;
+    private final PhotoRepository photoRepository;
+    public static final String uploadDir = "C:\\Users\\User\\Documents\\Java Course\\SoftServe-course-backend\\src\\main\\resources\\photos";
 
-    public PhotoOfTheDay savePhoto(PhotoDTO photo, MultipartFile image) throws IOException {
+    public PhotoOfTheDay savePhotoDTO(PhotoDTO photoDTO) {
+        PhotoOfTheDay newPhoto = photoDTO.fromDTO();
+        return photoRepository.save(newPhoto);
+    }
+
+    public PhotoDTO savePhoto(Long id, MultipartFile image) throws IOException {
 
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        photo.setPhotoUrl(fileName);
 
-        String uploadDir = "C:\\Users\\User\\Documents\\Java Course\\SoftServe-course-backend\\src\\main\\resources\\photos";
+        PhotoOfTheDay photo = photoRepository.getOne(id);
+        photo.setPhotoUrl(fileName);
 
         saveFile(uploadDir, fileName, image);
 
-        PhotoOfTheDay newPhoto = new PhotoOfTheDay();
-        newPhoto.setPhotoUrl(photo.getPhotoUrl());
-        newPhoto.setAlt(photo.getAlt());
-        newPhoto.setPhotoTitle(photo.getPhotoTitle());
-        newPhoto.setDescription(photo.getDescription());
-        newPhoto.setAuthor(photo.getAuthor());
-        newPhoto.setIsShown(photo.getIsShown());
+        PhotoOfTheDay newPhoto = photoRepository.save(photo);
 
-        return photoRepository.save(newPhoto);
+        return newPhoto.toDTO();
     }
 
     public void saveFile(String uploadDir, String fileName,
