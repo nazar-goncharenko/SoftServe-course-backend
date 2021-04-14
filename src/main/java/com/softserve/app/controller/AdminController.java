@@ -13,7 +13,7 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 @RequestMapping("/admin")
 @AllArgsConstructor
-public class PhotoController {
+public class AdminController {
 
     private final PhotoService photoService;
 
