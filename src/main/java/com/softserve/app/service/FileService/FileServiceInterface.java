@@ -1,4 +1,4 @@
-package com.softserve.app.service;
+package com.softserve.app.service.FileService;
 
 import org.springframework.web.multipart.MultipartFile;
 
