@@ -1,6 +1,6 @@
 package com.softserve.app.controller;
 
-import com.softserve.app.constant.ArticleConstant;
+import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
 import com.softserve.app.models.Article;
 import com.softserve.app.service.ArticleService.ArticleService;
@@ -39,7 +39,7 @@ public class ArticleController {
     @PostMapping()
     public ResponseEntity<String> create(@RequestBody ArticleDTO articleDto) {
         articleService.createArticle(articleDto);
-        return ResponseEntity.ok(ArticleConstant.CREATED_SUCCESSFULLY.getMessage());
+        return ResponseEntity.ok(SportHubConstant.ARTICLE_CREATED_SUCCESSFULLY.getMessage());
     }
 
     @GetMapping("/{id}")
@@ -50,13 +50,13 @@ public class ArticleController {
     @PutMapping()
     public ResponseEntity<String> edit(@RequestBody ArticleDTO articleDto) {
         articleService.updateArticle(articleDto.getId(), articleDto);
-        return ResponseEntity.ok(ArticleConstant.UPDATED_SUCCESSFULLY.getMessage());
+        return ResponseEntity.ok(SportHubConstant.ARTICLE_UPDATED_SUCCESSFULLY.getMessage());
     }
 
     @DeleteMapping()
     public ResponseEntity<String> delete(@RequestParam Long id) {
         articleService.deleteArticle(id);
-        return ResponseEntity.ok(ArticleConstant.DELETED_SUCCESSFULLY.getMessage());
+        return ResponseEntity.ok(SportHubConstant.ARTICLE_DELETED_SUCCESSFULLY.getMessage());
     }
 
     @GetMapping("/search")
