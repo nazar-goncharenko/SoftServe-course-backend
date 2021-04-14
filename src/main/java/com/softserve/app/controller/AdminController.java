@@ -2,12 +2,10 @@ package com.softserve.app.controller;
 
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
-import com.softserve.app.service.PhotoService;
+import com.softserve.app.service.PhotoService.PhotoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -25,7 +23,7 @@ public class AdminController {
     }
 
     @PutMapping
-    public PhotoDTO addPhoto(@RequestParam("id") Long id, @RequestParam("img") MultipartFile image) throws IOException {
+    public PhotoDTO addPhoto(@RequestParam("id") Long id, @RequestParam("img") MultipartFile image) {
 
         return photoService.savePhoto(id, image);
     }
