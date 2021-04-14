@@ -5,9 +5,11 @@ import com.softserve.app.dto.ArticleDTO;
 import com.softserve.app.models.Article;
 import com.softserve.app.service.ArticleService.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,25 +26,38 @@ public class ArticleController {
     }
 
     @GetMapping()
-    public List<Article> findAll() {
-        return articleService.listArticles();
+    public @ResponseBody
+    ResponseEntity<List<Article>> findAll() {
+        return new ResponseEntity<>(articleService.listArticles(), HttpStatus.OK);
     }
 
+    /* without image */
     @PostMapping()
-    public ResponseEntity<String> create(@RequestBody ArticleDTO articleDto) {
-        articleService.createArticle(articleDto);
-        return ResponseEntity.ok(ArticleConstant.CREATED_SUCCESSFULLY.getMessage());
+    public @ResponseBody ResponseEntity<Article> create(@RequestBody ArticleDTO articleDto) {
+        return new ResponseEntity<>(articleService.createArticle(articleDto), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Article getById(@PathVariable Long id) {
-        return articleService.getArticleById(id);
+    public @ResponseBody
+    ResponseEntity<Article> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(articleService.getArticleById(id), HttpStatus.OK);
     }
 
+    /* without image */
     @PutMapping()
     public ResponseEntity<String> edit(@RequestBody ArticleDTO articleDto) {
         articleService.updateArticle(articleDto.getId(), articleDto);
         return ResponseEntity.ok(ArticleConstant.UPDATED_SUCCESSFULLY.getMessage());
+    }
+
+    /* separate endpoint for image upload */
+    @PutMapping("/{id}/image")
+    public ResponseEntity<String> updateImage(
+            @PathVariable Long id,
+            @RequestParam("fileName") MultipartFile multipartFile
+    ) {
+        articleService.updateArticleImage(id, multipartFile);
+        return ResponseEntity.ok(ArticleConstant.IMAGE_UPDATED_SUCCESSFULLY.getMessage());
     }
 
     @DeleteMapping()
@@ -52,13 +67,15 @@ public class ArticleController {
     }
 
     @GetMapping("/search")
-    public List<Article> search(@RequestParam String q) {
-        return articleService.searchArticles(q);
+    public @ResponseBody
+    ResponseEntity<List<Article>> search(@RequestParam String q) {
+        return new ResponseEntity<>(articleService.searchArticles(q), HttpStatus.OK);
     }
 
     @GetMapping("/filterBy")
-    public List<Article> filterByCategory(@RequestParam String category) {
-        return articleService.searchArticlesByCategory(category);
+    public @ResponseBody
+    ResponseEntity<List<Article>> filterByCategory(@RequestParam String category) {
+        return new ResponseEntity<>(articleService.searchArticlesByCategory(category), HttpStatus.OK);
     }
-    
+
 }

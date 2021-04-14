@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "img.path",
+      "type": "java.lang.String",
+      "description": "Description for img.path."
+  }
+] }
