@@ -1,9 +1,13 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.UserDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,10 +22,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@Component
 @Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -40,18 +48,27 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public enum Role {
-        ADMIN, USER;
-    }
+    @Column(name = "photoUrl")
+    private String photoUrl;
 
+    public enum Role implements GrantedAuthority {
+        ROLE_ADMIN, ROLE_USER;
+        @Override
+        public String getAuthority() {
+            return name();
+        }
+    }
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String resetPasswordToken;
+
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Survey> userSurveys = new HashSet<>();
 
-    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Banner> userBanners = new HashSet<>();
+//    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> userComments = new HashSet<>();
@@ -61,4 +78,19 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
     private Set<SportCategory> favourites = new HashSet<>();
+
+    public UserDTO ofDTO() {
+        return UserDTO.builder()
+                .id(this.id)
+                .username(this.username)
+                .email(this.email)
+                .password(this.password)
+                .photoUrl(this.photoUrl)
+                .favourites(this.favourites.stream()
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList()))
+                .userComments(new ArrayList<>(this.userComments))
+                .userSurveys(new ArrayList<>(this.userSurveys))
+                .build();
+    }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -30,8 +32,11 @@ public class Article {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "text", nullable = false)
-    private String text;
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "image_path", nullable = true)
+    private String imagePath;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
