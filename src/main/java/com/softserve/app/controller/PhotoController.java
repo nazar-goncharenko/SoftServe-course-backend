@@ -1,8 +1,8 @@
-package com.softserve.app.controllers;
+package com.softserve.app.controller;
 
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
-import com.softserve.app.services.PhotoService;
+import com.softserve.app.service.PhotoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

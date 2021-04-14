@@ -1,4 +1,4 @@
-package com.softserve.app.repositories;
+package com.softserve.app.repository;
 
 import com.softserve.app.models.PhotoOfTheDay;
 import org.springframework.data.jpa.repository.JpaRepository;
