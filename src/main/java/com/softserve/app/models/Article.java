@@ -1,5 +1,7 @@
 package com.softserve.app.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softserve.app.dto.ArticleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,4 +45,14 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory category;
+
+    public ArticleDTO convertToDTO() {
+        return ArticleDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .description(this.description)
+                .imagePath(this.imagePath)
+                .build();
+    }
+
 }

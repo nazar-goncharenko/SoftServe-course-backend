@@ -27,7 +27,7 @@ public class FileService implements FileServiceInterface {
     @Value("${img.path}")
     private String imgUploadPath;
 
-    @Value("${img.video}")
+    @Value("${video.path}")
     private String videoUploadPath;
 
     @Override
