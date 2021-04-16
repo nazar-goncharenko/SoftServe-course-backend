@@ -2,6 +2,7 @@ package com.softserve.app.models;
 
 import com.softserve.app.dto.VideoDTO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder(toBuilder = true)
 @Entity
 public class Video {
 
@@ -36,6 +38,8 @@ public class Video {
 
     private boolean isPublish;
 
+    private boolean showComments;
+
     public VideoDTO ofDTO(){
         return VideoDTO.builder()
                 .id(this.id)
@@ -44,6 +48,7 @@ public class Video {
                 .url(this.url)
                 .title(this.title)
                 .isPublish(this.isPublish)
+                .showComments(this.showComments)
                 .build();
     }
 }

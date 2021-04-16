@@ -27,7 +27,7 @@ public class FileService implements FileServiceInterface {
     @Value("${img.path}")
     private String imgUploadPath;
 
-    @Value("${img.video}")
+    @Value("${video.path}")
     private String videoUploadPath;
 
     @Override
@@ -57,7 +57,40 @@ public class FileService implements FileServiceInterface {
                 return filename;
             } catch (IOException e) {
                 log.info(e.getMessage());
-                throw new SportHubException(SportHubConstant.FILES_IMAGE_IS_NOT_UPLOADED.getMessage(), 400);
+                throw new SportHubException(SportHubConstant.FILE_LOADING_EXCEPTION.getMessage(), 400);
+            }
+        }
+    }
+
+    @Override
+    public String saveVideo(MultipartFile video) {
+        File uploadDir = new File(videoUploadPath);
+
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        String fileUrl = UUID.randomUUID().toString();
+        String filename = uploadDir + "\\" + fileUrl;
+
+        // only image file can be uploaded
+        String mimetype= new MimetypesFileTypeMap()
+                .getContentType(video.getOriginalFilename());
+
+        String type = mimetype.split("/")[0];
+        System.out.println(type);
+        if(!type.equals("application"))
+            throw new SportHubException(SportHubConstant.FILES_NOT_VIDEO.getMessage(), 400);
+        else {
+            // images with the same name will replace existing ones
+            try {
+                Files.copy(video.getInputStream(),
+                        Path.of(filename),
+                        StandardCopyOption.REPLACE_EXISTING);
+                return fileUrl;
+            } catch (IOException e) {
+                log.info(e.getMessage());
+                throw new SportHubException(SportHubConstant.FILE_LOADING_EXCEPTION.getMessage(), 400);
             }
         }
     }
