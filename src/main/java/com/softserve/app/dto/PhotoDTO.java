@@ -1,5 +1,6 @@
 package com.softserve.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.softserve.app.models.PhotoOfTheDay;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PhotoDTO implements Serializable {
     private Long id;
 

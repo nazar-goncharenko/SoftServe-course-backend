@@ -3,6 +3,7 @@ package com.softserve.app.service.PhotoService;
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.repository.PhotoRepository;
+import com.softserve.app.service.ConverterService.ConverterService;
 import com.softserve.app.service.FileService.FileServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,15 @@ public class PhotoService {
 
     private final PhotoRepository photoRepository;
     private final FileServiceInterface fileService;
+    private final ConverterService converterService;
 
-    public PhotoOfTheDay savePhotoDTO(PhotoDTO photoDTO) {
-        PhotoOfTheDay newPhoto = photoDTO.fromDTO();
-        return photoRepository.save(newPhoto);
-    }
+    public PhotoDTO savePhoto(String photoDTO, MultipartFile image) {
 
-    public PhotoDTO savePhoto(Long id, MultipartFile image) {
-
-        PhotoOfTheDay photo = photoRepository.getOne(id);
+        PhotoDTO photo = converterService.convertStringToClass(photoDTO, PhotoDTO.class);
         photo.setPhotoUrl(fileService.saveImg(image));
 
-        PhotoOfTheDay newPhoto = photoRepository.save(photo);
+        PhotoOfTheDay newPhoto = photo.fromDTO();
+        photoRepository.save(newPhoto);
 
         return newPhoto.toDTO();
     }
