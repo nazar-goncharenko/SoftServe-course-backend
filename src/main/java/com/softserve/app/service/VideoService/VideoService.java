@@ -47,7 +47,8 @@ public class VideoService {
 
     public VideoDTO save(MultipartFile file, String videoDTO) {
         VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
-        if(file != null){
+        System.out.println(dto.toString());
+        if (file != null) {
             dto.setUrl(fileService.saveVideo(file));
         }
         return videoRepository.save(Video.builder()
@@ -55,7 +56,33 @@ public class VideoService {
                 .title(dto.getTitle())
                 .isUploaded(dto.isUploaded())
                 .isPublish(dto.isPublish())
+                .showComments(dto.isShowComments())
                 .build()).ofDTO();
+
+    }
+
+    public VideoDTO update(MultipartFile file, String videoDTO) {
+        VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
+
+        if (file != null) {
+            dto.setUrl(fileService.saveVideo(file));
+        }
+
+        Video video = videoRepository.findById(dto.getId())
+                .orElseThrow(() ->
+                        new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404));
+
+        return videoRepository.save(
+                video.setFromDTO(dto))
+                .ofDTO();
+    }
+
+    public void delete(Long id) {
+        videoRepository.delete(
+                videoRepository.findById(id).orElseThrow(
+                        () -> new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404)
+                )
+        );
     }
 }
 

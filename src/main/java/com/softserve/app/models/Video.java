@@ -44,11 +44,21 @@ public class Video {
         return VideoDTO.builder()
                 .id(this.id)
                 .comments(this.comments)
-                .isUploaded(this.isUploaded)
+                .uploaded(this.isUploaded)
                 .url(this.url)
                 .title(this.title)
-                .isPublish(this.isPublish)
+                .publish(this.isPublish)
                 .showComments(this.showComments)
                 .build();
+    }
+
+    public Video setFromDTO(VideoDTO videoDTO){
+        this.title = videoDTO.getTitle();
+        this.isPublish = videoDTO.isPublish();
+        this.isUploaded = videoDTO.isUploaded();
+        this.url = videoDTO.getUrl();
+        this.showComments = videoDTO.isShowComments();
+        this.comments = videoDTO.getComments();
+        return this;
     }
 }
