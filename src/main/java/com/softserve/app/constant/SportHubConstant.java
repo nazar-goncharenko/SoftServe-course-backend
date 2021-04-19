@@ -28,6 +28,8 @@ public enum SportHubConstant {
 
     AUTHORIZE_EXCEPTION("Sorry, you're not authorized to access this resource"),
     USER_NOT_FOUND("User not found"),
+    USER_DELETED("User deleted"),
+    USER_UPDATED("User updated"),
     JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
     EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
     PASSWORD_NOT_MATCH("Password not match"),
@@ -35,7 +37,6 @@ public enum SportHubConstant {
     FILE_LOADING_EXCEPTION("Could not load file"),
 
 
-    // positive
     LOGGED_SUCCESSFULLY("Logged in Successfully %s"),
     REGISTERED_SUCCESSFULLY("Registered Successfully %s"),
     PASSWORD_RESTORE_MESSAGE("Hello %s, here your new password : %s"),
