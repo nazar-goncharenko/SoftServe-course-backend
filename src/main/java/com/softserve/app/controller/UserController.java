@@ -41,9 +41,7 @@ public class UserController {
 
         User usr = userService.findById(user_id);
 
-        User FAKE = userService.findById((long) 1);
-        if (Objects.equals(FAKE, usr)) {
-            //if (Objects.equals(userService.getCurrentUser(), usr)) {
+        if (Objects.equals(userService.getCurrentUser(), usr)) {
             return ResponseEntity.ok(usr.ofDTO());
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
@@ -55,9 +53,7 @@ public class UserController {
             @PathVariable Long user_id) {
         User usr = userService.findById(user_id);
 
-        User FAKE = userService.findById((long) 1);
-        if (Objects.equals(FAKE, usr)) {
-            //if (Objects.equals(userService.getCurrentUser(), usr)) {
+        if (Objects.equals(userService.getCurrentUser(), usr)) {
             userService.deleteUser(usr);
             return ResponseEntity.ok(SportHubConstant.USER_DELETED.getMessage());
         }
