@@ -15,7 +15,7 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    void updateUser(MultipartFile file, String userDTO);
+    UserDTO updateUser(MultipartFile file, String userDTO);
 
     void deleteUser(User user);
 

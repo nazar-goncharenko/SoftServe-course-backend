@@ -24,12 +24,7 @@ public class ConverterService {
         try {
             return objectMapper.readValue(stringClass, clazz);
         } catch (Exception e) {
-            log.error(
-                    "{} exception on convertStringToClass method: {}",
-                    this.getClass(),
-                    e.getMessage()
-            );
-            throw new SportHubException(e.getMessage(), 400);
+            throw new SportHubException(SportHubConstant.CONVERTER_PROCESS_EXCEPTION.getMessage(), 405);
         }
     }
 }

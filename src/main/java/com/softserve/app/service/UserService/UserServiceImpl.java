@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final FileServiceInterface fileService;
     private final ConverterService converterService;
 
+
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(MultipartFile file, String userDTO) {
+    public UserDTO updateUser(MultipartFile file, String userDTO) {
         UserDTO dto = converterService.convertStringToClass(userDTO, UserDTO.class);
         User usrFromDb = findById(dto.getId());
 
@@ -74,14 +75,14 @@ public class UserServiceImpl implements UserService {
             }
         } else dto.setPassword(usrFromDb.getPassword());
 
-        userRepository.save(User.builder()
+        return userRepository.save(User.builder()
                 .id(dto.getId())
                 .username(dto.getUsername() != null ? dto.getUsername() : usrFromDb.getUsername())
                 .email(dto.getEmail() != null ? dto.getEmail() : usrFromDb.getEmail())
                 .photoUrl(dto.getPhotoUrl())
                 .password(dto.getPassword())
-                .build());
-
+                .build())
+                .ofDTO();
     }
 
 
@@ -89,21 +90,19 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user) {
         User usr = userRepository.findById(user.getId()).orElseThrow(() -> new SportHubException(
                 SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
-        System.out.println("User service: deleting user " + usr.getId());
-
         userRepository.delete(usr);
     }
 
 
     private String checkPassword(User user, String oldPass, String pass1, String pass2) {
+        String encodedPassword = null;
         if (pass1.equals(pass2)) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedOld = passwordEncoder.encode(oldPass);
             if (encodedOld.equals(user.getPassword())) {
-                return passwordEncoder.encode(pass2);
+                encodedPassword = passwordEncoder.encode(pass2);
             }
         }
-        return null;
+        return encodedPassword;
     }
 
 // Auth
@@ -131,8 +130,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         Optional<User> userFromDb = userRepository.findByEmail(user.getEmail());
-
-        // ????????
         if (userFromDb.isPresent()) {
             throw new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 401);
         }

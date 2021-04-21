@@ -62,12 +62,11 @@ public class UserController {
 
 
     @PostMapping("/user/{user_id}")
-    public  ResponseEntity<String> updateUser(
+    public  ResponseEntity<UserDTO> updateUser(
             @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam(name = "userDTO") String userDTO) {
 
-        userService.updateUser(file, userDTO);
-        return ResponseEntity.ok(SportHubConstant.USER_UPDATED.getMessage());
+        return ResponseEntity.ok(userService.updateUser(file, userDTO));
     }
 
 
