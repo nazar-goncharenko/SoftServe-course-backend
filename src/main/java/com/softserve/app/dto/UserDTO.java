@@ -50,9 +50,7 @@ public class UserDTO implements Serializable {
                 .email(this.email)
                 .password(this.new_pass_2)
                 .photoUrl(this.photoUrl)
-                /*.favourites(this.favourites.stream()
-                        .map(SportCategory::ofDTO)
-                        .collect(Collectors.toList()))*/
+                .favourites((Set<SportCategory>) this.favourites)
                 .userComments((Set<Comment>) this.userComments)
                 .userSurveys((Set<Survey>) this.userSurveys)
                 .build();
