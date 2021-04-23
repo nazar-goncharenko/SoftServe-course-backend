@@ -4,7 +4,6 @@ import com.softserve.app.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -22,18 +21,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+
 @Data
+@Component
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +52,8 @@ public class User {
     @Column(name = "photoUrl")
     private String photoUrl;
 
+
+
     public enum Role implements GrantedAuthority {
         ROLE_ADMIN, ROLE_USER;
         @Override
@@ -63,12 +66,8 @@ public class User {
 
     private String resetPasswordToken;
 
-
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Survey> userSurveys = new HashSet<>();
-
-//    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private Set<Banner> userBanners = new HashSet<>();
+    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> userComments = new HashSet<>();
@@ -90,7 +89,6 @@ public class User {
                         .map(SportCategory::ofDTO)
                         .collect(Collectors.toList()))
                 .userComments(new ArrayList<>(this.userComments))
-                .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
     }
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -37,4 +38,16 @@ public class UserDTO implements Serializable {
     private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
 
+
+    public User ofEntity(){
+        return User.builder()
+                .id(this.id)
+                .username(this.username)
+                .email(this.email)
+                .password(this.new_pass_2)
+                .photoUrl(this.photoUrl)
+                //.favourites(SportCategoryDtoHashSetFavourites) //overflow
+                .userComments((Set<Comment>) this.userComments)
+                .build();
+    }
 }

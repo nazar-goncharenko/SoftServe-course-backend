@@ -1,14 +1,16 @@
 package com.softserve.app.service.SurveyService;
 
+import com.softserve.app.dto.SurveyDTO;
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface SurveyService {
-    List<Survey> findAllByAuthor(User author);
+    Survey findById(Long id);
 
-    Optional<Survey> findById(Long id);
+    List<Survey> findAllByUser(User user);
+
+    SurveyDTO createSurvey(String surveyDTO, Long user_id);
 }

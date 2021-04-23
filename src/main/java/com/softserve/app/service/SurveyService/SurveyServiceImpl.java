@@ -1,31 +1,48 @@
 package com.softserve.app.service.SurveyService;
 
+import com.softserve.app.constant.SportHubConstant;
+import com.softserve.app.dto.SurveyDTO;
+import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.SurveyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.softserve.app.service.ConverterService.ConverterService;
+import com.softserve.app.service.UserService.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class SurveyServiceImpl implements SurveyService {
     private final SurveyRepository surveyRepository;
+    private final UserService userService;
+    private final ConverterService converterService;
 
-    @Autowired
-    public SurveyServiceImpl(SurveyRepository surveyRepository) {
-        this.surveyRepository = surveyRepository;
+
+    @Override
+    public Survey findById(Long id) {
+        return surveyRepository.findById(id).orElseThrow(() -> new SportHubException(
+                SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
     }
 
     @Override
-    public List<Survey> findAllByAuthor(User author) {
-        return surveyRepository.findAllByAuthor(author);
+    public List<Survey> findAllByUser(User user) {
+        return surveyRepository.findAllByUser(user);
     }
 
     @Override
-    public Optional<Survey> findById(Long id) {
-        return surveyRepository.findById(id);
+    public SurveyDTO createSurvey(String surveyDTO, Long user_id) {
+        SurveyDTO dto = converterService.convertStringToClass(surveyDTO, SurveyDTO.class);
+        User user = userService.findById(user_id);
+
+        Survey survey = new Survey();
+        survey.setIsShown(dto.getIsShown());
+        survey.setUser(user);
+        return surveyRepository.save(survey).ofDTO();
     }
 
 }
