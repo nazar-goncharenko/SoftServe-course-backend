@@ -23,15 +23,14 @@ public enum SportHubConstant {
             + "<br>"
             + "<p>Ignore this email if you do remember your password, "
             + "or you have not made the request.</p>"),
+    EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
 
 
     AUTHORIZE_EXCEPTION("Sorry, you're not authorized to access this resource"),
+    JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
     USER_NOT_FOUND("User not found"),
     USER_DELETED("User deleted"),
     USER_UPDATED("User updated"),
-    JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
-    EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
-    PASSWORD_NOT_MATCH("Password not match"),
 
 
     LOGGED_SUCCESSFULLY("Logged in Successfully %s"),
@@ -39,6 +38,7 @@ public enum SportHubConstant {
     PASSWORD_RESTORE_MESSAGE("Hello %s, here your new password : %s"),
     PASSWORD_RESTORE_SUBJECT("Password restoration for User"),
     PASSWORD_RESET_FAILED("Password reset failed"),
+    PASSWORD_NOT_MATCH("Password not match"),
 
 
     ARTICLE_CREATED_SUCCESSFULLY("Article was created successfully"),
@@ -64,7 +64,14 @@ public enum SportHubConstant {
 
 
     CONVERTER_PROCESS_EXCEPTION("Could not convert to dto"),
-    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation");
+    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation"),
 
+
+    SURVEY_DELETED("Survey deleted"),
+    CheckBox_LIST_CREATED("List of CheckBoxes created"),
+    CheckBox_DELETED("CheckBox deleted"),
+
+
+    ;
     private final String message;
 }

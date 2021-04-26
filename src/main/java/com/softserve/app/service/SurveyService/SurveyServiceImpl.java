@@ -40,9 +40,16 @@ public class SurveyServiceImpl implements SurveyService {
         User user = userService.findById(user_id);
 
         Survey survey = new Survey();
-        survey.setIsShown(dto.getIsShown());
+        survey.setQuestion(dto.getQuestion());
+        survey.setIsShown(dto.getIsShown() != null ? dto.getIsShown() : false);
         survey.setUser(user);
         return surveyRepository.save(survey).ofDTO();
+    }
+
+    @Override
+    public void deleteSurvey(Long survey_id) {
+        Survey survey = findById(survey_id);
+        surveyRepository.delete(survey);
     }
 
 }

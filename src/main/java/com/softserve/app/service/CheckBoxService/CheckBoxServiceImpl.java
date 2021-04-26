@@ -2,6 +2,7 @@ package com.softserve.app.service.CheckBoxService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.CheckBoxDTO;
+import com.softserve.app.dto.CheckBoxManyDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.CheckBox;
 import com.softserve.app.models.Survey;
@@ -43,5 +44,25 @@ public class CheckBoxServiceImpl implements CheckBoxService{
         checkBox.setResponses_count((long) 0);
         checkBox.setSurvey(survey);
         return checkBoxRepository.save(checkBox).ofDTO();
+    }
+
+    @Override
+    public void createManyCheckBoxes(String checkBoxManyDTO, Long survey_id) {
+        CheckBoxManyDTO manyDtos = converterService.convertStringToClass(checkBoxManyDTO, CheckBoxManyDTO.class);
+        Survey survey = surveyService.findById(survey_id);
+
+        for (CheckBoxDTO eachDto : manyDtos.getListOfCheckBoxes()) {
+            CheckBox checkBox = new CheckBox();
+            checkBox.setText(eachDto.getText());
+            checkBox.setResponses_count((long) 0);
+            checkBox.setSurvey(survey);
+            checkBoxRepository.save(checkBox);
+        }
+    }
+
+    @Override
+    public void deleteCheckBox(Long checkBox_id) {
+        CheckBox checkBox = findById(checkBox_id);
+        checkBoxRepository.delete(checkBox);
     }
 }

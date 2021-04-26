@@ -2,7 +2,6 @@ package com.softserve.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.softserve.app.models.Comment;
-import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +38,6 @@ public class UserDTO implements Serializable {
 
     private User.Role role;
 
-    private List<Survey> userSurveys = new ArrayList<>();
     private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
 
@@ -50,9 +48,8 @@ public class UserDTO implements Serializable {
                 .email(this.email)
                 .password(this.new_pass_2)
                 .photoUrl(this.photoUrl)
-                .favourites((Set<SportCategory>) this.favourites)
+                // .favourites((Set<SportCategory>) this.favourites)
                 .userComments((Set<Comment>) this.userComments)
-                .userSurveys((Set<Survey>) this.userSurveys)
                 .build();
     }
 }

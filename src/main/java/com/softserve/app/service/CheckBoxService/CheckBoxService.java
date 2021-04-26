@@ -13,4 +13,7 @@ public interface CheckBoxService {
     List<CheckBox> findAllBySurvey(Survey survey);
 
     CheckBoxDTO createCheckBox(String checkBoxDTO, Long survey_id);
+    void createManyCheckBoxes(String checkBoxManyDTO, Long survey_id);
+
+    void deleteCheckBox(Long checkBox_id);
 }
