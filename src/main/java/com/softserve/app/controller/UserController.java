@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class UserController {
 
 
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<UserDTO> showProfile(
+    public ResponseEntity<UserDTO> getUser(
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
@@ -47,31 +48,25 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/{user_id}")
-    public ResponseEntity<UserDTO> updatePersonal(
-            @RequestBody UserDTO userDto,
+    @DeleteMapping("/user/{user_id}")
+    public ResponseEntity<String> deleteUser(
             @PathVariable Long user_id) {
-
         User usr = userService.findById(user_id);
 
         if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(userService.updateUser(userDto));
+            userService.deleteUser(usr);
+            return ResponseEntity.ok(SportHubConstant.USER_DELETED.getMessage());
         }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
     }
 
 
-    @PostMapping("/user/{user_id}/avatar")
-    public ResponseEntity<UserDTO> updateAvatar(
-            @RequestParam("file") MultipartFile userAva,
-            @PathVariable Long user_id) {
+    @PostMapping("/user/{user_id}")
+    public  ResponseEntity<UserDTO> updateUser(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "userDTO") String userDTO) {
 
-        User usr = userService.findById(user_id);
-
-        if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(userService.updateAvatar(user_id, userAva));
-        }
-        throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
+        return ResponseEntity.ok(userService.updateUser(file, userDTO));
     }
 
 

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -77,6 +78,7 @@ public class User {
     @JoinTable(name = "users_sportCategoties",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
+    @Singular // treat that builder node as a collection.
     private Set<SportCategory> favourites = new HashSet<>();
 
     public UserDTO ofDTO() {
@@ -87,8 +89,8 @@ public class User {
                 .password(this.password)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
-                        .map(SportCategory::ofDTO)
-                        .collect(Collectors.toList()))
+                            .map(SportCategory::ofDTO)
+                            .collect(Collectors.toList()))
                 .userComments(new ArrayList<>(this.userComments))
                 .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
