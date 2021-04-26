@@ -1,23 +1,26 @@
 package com.softserve.app.dto;
 
-import com.softserve.app.models.Banner;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.softserve.app.models.Comment;
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO implements Serializable {
 
     private Long id;
@@ -26,7 +29,9 @@ public class UserDTO implements Serializable {
 
     private String email;
 
-    private String password;
+    private String password; //old one
+    private String new_pass;
+    private String new_pass_2;
 
     private String photoUrl;
 
@@ -38,7 +43,6 @@ public class UserDTO implements Serializable {
     private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
 
-
     public User ofEntity(){
         return User.builder()
                 .id(this.id)
@@ -46,8 +50,9 @@ public class UserDTO implements Serializable {
                 .email(this.email)
                 .password(this.new_pass_2)
                 .photoUrl(this.photoUrl)
-                //.favourites(SportCategoryDtoHashSetFavourites) //overflow
+                .favourites((Set<SportCategory>) this.favourites)
                 .userComments((Set<Comment>) this.userComments)
+                .userSurveys((Set<Survey>) this.userSurveys)
                 .build();
     }
 }
