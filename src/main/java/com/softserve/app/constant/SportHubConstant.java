@@ -62,7 +62,11 @@ public enum SportHubConstant {
 
 
     FILES_NOT_IMAGE("Uploaded file isn't an image"),
-    FILES_IMAGE_IS_NOT_UPLOADED("Can not upload the image");
+    FILES_IMAGE_IS_NOT_UPLOADED("Can not upload the image"),
+    FILES_NOT_VIDEO("Uploaded file isn't an video"),
+    VIDEO_NOT_FOUND("Video not found"),
+
+    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation");
 
     private final String message;
 }

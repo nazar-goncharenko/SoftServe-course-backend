@@ -2,18 +2,15 @@ package com.softserve.app.controller;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
-import com.softserve.app.models.Article;
 import com.softserve.app.service.ArticleService.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Controller
+@RestController
 @CrossOrigin
 @RequestMapping("/articles")
 public class ArticleController {
@@ -26,38 +23,34 @@ public class ArticleController {
     }
 
     @GetMapping()
-    public @ResponseBody
-    ResponseEntity<List<Article>> findAll() {
-        return new ResponseEntity<>(articleService.listArticles(), HttpStatus.OK);
+    public List<ArticleDTO> findAll() {
+        return articleService.listArticles();
     }
 
-    /* without image */
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
-    public @ResponseBody ResponseEntity<Article> create(@RequestBody ArticleDTO articleDto) {
-        return new ResponseEntity<>(articleService.createArticle(articleDto), HttpStatus.OK);
+    public ResponseEntity<String> create(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "articleDto") String articleDto
+    ) {
+        articleService.createArticle(file, articleDto);
+        return ResponseEntity.ok(SportHubConstant.ARTICLE_CREATED_SUCCESSFULLY.getMessage());
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody
-    ResponseEntity<Article> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(articleService.getArticleById(id), HttpStatus.OK);
+    public ArticleDTO getById(@PathVariable Long id) {
+        return articleService.getArticleById(id);
     }
 
-    /* without image */
+    // PASS ID VIA DTO OR PATHVARIABLE?
     @PutMapping()
-    public ResponseEntity<String> edit(@RequestBody ArticleDTO articleDto) {
-        articleService.updateArticle(articleDto.getId(), articleDto);
-        return ResponseEntity.ok(SportHubConstant.ARTICLE_UPDATED_SUCCESSFULLY.getMessage());
-    }
-
-    /* separate endpoint for image upload */
-    @PutMapping("/{id}/image")
-    public ResponseEntity<String> updateImage(
-            @PathVariable Long id,
-            @RequestParam("file") MultipartFile multipartFile
+    public ResponseEntity<String> edit(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "articleDto") String articleDto
     ) {
-        articleService.updateArticleImage(id, multipartFile);
-        return ResponseEntity.ok(SportHubConstant.ARTICLE_IMAGE_UPDATED_SUCCESSFULLY.getMessage());
+        System.out.println(articleDto);
+        articleService.updateArticle(file, articleDto);
+        return ResponseEntity.ok(SportHubConstant.ARTICLE_UPDATED_SUCCESSFULLY.getMessage());
     }
 
     @DeleteMapping()
@@ -67,15 +60,13 @@ public class ArticleController {
     }
 
     @GetMapping("/search")
-    public @ResponseBody
-    ResponseEntity<List<Article>> search(@RequestParam String q) {
-        return new ResponseEntity<>(articleService.searchArticles(q), HttpStatus.OK);
+    public List<ArticleDTO> search(@RequestParam String q) {
+        return articleService.searchArticles(q);
     }
 
+    /* filterBy?category=nba */
     @GetMapping("/filterBy")
-    public @ResponseBody
-    ResponseEntity<List<Article>> filterByCategory(@RequestParam String category) {
-        return new ResponseEntity<>(articleService.searchArticlesByCategory(category), HttpStatus.OK);
+    public List<ArticleDTO> filterByCategory(@RequestParam String category) {
+        return articleService.searchArticlesByCategory(category);
     }
-
 }
