@@ -39,7 +39,9 @@ public class FileService implements FileServiceInterface {
             uploadDir.mkdir();
         }
 
-        String filename = uploadDir + "/" + UUID.randomUUID().toString();
+        //String filename = uploadDir + "/" + UUID.randomUUID().toString();
+        String filename = UUID.randomUUID().toString() + ".png";
+        String fileDir = uploadDir + "/" + filename;
 
         // only image file can be uploaded
         String mimetype= new MimetypesFileTypeMap()
@@ -52,7 +54,7 @@ public class FileService implements FileServiceInterface {
             // images with the same name will replace existing ones
             try {
                 Files.copy(img.getInputStream(),
-                        Path.of(filename),
+                        Path.of(fileDir),
                         StandardCopyOption.REPLACE_EXISTING);
                 return filename;
             } catch (IOException e) {

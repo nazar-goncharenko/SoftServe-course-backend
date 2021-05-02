@@ -28,4 +28,12 @@ public class PhotoService {
         return newPhoto.toDTO();
     }
 
+    public PhotoDTO show() {
+        PhotoOfTheDay photo = photoRepository.findTopByOrderByIdDesc();
+        if (photo.getIsShown())
+            return photo.toDTO();
+        else
+            return null;
+    }
+
 }
