@@ -1,6 +1,5 @@
 package com.softserve.app.service.ConverterService;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.app.constant.SportHubConstant;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ConverterService {
-
-
     public <Clazz> Clazz convertStringToClass(String stringClass, Class<Clazz> clazz) {
         if (clazz.getAnnotation(JsonIgnoreProperties.class) == null) {
             log.error(
@@ -27,13 +24,7 @@ public class ConverterService {
         try {
             return objectMapper.readValue(stringClass, clazz);
         } catch (Exception e) {
-
-            log.error(
-                    "{} exception on convertStringToClass method: {}",
-                    this.getClass(),
-                    e.getMessage()
-            );
-            throw new SportHubException(e.getMessage(), 400);
+            throw new SportHubException(SportHubConstant.CONVERTER_PROCESS_EXCEPTION.getMessage(), 405);
         }
     }
 }
