@@ -30,6 +30,11 @@ public class VideoController {
         return videoService.getAll();
     }
 
+    @GetMapping("/published")
+    public List<VideoDTO> getPublished(){
+        return videoService.getPublished();
+    }
+
 
     @GetMapping("/{id}")
     public VideoDTO getById(@PathVariable Long id) {

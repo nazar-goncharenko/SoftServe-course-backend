@@ -26,7 +26,17 @@ public class VideoService {
 
 
     public List<VideoDTO> getAll() {
-        return videoRepository.findAll().stream().map(Video::ofDTO).collect(Collectors.toList());
+        return videoRepository.findAll()
+                .stream()
+                .map(Video::ofDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoDTO> getPublished() {
+        return videoRepository.getAllByPublishIsTrue()
+                .stream()
+                .map(Video::ofDTO)
+                .collect(Collectors.toList());
     }
 
     public VideoDTO getById(Long id) {
@@ -54,8 +64,8 @@ public class VideoService {
         return videoRepository.save(Video.builder()
                 .url(dto.getUrl())
                 .title(dto.getTitle())
-                .isUploaded(dto.isUploaded())
-                .isPublish(dto.isPublish())
+                .uploaded(dto.isUploaded())
+                .publish(dto.isPublish())
                 .showComments(dto.isShowComments())
                 .build()).ofDTO();
 
