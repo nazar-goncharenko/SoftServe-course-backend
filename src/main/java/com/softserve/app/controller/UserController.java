@@ -12,16 +12,24 @@ import com.softserve.app.service.userService.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpPost;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -29,6 +37,7 @@ public class UserController {
     private final UserService userService;
 
     private final ResetService resetService;
+
     @PostMapping("/registration")
     @JsonView(View.UserInfo.class)
     public ResponseEntity<UserDTO> addUser(@RequestBody User user) {
@@ -37,14 +46,15 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    List<User> getAllUser() {
+    List<User> getAllUser(@RequestHeader HttpHeaders headers) {
+        System.out.println(headers);
         return userRepository.findAll();
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginAuth(@RequestBody UserDTO userDTO) {
         userService.authorize(userDTO);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity(userService.authorize(userDTO), HttpStatus.OK);
     }
 
 
