@@ -143,15 +143,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByResetPasswordToken(token);
     }
 
-//    public void authorize(UserDTO userDTO) {
-//        userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
-//                new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
-//        ////checking passwords
-//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(),
-//                userDTO.getPassword()));
-//     //   return  userRepository.findByEmail(userDTO.getEmail());
-//    }
-
     @Override
     public void authorize(UserDTO userDTO) {
         userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
