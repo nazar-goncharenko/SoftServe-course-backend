@@ -1,4 +1,4 @@
-package com.softserve.app.service.userService;
+package com.softserve.app.service.UserService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.exception.SportHubException;
@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user;
-            user = userRepository.findByEmail(email).orElseThrow(() -> new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 401));
+        user = userRepository.findByEmail(email).orElseThrow(() -> new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 401));
 
         return new AuthUserDetails(user);
     }

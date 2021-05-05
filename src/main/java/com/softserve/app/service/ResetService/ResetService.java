@@ -1,11 +1,11 @@
-package com.softserve.app.service;
+package com.softserve.app.service.ResetService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.models.ResetPasswordRequest;
-import com.softserve.app.service.userService.UserService;
+import com.softserve.app.service.UserService.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,14 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class ResetService {
 
+    private final UserService userService;
+    private final JavaMailSender mailSender;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private JavaMailSender mailSender;
+    public ResetService(UserService userService, JavaMailSender mailSender) {
+        this.userService = userService;
+        this.mailSender = mailSender;
+    }
 
     public void createToken(UserDTO userDTO) {
         String email = userDTO.getEmail();

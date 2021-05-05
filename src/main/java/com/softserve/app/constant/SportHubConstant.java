@@ -1,10 +1,15 @@
 package com.softserve.app.constant;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@Getter
+@ToString
 public enum SportHubConstant {
 
-    /*
-    If necessary, enter more constants
-     */
     /// emailSender constants
     EMAIL_SENT("Email sent"),
     COMPANY_EMAIL("SportHub@gmail.com"),
@@ -18,35 +23,48 @@ public enum SportHubConstant {
             + "<br>"
             + "<p>Ignore this email if you do remember your password, "
             + "or you have not made the request.</p>"),
-    // negative
+
+
     AUTHORIZE_EXCEPTION("Sorry, you're not authorized to access this resource"),
     USER_NOT_FOUND("User not found"),
-
-    AUTHENTICATION_EXCEPTION("User authentication was failed"),
+    USER_DELETED("User deleted"),
+    USER_UPDATED("User updated"),
     JWT_EXCEPTION("Unable to get JWT Token or JWT Token has expired"),
     EMAIL_SENDING_EXCEPTION("Exception while performing email sending"),
-    PASSWORD_NOT_MATCH("Password did not match"),
-    // positive
-    USER_FOUND("User found"),
+    PASSWORD_NOT_MATCH("Password not match"),
+
+
     LOGGED_SUCCESSFULLY("Logged in Successfully %s"),
     REGISTERED_SUCCESSFULLY("Registered Successfully %s"),
     PASSWORD_RESTORE_MESSAGE("Hello %s, here your new password : %s"),
     PASSWORD_RESTORE_SUBJECT("Password restoration for User"),
-    PASSWORD_RESET_FAILED("Password reset failed");
-    private String message;
+    PASSWORD_RESET_FAILED("Password reset failed"),
 
-    SportHubConstant(String message) {
-        this.message = message;
-    }
 
-    public String getMessage() {
-        return message;
-    }
+    ARTICLE_CREATED_SUCCESSFULLY("Article was created successfully"),
+    ARTICLE_UPDATED_SUCCESSFULLY("Article was updated successfully"),
+    ARTICLE_DELETED_SUCCESSFULLY("Article was updated successfully"),
+    ARTICLE_NOT_FOUND("Article was not found"),
 
-    @Override
-    public String toString() {
-        return "SportHubConstant{" +
-                "message='" + message + '\'' +
-                '}';
-    }
+
+    BANNER_CREATED_SUCCESSFULLY("Banner was created successfully"),
+    BANNER_UPDATED_SUCCESSFULLY("Banner was updated successfully"),
+    BANNER_CONFIGURED_SUCCESSFULLY("Banner was configured successfully"),
+    BANNER_DELETED_SUCCESSFULLY("Banner was deleted successfully"),
+    BANNER_NOT_FOUND("Banner doesn't exist"),
+    BANNER_HIDDEN_SUCCESSFULLY("Banners of this category are not visible to users anymore"),
+    BANNER_SHOWN_SUCCESSFULLY("Banners of this category are visible to the users now"),
+
+
+    FILES_NOT_IMAGE("Uploaded file isn't an image"),
+    FILES_IMAGE_IS_NOT_UPLOADED("Can not upload the image"),
+    FILES_NOT_VIDEO("Uploaded file isn't an video"),
+    VIDEO_NOT_FOUND("Video not found"),
+    FILE_LOADING_EXCEPTION("Could not load file"),
+
+
+    CONVERTER_PROCESS_EXCEPTION("Could not convert to dto"),
+    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation");
+
+    private final String message;
 }

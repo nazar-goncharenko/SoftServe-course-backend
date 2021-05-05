@@ -9,7 +9,8 @@ import java.util.List;
 
 @Repository
 public interface SportCategoryRepository extends JpaRepository<SportCategory, Long> {
-
-
+    SportCategory findByIdEquals (Long id);
+    SportCategory findByName (String name);
     List<SportCategory> getAllByParentEquals(Long id);
+    List<SportCategory> findByIsPredefinedTrue();
 }
