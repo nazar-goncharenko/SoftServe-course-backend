@@ -80,7 +80,6 @@ public class UserController {
 
     private final ResetService resetService;
     @PostMapping("/registration")
-    @JsonView(View.UserInfo.class)
     public ResponseEntity<UserDTO> addUser(@RequestBody User user) {
         userService.saveUser(user);
         return new ResponseEntity<>(user.ofDTO(), HttpStatus.OK);

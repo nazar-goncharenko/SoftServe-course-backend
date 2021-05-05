@@ -57,10 +57,16 @@ public class VideoService {
 
     public VideoDTO save(MultipartFile file, String videoDTO) {
         VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
-        System.out.println(dto.toString());
         if (file != null) {
             dto.setUrl(fileService.saveVideo(file));
         }
+        System.out.println(Video.builder()
+                .url(dto.getUrl())
+                .title(dto.getTitle())
+                .uploaded(dto.isUploaded())
+                .publish(dto.isPublish())
+                .showComments(dto.isShowComments())
+                .build());
         return videoRepository.save(Video.builder()
                 .url(dto.getUrl())
                 .title(dto.getTitle())
