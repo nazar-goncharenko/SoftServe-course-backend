@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class SurveyDTO {
     private Long id;
     private String question;
-    private Boolean isShown;
+    private Boolean isOpen;
 }

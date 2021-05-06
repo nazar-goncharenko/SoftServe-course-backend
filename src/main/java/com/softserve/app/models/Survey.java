@@ -19,7 +19,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Data
 @Component
@@ -27,7 +26,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "surveys")
 public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,14 +41,14 @@ public class Survey {
     private String question;
 
     @NotNull
-    @Column(name = "isShown", nullable = false)
-    private Boolean isShown = false;
+    @Column(name = "isOpen", nullable = false)
+    private Boolean isOpen = false;
 
     public SurveyDTO ofDTO() {
         return SurveyDTO.builder()
                 .id(this.id)
                 .question(this.question)
-                .isShown(this.isShown)
+                .isOpen(this.isOpen)
                 .build();
     }
 }

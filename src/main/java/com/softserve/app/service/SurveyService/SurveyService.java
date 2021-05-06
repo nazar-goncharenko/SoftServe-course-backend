@@ -14,5 +14,9 @@ public interface SurveyService {
 
     SurveyDTO createSurvey(String surveyDTO, Long user_id);
 
+    SurveyDTO updateSurvey(String surveyDTO);
+
     void deleteSurvey(Long survey_id);
+
+
 }

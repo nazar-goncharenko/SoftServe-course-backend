@@ -22,7 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +34,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +50,6 @@ public class User {
 
     @Column(name = "photoUrl")
     private String photoUrl;
-
-
 
     public enum Role implements GrantedAuthority {
         ROLE_ADMIN, ROLE_USER;

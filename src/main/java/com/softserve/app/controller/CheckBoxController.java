@@ -30,7 +30,7 @@ public class CheckBoxController {
     private final SurveyService surveyService;
 
     @GetMapping("/user/{user_id}/surveys/{survey_id}")
-    public List<CheckBox> findAllBySurveyId(
+    public List<CheckBox>  n(
             @PathVariable Long user_id
             , @PathVariable Long survey_id) {
         User usr = userService.findById(user_id); // for control
@@ -39,7 +39,7 @@ public class CheckBoxController {
     }
 
 
-    @PostMapping("/user/{user_id}/surveys/{survey_id}")
+    @PostMapping("/user/{user_id}/surveys/{survey_id}/checkbox")
     public ResponseEntity<CheckBoxDTO> createCheckBox(
             @PathVariable Long user_id
             , @PathVariable Long survey_id
@@ -47,7 +47,7 @@ public class CheckBoxController {
         return ResponseEntity.ok(checkBoxService.createCheckBox(checkBoxDTO, survey_id));
     }
 
-    @PutMapping("/user/{user_id}/surveys/{survey_id}")
+    @PutMapping("/user/{user_id}/surveys/{survey_id}/checkbox")
     public ResponseEntity<String> createManyCheckBoxes(
             @PathVariable Long user_id
             , @PathVariable Long survey_id

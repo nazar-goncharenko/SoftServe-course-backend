@@ -3,7 +3,6 @@ package com.softserve.app.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
-import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
 import com.softserve.app.models.View;
@@ -24,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Objects;
-
 
 @RestController
 @AllArgsConstructor
@@ -40,11 +37,15 @@ public class UserController {
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
-
+/*
         if (Objects.equals(userService.getCurrentUser(), usr)) {
+        */
+
             return ResponseEntity.ok(usr.ofDTO());
-        }
+       /* }
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
+        */
+
     }
 
 
@@ -52,12 +53,16 @@ public class UserController {
     public ResponseEntity<String> deleteUser(
             @PathVariable Long user_id) {
         User usr = userService.findById(user_id);
-
+/*
         if (Objects.equals(userService.getCurrentUser(), usr)) {
+
+        */
             userService.deleteUser(usr);
             return ResponseEntity.ok(SportHubConstant.USER_DELETED.getMessage());
-        }
+        /*}
         throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
+
+         */
     }
 
 

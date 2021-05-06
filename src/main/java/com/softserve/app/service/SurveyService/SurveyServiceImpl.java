@@ -41,9 +41,23 @@ public class SurveyServiceImpl implements SurveyService {
 
         Survey survey = new Survey();
         survey.setQuestion(dto.getQuestion());
-        survey.setIsShown(dto.getIsShown() != null ? dto.getIsShown() : false);
+        survey.setIsOpen(dto.getIsOpen() != null ? dto.getIsOpen() : false);
         survey.setUser(user);
         return surveyRepository.save(survey).ofDTO();
+    }
+
+    @Override
+    public SurveyDTO updateSurvey(String surveyDTO) {
+        SurveyDTO dto = converterService.convertStringToClass(surveyDTO, SurveyDTO.class);
+        Survey srvFromDb = findById(dto.getId());
+
+        return surveyRepository.save(Survey.builder()
+                .id(dto.getId())
+                .question(dto.getQuestion() != null ? dto.getQuestion() : srvFromDb.getQuestion())
+                .isOpen(!srvFromDb.getIsOpen())
+                .user(srvFromDb.getUser())
+                .build())
+                .ofDTO();
     }
 
     @Override
