@@ -17,9 +17,9 @@ public interface UserService {
 
     UserDTO updateUser(MultipartFile file, String userDTO);
 
-    void deleteUser(User user);
+    void deleteUser(Long id);
 
-    void saveUser(User user);
+    User saveUser(User user);
     void updatePassword(User user, String newPassword);
     void updateResetPasswordToken(String token, String email);
     User getByResetPasswordToken(String token);

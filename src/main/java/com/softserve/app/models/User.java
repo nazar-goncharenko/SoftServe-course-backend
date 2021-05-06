@@ -64,9 +64,15 @@ public class User {
     private String resetPasswordToken;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Banner> userBanners = new HashSet<>();
+
+    @Singular
+    private Set<Survey> userSurveys = new HashSet<>();
+
+//    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Singular
     private Set<Comment> userComments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)

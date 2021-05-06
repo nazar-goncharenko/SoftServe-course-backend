@@ -21,10 +21,14 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class ResetService {
 
+    private final UserService userService;
+    private final JavaMailSender mailSender;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private JavaMailSender mailSender;
+    public ResetService(UserService userService, JavaMailSender mailSender) {
+        this.userService = userService;
+        this.mailSender = mailSender;
+    }
 
     public void createToken(UserDTO userDTO) {
         String email = userDTO.getEmail();
