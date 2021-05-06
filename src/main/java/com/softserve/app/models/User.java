@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -65,18 +66,21 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Singular
     private Set<Survey> userSurveys = new HashSet<>();
 
 //    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Singular
     private Set<Comment> userComments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinTable(name = "users_sportCategoties",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "sportCategory_id")})
+    @Singular // treat that builder node as a collection.
     private Set<SportCategory> favourites = new HashSet<>();
 
     public UserDTO ofDTO() {
@@ -87,8 +91,8 @@ public class User {
                 .password(this.password)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
-                        .map(SportCategory::ofDTO)
-                        .collect(Collectors.toList()))
+                            .map(SportCategory::ofDTO)
+                            .collect(Collectors.toList()))
                 .userComments(new ArrayList<>(this.userComments))
                 .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
