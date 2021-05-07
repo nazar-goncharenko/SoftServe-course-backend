@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-;
 
 
 @Service
@@ -97,6 +96,13 @@ public class BannerService implements BannerServiceInterface {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<BannerDTO> getByStatus(Banner.Status status){
+        return bannerRepository.findByStatusEquals(status).stream()
+                .map(Banner::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     // list of banners with status "CLOSED"
     @Override
     public List<BannerDTO> getClosed(){
@@ -146,7 +152,7 @@ public class BannerService implements BannerServiceInterface {
         Banner bannerFromDb = bannerRepository.findById(bannerDTO.getId())
                 .orElseThrow(() -> new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400));
         bannerFromDb.setStatus(bannerDTO.getStatus() != null ? bannerDTO.getStatus() : bannerFromDb.getStatus());
-        bannerFromDb.setCategory(bannerDTO.getCategory() != null ? bannerDTO.getCategory() : bannerFromDb.getCategory());
+        bannerFromDb.setCategory(bannerDTO.getCategory() != null ? sportCategoryRepository.findByName(bannerDTO.getCategory().getName()): bannerFromDb.getCategory());
         bannerRepository.save(bannerFromDb).convertToDTO();
     }
 

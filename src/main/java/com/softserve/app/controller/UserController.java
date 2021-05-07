@@ -1,12 +1,8 @@
 package com.softserve.app.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
-import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
-import com.softserve.app.models.View;
 import com.softserve.app.service.ResetService.ResetService;
 import com.softserve.app.service.UserService.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
-
 
 @RestController
 @AllArgsConstructor
@@ -35,43 +29,28 @@ public class UserController {
 
 
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<UserDTO> showProfile(
+    public ResponseEntity<UserDTO> getUser(
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
+        return ResponseEntity.ok(usr.ofDTO());
+    }
 
-        if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(usr.ofDTO());
-        }
-        throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
+
+    @DeleteMapping("/user/{user_id}")
+    public ResponseEntity<HttpStatus> deleteUser(
+            @PathVariable Long user_id) {
+        userService.deleteUser(user_id);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
 
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<UserDTO> updatePersonal(
-            @RequestBody UserDTO userDto,
-            @PathVariable Long user_id) {
+    public ResponseEntity<UserDTO> updateUser(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "userDTO") String userDTO) {
 
-        User usr = userService.findById(user_id);
-
-        if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(userService.updateUser(userDto));
-        }
-        throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
-    }
-
-
-    @PostMapping("/user/{user_id}/avatar")
-    public ResponseEntity<UserDTO> updateAvatar(
-            @RequestParam("file") MultipartFile userAva,
-            @PathVariable Long user_id) {
-
-        User usr = userService.findById(user_id);
-
-        if (Objects.equals(userService.getCurrentUser(), usr)) {
-            return ResponseEntity.ok(userService.updateAvatar(user_id, userAva));
-        }
-        throw new SportHubException(SportHubConstant.AUTHORIZE_EXCEPTION.getMessage(), 403);
+        return ResponseEntity.ok(userService.updateUser(file, userDTO));
     }
 
 
@@ -79,17 +58,18 @@ public class UserController {
 
 
     private final ResetService resetService;
+
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> addUser(@RequestBody User user) {
-        userService.saveUser(user);
-        return new ResponseEntity<>(user.ofDTO(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.saveUser(user).ofDTO(), HttpStatus.OK);
     }
 
 
-    @PostMapping("/login")
+
+    @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> loginAuth(@RequestBody UserDTO userDTO) {
         userService.authorize(userDTO);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity(userService.getByDTO(userDTO), HttpStatus.OK);
     }
 
 

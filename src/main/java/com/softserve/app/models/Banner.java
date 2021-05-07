@@ -44,7 +44,7 @@ public class Banner {
     private SportCategory category;
 
     public enum Status {
-        PUBLISHED, NOT_PUBLISHED, CLOSED;
+        PUBLISHED, NOT_PUBLISHED, CLOSED
     }
 
     @Enumerated(EnumType.STRING)

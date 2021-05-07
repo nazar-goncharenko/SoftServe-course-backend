@@ -5,8 +5,9 @@ import com.softserve.app.dto.UserDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.UserRepository;
+import com.softserve.app.service.ConverterService.ConverterService;
+import com.softserve.app.service.FileService.FileServiceInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final FileServiceInterface fileService;
+    private final ConverterService converterService;
 
 
     @Override
@@ -43,7 +45,6 @@ public class UserServiceImpl implements UserService {
         return findByEmail(auth.getName());
     }
 
-
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new SportHubException(
@@ -57,67 +58,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
-        User curUser = userRepository.findById(userDTO.getId()).orElseThrow(() -> new SportHubException(
-                SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
+    public UserDTO updateUser(MultipartFile file, String userDTO) {
+        UserDTO dto = converterService.convertStringToClass(userDTO, UserDTO.class);
+        User usrFromDb = findById(dto.getId());
 
-        // Username
-        if (userDTO.getUsername() != null) {
-            curUser.setUsername(userDTO.getUsername());
-        }
-
-        // Email
-        if (userDTO.getId().equals(curUser.getId())) {
-            curUser.setEmail(userDTO.getEmail());
-        }
-
-        // Photo = avatar
-        if (userDTO.getPhotoUrl() != null) {
-            curUser.setPhotoUrl(userDTO.getPhotoUrl());
-        }
+        // Avatar
+        if (file != null) {
+            dto.setPhotoUrl(fileService.saveImg(file));
+        } else dto.setPhotoUrl(usrFromDb.getPhotoUrl());
 
         // Password
-        if (userDTO.getPassword() != null) {
-            curUser.setPassword(userDTO.getPassword());
-        }
-/*
-        // Surveys list
-        if (userDTO.getUserSurveys() != null) {
-            curUser.setUserSurveys(new HashSet<>(userDTO.getUserSurveys()));
-        }
+        if ((dto.getPassword() != null) && (dto.getNew_pass() != null)) {
+            String encodedNew = checkPassword(usrFromDb, dto.getPassword(), dto.getNew_pass(), dto.getNew_pass_2());
+            if (encodedNew != null) {
+                dto.setPassword(encodedNew);
+            }
+        } else dto.setPassword(usrFromDb.getPassword());
 
-        // Favourites list
-        if (userDTO.getFavourites() != null) {
-            curUser.setFavourites(new HashSet<>(userDTO.getFavourites()));
-        }
-*/
-        return curUser.ofDTO();
+        return userRepository.save(User.builder()
+                .id(dto.getId())
+                .username(dto.getUsername() != null ? dto.getUsername() : usrFromDb.getUsername())
+                .email(dto.getEmail() != null ? dto.getEmail() : usrFromDb.getEmail())
+                .photoUrl(dto.getPhotoUrl())
+                .password(dto.getPassword())
+                .build())
+                .ofDTO();
     }
 
-
-    @Value("${img.path}")
-    private String uploadPath;
 
     @Override
-    public UserDTO updateAvatar(Long user_id, MultipartFile userAva) {
-        User user = userRepository.findById(user_id).orElseThrow(() -> new SportHubException(
-                SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
-
-
-        String directory = uploadPath + "UserAvatars/" + user.getId() + "avatar.jpg";
-
-        File logo = new File(directory);
-        try {
-            userAva.transferTo(logo);
-            user.setPhotoUrl(logo.getName());
-        } catch (Exception e) {
-            throw new SportHubException(SportHubConstant.FILE_LOADING_EXCEPTION.getMessage(), 500);
-        }
-        return user.ofDTO();
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
 
-
+    private String checkPassword(User user, String oldPass, String pass1, String pass2) {
+        String encodedPassword = null;
+        if (pass1.equals(pass2)) {
+            String encodedOld = passwordEncoder.encode(oldPass);
+            if (encodedOld.equals(user.getPassword())) {
+                encodedPassword = passwordEncoder.encode(pass2);
+            }
+        }
+        return encodedPassword;
+    }
 
 // Auth
 
@@ -166,5 +150,11 @@ public class UserServiceImpl implements UserService {
         ////checking passwords
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(),
                 userDTO.getPassword()));
+    }
+
+    @Override
+    public UserDTO getByDTO(UserDTO userDTO) {
+        return userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
+                new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 404)).ofDTO();
     }
 }

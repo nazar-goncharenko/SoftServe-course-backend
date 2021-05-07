@@ -15,13 +15,14 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    UserDTO  updateUser(UserDTO userDTO);
+    UserDTO updateUser(MultipartFile file, String userDTO);
 
-    UserDTO updateAvatar(Long user_id, MultipartFile userAva);
+    void deleteUser(Long id);
 
+    User saveUser(User user);
     void updatePassword(User user, String newPassword);
     void updateResetPasswordToken(String token, String email);
-    User saveUser(User user);
     User getByResetPasswordToken(String token);
     void authorize(UserDTO userDTO);
+    UserDTO getByDTO(UserDTO userDTO);
 }

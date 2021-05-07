@@ -21,7 +21,7 @@ public class MainPageController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> showMainPage() {
-        return  ResponseEntity.ok("You are at main page ^^");
+        return ResponseEntity.ok("You are at main page ^^");
     }
 
     // just for test
@@ -29,4 +29,5 @@ public class MainPageController {
     ResponseEntity<List<User>> getAllUser() {
         return ResponseEntity.ok(userService.findAll());
     }
+
 }
