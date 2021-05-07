@@ -39,7 +39,8 @@ public class FileService implements FileServiceInterface {
             uploadDir.mkdir();
         }
 
-        String filename = uploadDir + "/" + UUID.randomUUID().toString();
+        String fileUrl = UUID.randomUUID().toString();
+        String filename = uploadDir + "/" + fileUrl;
 
         // only image file can be uploaded
         String mimetype= new MimetypesFileTypeMap()
@@ -54,7 +55,7 @@ public class FileService implements FileServiceInterface {
                 Files.copy(img.getInputStream(),
                         Path.of(filename),
                         StandardCopyOption.REPLACE_EXISTING);
-                return filename;
+                return fileUrl;
             } catch (IOException e) {
                 log.info(e.getMessage());
                 throw new SportHubException(SportHubConstant.FILE_LOADING_EXCEPTION.getMessage(), 400);

@@ -26,7 +26,17 @@ public class VideoService {
 
 
     public List<VideoDTO> getAll() {
-        return videoRepository.findAll().stream().map(Video::ofDTO).collect(Collectors.toList());
+        return videoRepository.findAll()
+                .stream()
+                .map(Video::ofDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<VideoDTO> getPublished() {
+        return videoRepository.getAllByPublishIsTrue()
+                .stream()
+                .map(Video::ofDTO)
+                .collect(Collectors.toList());
     }
 
     public VideoDTO getById(Long id) {
@@ -47,15 +57,48 @@ public class VideoService {
 
     public VideoDTO save(MultipartFile file, String videoDTO) {
         VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
-        if(file != null){
+        if (file != null) {
             dto.setUrl(fileService.saveVideo(file));
         }
+        System.out.println(Video.builder()
+                .url(dto.getUrl())
+                .title(dto.getTitle())
+                .uploaded(dto.isUploaded())
+                .publish(dto.isPublish())
+                .showComments(dto.isShowComments())
+                .build());
         return videoRepository.save(Video.builder()
                 .url(dto.getUrl())
                 .title(dto.getTitle())
-                .isUploaded(dto.isUploaded())
-                .isPublish(dto.isPublish())
+                .uploaded(dto.isUploaded())
+                .publish(dto.isPublish())
+                .showComments(dto.isShowComments())
                 .build()).ofDTO();
+
+    }
+
+    public VideoDTO update(MultipartFile file, String videoDTO) {
+        VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
+
+        if (file != null) {
+            dto.setUrl(fileService.saveVideo(file));
+        }
+
+        Video video = videoRepository.findById(dto.getId())
+                .orElseThrow(() ->
+                        new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404));
+
+        return videoRepository.save(
+                video.setFromDTO(dto))
+                .ofDTO();
+    }
+
+    public void delete(Long id) {
+        videoRepository.delete(
+                videoRepository.findById(id).orElseThrow(
+                        () -> new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404)
+                )
+        );
     }
 }
 
