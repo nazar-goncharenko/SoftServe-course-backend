@@ -35,7 +35,7 @@ public class ResetService {
         String token = RandomString.make(30);
         try {
             userService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = "http://localhost:3000/reset_password?token=" + token;
+            String resetPasswordLink = "http://localhost:4200/reset_password?token=" + token;
             sendEmail(email, resetPasswordLink);
         } catch (UnsupportedEncodingException | MessagingException e) {
             throw new SportHubException(SportHubConstant.EMAIL_SENDING_EXCEPTION.getMessage(), 405);

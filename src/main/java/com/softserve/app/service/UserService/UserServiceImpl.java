@@ -151,4 +151,10 @@ public class UserServiceImpl implements UserService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(),
                 userDTO.getPassword()));
     }
+
+    @Override
+    public UserDTO getByDTO(UserDTO userDTO) {
+        return userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
+                new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 404)).ofDTO();
+    }
 }

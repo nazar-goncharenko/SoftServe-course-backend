@@ -24,4 +24,5 @@ public interface UserService {
     void updateResetPasswordToken(String token, String email);
     User getByResetPasswordToken(String token);
     void authorize(UserDTO userDTO);
+    UserDTO getByDTO(UserDTO userDTO);
 }

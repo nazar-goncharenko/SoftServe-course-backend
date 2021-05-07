@@ -40,5 +40,5 @@ public class PhotoDTO implements Serializable {
         photo.setIsShown(this.isShown);
 
         return photo;
-    };
+    }
 }
