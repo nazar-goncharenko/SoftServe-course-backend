@@ -18,5 +18,5 @@ public interface SurveyService {
 
     void deleteSurvey(Long survey_id);
 
-
+    List<Survey> findAllFiltered(Long user_id, boolean isOpen);
 }

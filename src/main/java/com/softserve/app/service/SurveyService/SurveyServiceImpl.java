@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,12 +27,34 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public Survey findById(Long id) {
         return surveyRepository.findById(id).orElseThrow(() -> new SportHubException(
-                SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
+                SportHubConstant.SURVEY_DELETED.getMessage(), 404));
     }
 
     @Override
     public List<Survey> findAllByUser(User user) {
         return surveyRepository.findAllByUser(user);
+    }
+
+    @Override
+    public List<Survey> findAllFiltered(Long user_id, boolean isOpen) {
+        User usr = userService.findById(user_id);
+        List<Survey> surveys = findAllByUser(usr);
+
+        List<Survey> sortedSurveys = new ArrayList<>();
+        if (isOpen) {
+            for (Survey s : surveys) {
+                if (s.getIsOpen()) {
+                    sortedSurveys.add(s);
+                }
+            }
+        } else {
+            for (Survey s : surveys) {
+                if (!s.getIsOpen()) {
+                    sortedSurveys.add(s);
+                }
+            }
+        }
+        return sortedSurveys;
     }
 
     @Override

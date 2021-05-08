@@ -2,9 +2,7 @@ package com.softserve.app.controller;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.CheckBoxDTO;
-import com.softserve.app.models.CheckBox;
 import com.softserve.app.models.Survey;
-import com.softserve.app.models.User;
 import com.softserve.app.service.CheckBoxService.CheckBoxService;
 import com.softserve.app.service.SurveyService.SurveyService;
 import com.softserve.app.service.UserService.UserService;
@@ -30,14 +28,12 @@ public class CheckBoxController {
     private final SurveyService surveyService;
 
     @GetMapping("/user/{user_id}/surveys/{survey_id}")
-    public List<CheckBox>  n(
+    public List<CheckBoxDTO> findAllBySurvey(
             @PathVariable Long user_id
             , @PathVariable Long survey_id) {
-        User usr = userService.findById(user_id); // for control
         Survey srv = surveyService.findById(survey_id);
         return checkBoxService.findAllBySurvey(srv);
     }
-
 
     @PostMapping("/user/{user_id}/surveys/{survey_id}/checkbox")
     public ResponseEntity<CheckBoxDTO> createCheckBox(

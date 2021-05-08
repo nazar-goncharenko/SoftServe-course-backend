@@ -10,9 +10,10 @@ import java.util.List;
 public interface CheckBoxService {
     CheckBox findById(Long id);
 
-    List<CheckBox> findAllBySurvey(Survey survey);
+    List<CheckBoxDTO> findAllBySurvey(Survey survey);
 
     CheckBoxDTO createCheckBox(String checkBoxDTO, Long survey_id);
+
     void createManyCheckBoxes(String checkBoxManyDTO, Long survey_id);
 
     void deleteCheckBox(Long checkBox_id);

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -58,31 +57,15 @@ public class SurveyController {
     }
 
     @GetMapping("/user/{user_id}/surveys/open")
-    public List<Survey> findAllOpen(
+    public ResponseEntity<List<Survey>> findAllOpen(
             @PathVariable Long user_id) {
-        List<Survey> openSurveys = new ArrayList<>();
-        User usr = userService.findById(user_id);
-        List<Survey> surveys =  surveyService.findAllByUser(usr);
-        for (Survey s : surveys){
-            if (s.getIsOpen()) {
-                openSurveys.add(s);
-            }
-        }
-        return openSurveys;
+        return ResponseEntity.ok(surveyService.findAllFiltered(user_id, true));
     }
 
     @GetMapping("/user/{user_id}/surveys/closed")
-    public List<Survey> findAllClosed(
+    public ResponseEntity<List<Survey>> findAllClosed(
             @PathVariable Long user_id) {
-        List<Survey> closedSurveys = new ArrayList<>();
-        User usr = userService.findById(user_id);
-        List<Survey> surveys =  surveyService.findAllByUser(usr);
-        for (Survey s : surveys){
-            if (!s.getIsOpen()) {
-                closedSurveys.add(s);
-            }
-        }
-        return closedSurveys;
+        return ResponseEntity.ok(surveyService.findAllFiltered(user_id, false));
     }
 
 }

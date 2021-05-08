@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,8 +31,14 @@ public class CheckBoxServiceImpl implements CheckBoxService{
     }
 
     @Override
-    public List<CheckBox> findAllBySurvey(Survey survey) {
-        return checkBoxRepository.findAllBySurvey(survey);
+    public List<CheckBoxDTO> findAllBySurvey(Survey survey) {
+        List<CheckBox> checkBoxes = checkBoxRepository.findAllBySurvey(survey);
+
+        List<CheckBoxDTO> cbDto = new ArrayList<>();
+        for (CheckBox cb : checkBoxes) {
+            cbDto.add(cb.ofDTO());
+        }
+        return cbDto;
     }
 
     @Override
