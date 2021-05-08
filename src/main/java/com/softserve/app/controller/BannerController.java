@@ -3,6 +3,7 @@ package com.softserve.app.controller;
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;
+import com.softserve.app.models.Banner;
 import com.softserve.app.service.BannerSevice.BannerServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,12 @@ public class BannerController {
     @GetMapping("/closed")
     public List<BannerDTO> getClosed(){
         return bannerService.getClosed();
+    }
+
+    // TODO should be available only for admins
+    @GetMapping("/sortByStatus")
+    public List<BannerDTO> getByStatus(@RequestParam("status") Banner.Status status){
+        return bannerService.getByStatus(status);
     }
 
     @GetMapping("/{bannerId}")

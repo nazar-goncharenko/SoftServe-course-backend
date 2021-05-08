@@ -88,6 +88,7 @@ public class User {
                 .username(this.username)
                 .email(this.email)
                 .password(this.password)
+                .role(this.role)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
                             .map(SportCategory::ofDTO)
