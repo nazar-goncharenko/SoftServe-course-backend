@@ -16,7 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -51,9 +50,8 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-                httpSecurity
-
+        httpSecurity
+                .cors().and()
                 .csrf().disable();
         httpSecurity
                 .authorizeRequests()

@@ -95,4 +95,9 @@ public class UserController {
         resetService.resetPassword(resetPasswordRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("user/email/{email}")
+    public UserDTO getByEmail(@PathVariable String email){
+        return userService.findByEmail(email).ofDTO();
+    }
 }

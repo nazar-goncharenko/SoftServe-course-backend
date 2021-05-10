@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if ((dto.getPassword() != null) && (dto.getNew_pass() != null)) {
             String encodedNew = checkPassword(usrFromDb, dto.getPassword(), dto.getNew_pass(), dto.getNew_pass_2());
             if (encodedNew != null) {
-                dto.setPassword(encodedNew);
+                dto.setPassword(passwordEncoder.encode(encodedNew));
             }
         } else dto.setPassword(usrFromDb.getPassword());
 
