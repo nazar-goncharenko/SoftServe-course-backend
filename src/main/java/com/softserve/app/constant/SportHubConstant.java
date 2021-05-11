@@ -43,7 +43,8 @@ public enum SportHubConstant {
 
     ARTICLE_CREATED_SUCCESSFULLY("Article was created successfully"),
     ARTICLE_UPDATED_SUCCESSFULLY("Article was updated successfully"),
-    ARTICLE_DELETED_SUCCESSFULLY("Article was updated successfully"),
+    ARTICLE_DELETED_SUCCESSFULLY("Article was deleted successfully"),
+    ARTICLE_IMAGE_UPDATED_SUCCESSFULLY("Article image was updated successfully"),
     ARTICLE_NOT_FOUND("Article was not found"),
 
 

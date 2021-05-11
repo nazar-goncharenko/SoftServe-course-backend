@@ -5,6 +5,7 @@ import com.softserve.app.exception.SportHubException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,8 @@ public class FileService implements FileServiceInterface {
             uploadDir.mkdir();
         }
 
-        String filename = UUID.randomUUID().toString();
+        String fileExt = FilenameUtils.getExtension(img.getOriginalFilename());
+        String filename = UUID.randomUUID().toString() + "." + fileExt;
         String filepath = uploadDir + "/" + filename;
 
         // only image file can be uploaded
