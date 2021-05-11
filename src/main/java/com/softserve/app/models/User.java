@@ -66,12 +66,14 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Singular
     private Set<Survey> userSurveys = new HashSet<>();
 
 //    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Banner> userBanners = new HashSet<>();
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Singular
     private Set<Comment> userComments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
@@ -87,6 +89,7 @@ public class User {
                 .username(this.username)
                 .email(this.email)
                 .password(this.password)
+                .role(this.role)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
                             .map(SportCategory::ofDTO)

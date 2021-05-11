@@ -21,17 +21,21 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class ResetService {
 
+    private final UserService userService;
+    private final JavaMailSender mailSender;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private JavaMailSender mailSender;
+    public ResetService(UserService userService, JavaMailSender mailSender) {
+        this.userService = userService;
+        this.mailSender = mailSender;
+    }
 
     public void createToken(UserDTO userDTO) {
         String email = userDTO.getEmail();
         String token = RandomString.make(30);
         try {
             userService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = "http://localhost:3000/reset_password?token=" + token;
+            String resetPasswordLink = "http://localhost:4200/reset_password?token=" + token;
             sendEmail(email, resetPasswordLink);
         } catch (UnsupportedEncodingException | MessagingException e) {
             throw new SportHubException(SportHubConstant.EMAIL_SENDING_EXCEPTION.getMessage(), 405);

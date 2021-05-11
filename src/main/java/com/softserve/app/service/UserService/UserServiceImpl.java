@@ -87,10 +87,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void deleteUser(User user) {
-        User usr = userRepository.findById(user.getId()).orElseThrow(() -> new SportHubException(
-                SportHubConstant.USER_NOT_FOUND.getMessage(), 404));
-        userRepository.delete(usr);
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 
 
@@ -128,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         Optional<User> userFromDb = userRepository.findByEmail(user.getEmail());
         if (userFromDb.isPresent()) {
             throw new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 401);
@@ -137,7 +135,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(User.Role.ROLE_USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -152,5 +150,11 @@ public class UserServiceImpl implements UserService {
         ////checking passwords
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getEmail(),
                 userDTO.getPassword()));
+    }
+
+    @Override
+    public UserDTO getByDTO(UserDTO userDTO) {
+        return userRepository.findByEmail(userDTO.getEmail()).orElseThrow(() ->
+                new SportHubException(SportHubConstant.USER_NOT_FOUND.getMessage(), 404)).ofDTO();
     }
 }

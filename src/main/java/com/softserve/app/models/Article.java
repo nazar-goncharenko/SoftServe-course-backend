@@ -1,5 +1,6 @@
 package com.softserve.app.models;
 
+import com.softserve.app.dto.ArticleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,7 +37,7 @@ public class Article {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "image_path", nullable = true)
+    @Column(name = "image_path")
     private String imagePath;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -43,4 +45,16 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory category;
+
+    public ArticleDTO ofDTO() {
+        return ArticleDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .description(this.description)
+                .imagePath(this.imagePath)
+//                .comments(new ArrayList<>(this.comments))
+                .category(this.category)
+                .build();
+    }
+
 }

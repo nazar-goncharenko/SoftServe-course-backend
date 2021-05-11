@@ -1,24 +1,24 @@
 package com.softserve.app.service.ArticleService;
 
 import com.softserve.app.dto.ArticleDTO;
-import com.softserve.app.models.Article;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    List<Article> listArticles();
+    List<ArticleDTO> listArticles();
 
-    void createArticle(ArticleDTO articleDto);
+    void createArticle(MultipartFile file, String articleDTO);
 
-    void updateArticle(Long id, ArticleDTO articleDto);
+    void updateArticle(MultipartFile file, String articleDto);
 
     void deleteArticle(Long id);
 
-    Article getArticleById(Long id);
+    ArticleDTO getArticleById(Long id);
 
-    List<Article> searchArticles(String searchQuery);
+    List<ArticleDTO> searchArticles(String searchQuery);
 
-    List<Article> searchArticlesByCategory(String searchQuery);
+    List<ArticleDTO> searchArticlesByCategory(String searchQuery);
 
 }
