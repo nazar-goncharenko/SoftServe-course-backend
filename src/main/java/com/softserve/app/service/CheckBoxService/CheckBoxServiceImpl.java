@@ -61,7 +61,7 @@ public class CheckBoxServiceImpl implements CheckBoxService{
         for (CheckBoxDTO eachDto : manyDtos.getListOfCheckBoxes()) {
             CheckBox checkBox = new CheckBox();
             checkBox.setText(eachDto.getText());
-            checkBox.setResponses_count((long) 0);
+            checkBox.setResponses_count(eachDto.getResponses_count() != null ? eachDto.getResponses_count() : 0L);
             checkBox.setSurvey(survey);
             checkBoxRepository.save(checkBox);
         }

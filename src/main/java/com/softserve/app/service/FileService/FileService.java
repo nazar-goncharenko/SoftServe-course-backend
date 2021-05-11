@@ -31,7 +31,7 @@ public class FileService implements FileServiceInterface {
     private String videoUploadPath;
 
     @Override
-    public String saveImg(MultipartFile img){
+    public String saveImg(MultipartFile img) {
         // if directory doesn't exist it will be created
         File uploadDir = new File(imgUploadPath);
 
@@ -39,20 +39,21 @@ public class FileService implements FileServiceInterface {
             uploadDir.mkdir();
         }
 
-        String filename = uploadDir + "/" + UUID.randomUUID().toString();
+        String filename = UUID.randomUUID().toString();
+        String filepath = uploadDir + "/" + filename;
 
         // only image file can be uploaded
-        String mimetype= new MimetypesFileTypeMap()
+        String mimetype = new MimetypesFileTypeMap()
                 .getContentType(img.getOriginalFilename());
 
         String type = mimetype.split("/")[0];
-        if(!type.equals("image"))
+        if (!type.equals("image"))
             throw new SportHubException(SportHubConstant.FILES_NOT_IMAGE.getMessage(), 400);
         else {
             // images with the same name will replace existing ones
             try {
                 Files.copy(img.getInputStream(),
-                        Path.of(filename),
+                        Path.of(filepath),
                         StandardCopyOption.REPLACE_EXISTING);
                 return filename;
             } catch (IOException e) {
@@ -74,12 +75,12 @@ public class FileService implements FileServiceInterface {
         String filename = uploadDir + "\\" + fileUrl;
 
         // only image file can be uploaded
-        String mimetype= new MimetypesFileTypeMap()
+        String mimetype = new MimetypesFileTypeMap()
                 .getContentType(video.getOriginalFilename());
 
         String type = mimetype.split("/")[0];
         System.out.println(type);
-        if(!type.equals("application"))
+        if (!type.equals("application"))
             throw new SportHubException(SportHubConstant.FILES_NOT_VIDEO.getMessage(), 400);
         else {
             // images with the same name will replace existing ones
