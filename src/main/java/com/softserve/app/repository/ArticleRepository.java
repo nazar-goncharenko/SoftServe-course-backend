@@ -9,6 +9,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findArticleByTitleContainsOrDescriptionContainsIgnoreCase(String searchTitleQuery, String searchDescriptionQuery);
 
-    List<Article> findArticleByCategoryNameIgnoreCase(String categoryName);
+    List<Article> findAllByCategoryNameIgnoreCase(String categoryName);
 
 }

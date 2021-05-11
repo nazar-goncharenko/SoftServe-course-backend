@@ -63,6 +63,7 @@ public class SportCategory {
     @Column(name = "showBanners")
     private boolean showBanners;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Article> articles = new HashSet<>();
 
