@@ -21,19 +21,19 @@ public class PhotoOfTheDay {
     @Column(name = "photo_url")
     private String photoUrl;
 
-    @Column(name = "alt", nullable = false)
+    @Column(name = "alt")
     private String alt;
 
-    @Column(name = "photo_title", nullable = false)
+    @Column(name = "photo_title")
     private String photoTitle;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "author", nullable = false)
+    @Column(name = "author")
     private String author;
 
-    @Column(name = "is_shown", nullable = false)
+    @Column(name = "is_shown")
     private Boolean isShown;
 
     public PhotoDTO toDTO() {

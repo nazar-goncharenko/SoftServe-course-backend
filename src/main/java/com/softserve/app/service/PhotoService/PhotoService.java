@@ -20,11 +20,12 @@ public class PhotoService {
     public PhotoDTO savePhoto(String photoDTO, MultipartFile image) {
 
         PhotoDTO photo = converterService.convertStringToClass(photoDTO, PhotoDTO.class);
-        photo.setPhotoUrl(fileService.saveImg(image));
+
+        if (image != null)
+            photo.setPhotoUrl(fileService.saveImg(image));
 
         PhotoOfTheDay newPhoto = photo.fromDTO();
         photoRepository.save(newPhoto);
-
         return newPhoto.toDTO();
     }
 
