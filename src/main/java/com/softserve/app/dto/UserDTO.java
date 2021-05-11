@@ -55,6 +55,7 @@ public class UserDTO implements Serializable {
                 .email(this.email)
                 .password(this.new_pass_2)
                 .photoUrl(this.photoUrl)
+                .role(this.role)
                 .favourites(new HashSet<>(
                         this.favourites.stream()
                                 .map(SportCategoryDTO::ofEntity)

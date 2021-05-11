@@ -2,6 +2,7 @@ package com.softserve.app.service.BannerSevice;
 
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;
+import com.softserve.app.models.Banner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public interface BannerServiceInterface {
     List<BannerDTO> getOpen();
 
     List<BannerDTO> getClosed();
+
+    List<BannerDTO> getByStatus(Banner.Status status);
 
     void showPredefined(String categoryName);
 

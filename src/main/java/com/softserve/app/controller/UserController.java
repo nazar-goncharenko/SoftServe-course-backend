@@ -46,7 +46,7 @@ public class UserController {
 
 
     @PostMapping("/user/{user_id}")
-    public  ResponseEntity<UserDTO> updateUser(
+    public ResponseEntity<UserDTO> updateUser(
             @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam(name = "userDTO") String userDTO) {
 
@@ -58,17 +58,18 @@ public class UserController {
 
 
     private final ResetService resetService;
+
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> addUser(@RequestBody User user) {
-        UserDTO userDTO = userService.saveUser(user).ofDTO();
-        return ResponseEntity.ok(userDTO);
+        return new ResponseEntity<>(userService.saveUser(user).ofDTO(), HttpStatus.OK);
     }
 
 
-    @PostMapping("/login")
+
+    @PostMapping(value = "/login")
     public ResponseEntity<UserDTO> loginAuth(@RequestBody UserDTO userDTO) {
         userService.authorize(userDTO);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity(userService.getByDTO(userDTO), HttpStatus.OK);
     }
 
 
