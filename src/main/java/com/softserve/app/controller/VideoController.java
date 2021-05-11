@@ -23,7 +23,7 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
-
+    
 
     @GetMapping
     public List<VideoDTO> getAll() {
