@@ -1,12 +1,12 @@
-package com.softserve.app.service.VideoService;
+package com.softserve.app.service.videoService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.VideoDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Video;
 import com.softserve.app.repository.VideoRepository;
-import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileServiceInterface;
+import com.softserve.app.service.converterService.ConverterService;
+import com.softserve.app.service.fileService.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +20,7 @@ public class VideoServiceImpl implements VideoService{
 
     private final VideoRepository videoRepository;
 
-    private final FileServiceInterface fileService;
+    private final FileService fileService;
 
     private final ConverterService converterService;
 

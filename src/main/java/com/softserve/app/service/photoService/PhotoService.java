@@ -1,10 +1,10 @@
-package com.softserve.app.service.PhotoService;
+package com.softserve.app.service.photoService;
 
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.repository.PhotoRepository;
-import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileService;
+import com.softserve.app.service.converterService.ConverterService;
+import com.softserve.app.service.fileService.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
