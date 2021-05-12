@@ -6,7 +6,7 @@ import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.UserRepository;
 import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileServiceInterface;
+import com.softserve.app.service.FileService.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final FileServiceInterface fileService;
+    private final FileService fileService;
     private final ConverterService converterService;
 
 

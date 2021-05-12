@@ -1,8 +1,14 @@
 package com.softserve.app.service.VideoService;
 
 import com.softserve.app.dto.VideoDTO;
+import com.softserve.app.exception.SportHubException;
+import com.softserve.app.models.Video;
+import com.softserve.app.repository.VideoRepository;
+import com.softserve.app.service.ConverterService.ConverterService;
+import com.softserve.app.service.FileService.FileService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface VideoService {
