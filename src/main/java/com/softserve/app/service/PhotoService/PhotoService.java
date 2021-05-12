@@ -4,7 +4,7 @@ import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.PhotoOfTheDay;
 import com.softserve.app.repository.PhotoRepository;
 import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileServiceInterface;
+import com.softserve.app.service.FileService.FileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PhotoService implements PhotoServiceInterface {
 
     private final PhotoRepository photoRepository;
-    private final FileServiceInterface fileService;
+    private final FileService fileService;
     private final ConverterService converterService;
 
     @Override
