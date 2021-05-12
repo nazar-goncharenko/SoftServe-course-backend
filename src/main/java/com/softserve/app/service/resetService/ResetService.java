@@ -1,11 +1,11 @@
-package com.softserve.app.service.ResetService;
+package com.softserve.app.service.resetService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.models.ResetPasswordRequest;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.userService.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

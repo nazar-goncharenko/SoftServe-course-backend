@@ -2,7 +2,7 @@ package com.softserve.app.config;
 
 import com.softserve.app.security.AuthenticationEntryPoint;
 import com.softserve.app.security.CustomFilter;
-import com.softserve.app.service.UserService.UserDetailsServiceImpl;
+import com.softserve.app.service.userService.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -51,9 +50,8 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-                httpSecurity
-
+        httpSecurity
+                .cors().and()
                 .csrf().disable();
         httpSecurity
                 .authorizeRequests()

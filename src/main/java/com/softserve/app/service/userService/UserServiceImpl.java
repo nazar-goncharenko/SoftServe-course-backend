@@ -1,12 +1,12 @@
-package com.softserve.app.service.UserService;
+package com.softserve.app.service.userService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.UserRepository;
-import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileService;
+import com.softserve.app.service.converterService.ConverterService;
+import com.softserve.app.service.fileService.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if ((dto.getPassword() != null) && (dto.getNew_pass() != null)) {
             String encodedNew = checkPassword(usrFromDb, dto.getPassword(), dto.getNew_pass(), dto.getNew_pass_2());
             if (encodedNew != null) {
-                dto.setPassword(encodedNew);
+                dto.setPassword(passwordEncoder.encode(encodedNew));
             }
         } else dto.setPassword(usrFromDb.getPassword());
 

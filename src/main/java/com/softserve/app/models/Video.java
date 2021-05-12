@@ -34,9 +34,9 @@ public class Video {
     @OneToMany
     List<Comment> comments = new ArrayList<>();
 
-    private boolean isUploaded;
+    private boolean uploaded;
 
-    private boolean isPublish;
+    private boolean publish;
 
     private boolean showComments;
 
@@ -44,11 +44,21 @@ public class Video {
         return VideoDTO.builder()
                 .id(this.id)
                 .comments(this.comments)
-                .isUploaded(this.isUploaded)
+                .uploaded(this.uploaded)
                 .url(this.url)
                 .title(this.title)
-                .isPublish(this.isPublish)
+                .publish(this.publish)
                 .showComments(this.showComments)
                 .build();
+    }
+
+    public Video setFromDTO(VideoDTO videoDTO){
+        this.title = videoDTO.getTitle();
+        this.publish = videoDTO.isPublish();
+        this.uploaded = videoDTO.isUploaded();
+        this.url = videoDTO.getUrl();
+        this.showComments = videoDTO.isShowComments();
+        this.comments = videoDTO.getComments();
+        return this;
     }
 }

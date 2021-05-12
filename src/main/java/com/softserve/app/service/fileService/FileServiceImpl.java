@@ -1,4 +1,4 @@
-package com.softserve.app.service.FileService;
+package com.softserve.app.service.fileService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.exception.SportHubException;

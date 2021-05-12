@@ -4,7 +4,7 @@ import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.models.Banner;
-import com.softserve.app.service.BannerSevice.BannerService;
+import com.softserve.app.service.bannerSevice.BannerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
