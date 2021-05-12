@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CheckBoxServiceImpl implements CheckBoxService{
+public class CheckBoxServiceImpl implements CheckBoxService {
     private final CheckBoxRepository checkBoxRepository;
     private final ConverterService converterService;
     private final SurveyService surveyService;
@@ -32,13 +32,8 @@ public class CheckBoxServiceImpl implements CheckBoxService{
 
     @Override
     public List<CheckBoxDTO> findAllBySurvey(Survey survey) {
-        List<CheckBox> checkBoxes = checkBoxRepository.findAllBySurvey(survey);
-
-        List<CheckBoxDTO> cbDto = new ArrayList<>();
-        for (CheckBox cb : checkBoxes) {
-            cbDto.add(cb.ofDTO());
-        }
-        return cbDto;
+        return checkBoxRepository.findAllBySurvey(survey).stream()
+                .map(CheckBox::ofDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +43,7 @@ public class CheckBoxServiceImpl implements CheckBoxService{
 
         CheckBox checkBox = new CheckBox();
         checkBox.setText(dto.getText());
-        checkBox.setResponses_count((long) 0);
+        checkBox.setResponses_count(dto.getResponses_count() != null ? dto.getResponses_count() : 0L);
         checkBox.setSurvey(survey);
         return checkBoxRepository.save(checkBox).ofDTO();
     }
@@ -58,18 +53,18 @@ public class CheckBoxServiceImpl implements CheckBoxService{
         CheckBoxManyDTO manyDtos = converterService.convertStringToClass(checkBoxManyDTO, CheckBoxManyDTO.class);
         Survey survey = surveyService.findById(survey_id);
 
-        for (CheckBoxDTO eachDto : manyDtos.getListOfCheckBoxes()) {
-            CheckBox checkBox = new CheckBox();
-            checkBox.setText(eachDto.getText());
-            checkBox.setResponses_count(eachDto.getResponses_count() != null ? eachDto.getResponses_count() : 0L);
-            checkBox.setSurvey(survey);
-            checkBoxRepository.save(checkBox);
-        }
+        manyDtos.getListOfCheckBoxes().forEach
+                (eachDto -> {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.setText(eachDto.getText());
+                    checkBox.setResponses_count(eachDto.getResponses_count() != null ? eachDto.getResponses_count() : 0L);
+                    checkBox.setSurvey(survey);
+                    checkBoxRepository.save(checkBox);
+                });
     }
 
     @Override
     public void deleteCheckBox(Long checkBox_id) {
-        CheckBox checkBox = findById(checkBox_id);
-        checkBoxRepository.delete(checkBox);
+        checkBoxRepository.deleteById(checkBox_id);
     }
 }

@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,23 +37,7 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public List<Survey> findAllFiltered(Long user_id, boolean isOpen) {
         User usr = userService.findById(user_id);
-        List<Survey> surveys = findAllByUser(usr);
-
-        List<Survey> sortedSurveys = new ArrayList<>();
-        if (isOpen) {
-            for (Survey s : surveys) {
-                if (s.getIsOpen()) {
-                    sortedSurveys.add(s);
-                }
-            }
-        } else {
-            for (Survey s : surveys) {
-                if (!s.getIsOpen()) {
-                    sortedSurveys.add(s);
-                }
-            }
-        }
-        return sortedSurveys;
+        return surveyRepository.findAllByUserAndIsOpen(usr, isOpen);
     }
 
     @Override
@@ -73,11 +56,12 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveyDTO updateSurvey(String surveyDTO) {
         SurveyDTO dto = converterService.convertStringToClass(surveyDTO, SurveyDTO.class);
         Survey srvFromDb = findById(dto.getId());
+        dto.setIsOpen(!srvFromDb.getIsOpen());
 
         return surveyRepository.save(Survey.builder()
                 .id(dto.getId())
                 .question(dto.getQuestion() != null ? dto.getQuestion() : srvFromDb.getQuestion())
-                .isOpen(!srvFromDb.getIsOpen())
+                .isOpen(dto.getIsOpen())
                 .user(srvFromDb.getUser())
                 .build())
                 .ofDTO();
@@ -85,8 +69,7 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public void deleteSurvey(Long survey_id) {
-        Survey survey = findById(survey_id);
-        surveyRepository.delete(survey);
+        surveyRepository.deleteById(survey_id);
     }
 
 }

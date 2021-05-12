@@ -10,6 +10,4 @@ public class SportHubApplication {
 		SpringApplication.run(SportHubApplication.class, args);
 	}
 
-
-
 }
