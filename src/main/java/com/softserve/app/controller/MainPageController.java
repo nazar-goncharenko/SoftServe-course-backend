@@ -2,7 +2,7 @@ package com.softserve.app.controller;
 
 import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.User;
-import com.softserve.app.service.PhotoService.PhotoService;
+import com.softserve.app.service.PhotoService.PhotoServiceInterface;
 import com.softserve.app.service.UserService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,11 +21,11 @@ import java.util.List;
 public class MainPageController {
 
     private final UserService userService;
-    private final PhotoService photoService;
+    private final PhotoServiceInterface photoService;
 
     @GetMapping
     public PhotoDTO showPhoto() {
-        return photoService.show();
+        return photoService.showPhoto();
     }
 
     // just for test

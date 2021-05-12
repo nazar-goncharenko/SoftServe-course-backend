@@ -11,12 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
-public class PhotoService {
+public class PhotoService implements PhotoServiceInterface {
 
     private final PhotoRepository photoRepository;
     private final FileServiceInterface fileService;
     private final ConverterService converterService;
 
+    @Override
     public PhotoDTO savePhoto(String photoDTO, MultipartFile image) {
 
         PhotoDTO photo = converterService.convertStringToClass(photoDTO, PhotoDTO.class);
@@ -29,12 +30,10 @@ public class PhotoService {
         return newPhoto.toDTO();
     }
 
-    public PhotoDTO show() {
+    @Override
+    public PhotoDTO showPhoto() {
         PhotoOfTheDay photo = photoRepository.findTopByOrderByIdDesc();
-        if (photo.getIsShown())
-            return photo.toDTO();
-        else
-            return null;
+        return photo.toDTO();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.dto.PhotoDTO;
-import com.softserve.app.service.PhotoService.PhotoService;
+import com.softserve.app.service.PhotoService.PhotoServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class AdminController {
 
-    private final PhotoService photoService;
+    private final PhotoServiceInterface photoService;
 
     @PostMapping
     public PhotoDTO addPhoto(@RequestParam(name = "photoDTO", required = false) String photoDTO, @RequestParam(name = "img", required = false) MultipartFile image) {
