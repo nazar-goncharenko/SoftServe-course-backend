@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.models.User;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

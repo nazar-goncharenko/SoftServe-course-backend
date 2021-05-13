@@ -1,4 +1,4 @@
-package com.softserve.app.service.FileService;
+package com.softserve.app.service.fileService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.exception.SportHubException;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileService implements FileServiceInterface {
+public class FileServiceImpl implements FileService {
 
     // directory for uploaded images (you can change it in application.properties)
     @Value("${img.path}")

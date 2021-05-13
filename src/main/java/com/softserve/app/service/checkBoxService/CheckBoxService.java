@@ -1,4 +1,4 @@
-package com.softserve.app.service.CheckBoxService;
+package com.softserve.app.service.checkBoxService;
 
 import com.softserve.app.dto.CheckBoxDTO;
 import com.softserve.app.models.CheckBox;

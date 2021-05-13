@@ -1,12 +1,12 @@
-package com.softserve.app.service.ArticleService;
+package com.softserve.app.service.articleService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Article;
 import com.softserve.app.repository.ArticleRepository;
-import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.FileService.FileService;
+import com.softserve.app.service.converterService.ConverterService;
+import com.softserve.app.service.fileService.FileServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    private final FileService fileService;
+    private final FileServiceImpl fileService;
 
     private final ConverterService converterService;
 

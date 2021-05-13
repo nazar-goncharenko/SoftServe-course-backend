@@ -1,4 +1,4 @@
-package com.softserve.app.service.SportCategoryService;
+package com.softserve.app.service.sportCategoryService;
 
 
 import com.softserve.app.dto.SportCategoryDTO;

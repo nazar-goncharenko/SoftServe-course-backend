@@ -3,8 +3,8 @@ package com.softserve.app.controller;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
-import com.softserve.app.service.ResetService.ResetService;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.resetService.ResetService;
+import com.softserve.app.service.userService.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -99,5 +99,10 @@ public class UserController {
             @RequestBody ResetPasswordRequest resetPasswordRequest) {
         resetService.resetPassword(resetPasswordRequest);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("user/email/{email}")
+    public UserDTO getByEmail(@PathVariable String email){
+        return userService.findByEmail(email).ofDTO();
     }
 }

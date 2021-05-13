@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.dto.SportCategoryDTO;
-import com.softserve.app.service.SportCategoryService.SportCategoryService;
+import com.softserve.app.service.sportCategoryService.SportCategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

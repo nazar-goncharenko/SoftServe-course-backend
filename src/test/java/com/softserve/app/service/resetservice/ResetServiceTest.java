@@ -2,8 +2,8 @@ package com.softserve.app.service.resetservice;
 
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
-import com.softserve.app.service.ResetService.ResetService;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.resetService.ResetService;
+import com.softserve.app.service.userService.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

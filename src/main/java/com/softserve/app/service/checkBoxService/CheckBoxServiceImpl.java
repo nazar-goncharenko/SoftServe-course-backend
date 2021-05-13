@@ -1,4 +1,4 @@
-package com.softserve.app.service.CheckBoxService;
+package com.softserve.app.service.checkBoxService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.CheckBoxDTO;
@@ -7,8 +7,8 @@ import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.CheckBox;
 import com.softserve.app.models.Survey;
 import com.softserve.app.repository.CheckBoxRepository;
-import com.softserve.app.service.ConverterService.ConverterService;
-import com.softserve.app.service.SurveyService.SurveyService;
+import com.softserve.app.service.converterService.ConverterService;
+import com.softserve.app.service.surveyService.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

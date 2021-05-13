@@ -1,4 +1,4 @@
-package com.softserve.app.service.ConverterService;
+package com.softserve.app.service.converterService;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;

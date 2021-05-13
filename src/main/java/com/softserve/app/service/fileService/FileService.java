@@ -1,8 +1,8 @@
-package com.softserve.app.service.FileService;
+package com.softserve.app.service.fileService;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileServiceInterface {
+public interface FileService {
 
     public String saveImg(MultipartFile img);
 
