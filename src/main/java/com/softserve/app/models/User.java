@@ -63,10 +63,6 @@ public class User {
 
     private String resetPasswordToken;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-
-    @Singular
-    private Set<Survey> userSurveys = new HashSet<>();
 
 //    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Banner> userBanners = new HashSet<>();
@@ -91,8 +87,8 @@ public class User {
                 .role(this.role)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
-                            .map(SportCategory::ofDTO)
-                            .collect(Collectors.toList()))
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList()))
                 .userComments(new ArrayList<>(this.userComments))
                 .build();
     }

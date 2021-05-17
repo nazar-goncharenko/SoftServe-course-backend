@@ -12,7 +12,7 @@ public interface CheckBoxService {
 
     List<CheckBoxDTO> findAllBySurvey(Survey survey);
 
-    CheckBoxDTO createCheckBox(String checkBoxDTO, Long survey_id);
+    CheckBoxDTO createCheckBox(CheckBoxDTO dto, Long survey_id);
 
     void createManyCheckBoxes(String checkBoxManyDTO, Long survey_id);
 

@@ -12,9 +12,9 @@ public interface SurveyService {
 
     List<Survey> findAllByUser(User user);
 
-    SurveyDTO createSurvey(String surveyDTO, Long user_id);
+    SurveyDTO createSurvey(SurveyDTO surveyDTO, Long user_id);
 
-    SurveyDTO updateSurvey(String surveyDTO);
+    SurveyDTO manageSurvey(Long survey_id);
 
     void deleteSurvey(Long survey_id);
 

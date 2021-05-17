@@ -69,18 +69,16 @@ public class UserServiceImpl implements UserService {
 
         // Password
         if ((dto.getPassword() != null) && (dto.getNew_pass() != null)) {
-            String encodedNew = checkPassword(usrFromDb, dto.getPassword(), dto.getNew_pass(), dto.getNew_pass_2());
-            if (encodedNew != null) {
-                dto.setPassword(passwordEncoder.encode(encodedNew));
-            }
-        } else dto.setPassword(usrFromDb.getPassword());
+            checkPassword(usrFromDb, dto.getPassword(), dto.getNew_pass(), dto.getNew_pass_2());
+        }
 
         return userRepository.save(User.builder()
                 .id(dto.getId())
                 .username(dto.getUsername() != null ? dto.getUsername() : usrFromDb.getUsername())
                 .email(dto.getEmail() != null ? dto.getEmail() : usrFromDb.getEmail())
                 .photoUrl(dto.getPhotoUrl())
-                .password(dto.getPassword())
+                .password(usrFromDb.getPassword())
+                .role(usrFromDb.getRole())
                 .build())
                 .ofDTO();
     }
@@ -92,15 +90,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private String checkPassword(User user, String oldPass, String pass1, String pass2) {
-        String encodedPassword = null;
+    private void checkPassword(User user, String oldPass, String pass1, String pass2) {
         if (pass1.equals(pass2)) {
             String encodedOld = passwordEncoder.encode(oldPass);
             if (encodedOld.equals(user.getPassword())) {
-                encodedPassword = passwordEncoder.encode(pass2);
+                updatePassword(user, pass2);
             }
         }
-        return encodedPassword;
     }
 
 // Auth

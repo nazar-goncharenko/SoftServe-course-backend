@@ -41,8 +41,7 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public SurveyDTO createSurvey(String surveyDTO, Long user_id) {
-        SurveyDTO dto = converterService.convertStringToClass(surveyDTO, SurveyDTO.class);
+    public SurveyDTO createSurvey(SurveyDTO dto, Long user_id) {
         User user = userService.findById(user_id);
 
         Survey survey = new Survey();
@@ -53,18 +52,11 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public SurveyDTO updateSurvey(String surveyDTO) {
-        SurveyDTO dto = converterService.convertStringToClass(surveyDTO, SurveyDTO.class);
-        Survey srvFromDb = findById(dto.getId());
-        dto.setIsOpen(!srvFromDb.getIsOpen());
+    public SurveyDTO manageSurvey(Long survey_id) {
+        Survey srvFromDb = findById(survey_id);
+        srvFromDb.setIsOpen(!srvFromDb.getIsOpen());
 
-        return surveyRepository.save(Survey.builder()
-                .id(dto.getId())
-                .question(dto.getQuestion() != null ? dto.getQuestion() : srvFromDb.getQuestion())
-                .isOpen(dto.getIsOpen())
-                .user(srvFromDb.getUser())
-                .build())
-                .ofDTO();
+        return surveyRepository.save(srvFromDb).ofDTO();
     }
 
     @Override

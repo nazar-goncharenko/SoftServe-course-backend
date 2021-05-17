@@ -37,8 +37,7 @@ public class CheckBoxServiceImpl implements CheckBoxService {
     }
 
     @Override
-    public CheckBoxDTO createCheckBox(String checkBoxDTO, Long survey_id) {
-        CheckBoxDTO dto = converterService.convertStringToClass(checkBoxDTO, CheckBoxDTO.class);
+    public CheckBoxDTO createCheckBox(CheckBoxDTO dto, Long survey_id) {
         Survey survey = surveyService.findById(survey_id);
 
         CheckBox checkBox = new CheckBox();

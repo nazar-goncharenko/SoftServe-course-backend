@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,16 +36,15 @@ public class SurveyController {
     @PostMapping("/user/{user_id}/surveys")
     public ResponseEntity<SurveyDTO> createSurvey(
             @PathVariable Long user_id
-            , @RequestParam(name = "surveyDTO") String surveyDTO) {
+            , @RequestBody SurveyDTO surveyDTO) {
         return ResponseEntity.ok(surveyService.createSurvey(surveyDTO, user_id));
     }
 
     @PostMapping("/user/{user_id}/surveys/{survey_id}")
-    public ResponseEntity<SurveyDTO> updateSurvey(
+    public ResponseEntity<SurveyDTO> manageSurvey(
             @PathVariable Long user_id
-            , @PathVariable Long survey_id
-            , @RequestParam(name = "surveyDTO") String surveyDTO) {
-        return ResponseEntity.ok(surveyService.updateSurvey(surveyDTO));
+            , @PathVariable Long survey_id) {
+        return ResponseEntity.ok(surveyService.manageSurvey(survey_id));
     }
 
     @DeleteMapping("/user/{user_id}/surveys/{survey_id}")
