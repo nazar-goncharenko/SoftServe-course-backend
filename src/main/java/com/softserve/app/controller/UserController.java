@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
@@ -33,15 +34,19 @@ public class UserController {
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
+
         return ResponseEntity.ok(usr.ofDTO());
+
     }
 
 
     @DeleteMapping("/user/{user_id}")
     public ResponseEntity<HttpStatus> deleteUser(
             @PathVariable Long user_id) {
+
         userService.deleteUser(user_id);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
     }
 
 

@@ -4,7 +4,6 @@ import com.softserve.app.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,12 +27,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+
 @Data
+@Component
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 public class User {
     @Id
@@ -65,10 +64,6 @@ public class User {
     private String resetPasswordToken;
 
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Singular
-    private Set<Survey> userSurveys = new HashSet<>();
-
 //    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Banner> userBanners = new HashSet<>();
 
@@ -92,10 +87,9 @@ public class User {
                 .role(this.role)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
-                            .map(SportCategory::ofDTO)
-                            .collect(Collectors.toList()))
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList()))
                 .userComments(new ArrayList<>(this.userComments))
-                .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
     }
 }

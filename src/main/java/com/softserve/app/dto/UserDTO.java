@@ -3,7 +3,6 @@ package com.softserve.app.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.softserve.app.models.Comment;
 import com.softserve.app.models.SportCategory;
-import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +43,6 @@ public class UserDTO implements Serializable {
 
     private User.Role role;
 
-    private List<Survey> userSurveys = new ArrayList<>();
     private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
 
@@ -62,7 +60,6 @@ public class UserDTO implements Serializable {
                                 .collect(Collectors.toList())
                 ))
                 .userComments(new HashSet<>(this.userComments))
-                .userSurveys(new HashSet<>(this.userSurveys))
                 .build();
     }
 }
