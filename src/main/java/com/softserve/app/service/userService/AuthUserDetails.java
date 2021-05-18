@@ -1,11 +1,10 @@
 
-package com.softserve.app.service.UserService;
+package com.softserve.app.service.userService;
 
 
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 

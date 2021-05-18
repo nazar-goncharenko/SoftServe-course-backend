@@ -1,4 +1,4 @@
-package com.softserve.app.service.PhotoService;
+package com.softserve.app.service.photoService;
 
 import com.softserve.app.dto.PhotoDTO;
 import org.springframework.web.multipart.MultipartFile;

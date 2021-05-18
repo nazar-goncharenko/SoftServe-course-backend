@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.dto.PhotoDTO;
-import com.softserve.app.service.PhotoService.PhotoService;
+import com.softserve.app.service.photoService.PhotoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

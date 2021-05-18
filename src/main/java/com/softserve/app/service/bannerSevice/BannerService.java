@@ -1,4 +1,4 @@
-package com.softserve.app.service.BannerSevice;
+package com.softserve.app.service.bannerSevice;
 
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;

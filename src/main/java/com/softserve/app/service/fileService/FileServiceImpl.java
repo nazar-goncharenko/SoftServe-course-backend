@@ -1,11 +1,10 @@
-package com.softserve.app.service.FileService;
+package com.softserve.app.service.fileService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.exception.SportHubException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,4 +1,4 @@
-package com.softserve.app.service.SurveyService;
+package com.softserve.app.service.surveyService;
 
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
