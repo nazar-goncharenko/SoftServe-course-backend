@@ -1,6 +1,8 @@
 package com.softserve.app.controller;
 
+import com.softserve.app.dto.PhotoDTO;
 import com.softserve.app.models.User;
+import com.softserve.app.service.photoService.PhotoService;
 import com.softserve.app.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,11 @@ import java.util.List;
 public class MainPageController {
 
     private final UserService userService;
+    private final PhotoService photoService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<String> showMainPage() {
-        return ResponseEntity.ok("You are at main page ^^");
+    @GetMapping
+    public PhotoDTO showPhoto() {
+        return photoService.showPhoto();
     }
 
     // just for test
