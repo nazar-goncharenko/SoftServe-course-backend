@@ -13,12 +13,15 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 
 @Data
 @Component
@@ -37,18 +40,31 @@ public class Survey {
     @JsonIgnore
     private User user;
 
-    @Column(name = "question", nullable = false)
+    @NotNull
+    @Column(name = "question")
     private String question;
 
     @NotNull
-    @Column(name = "isOpen", nullable = false)
-    private Boolean isOpen = false;
+    @Column(name = "isOpen")
+    private Boolean isOpen = true;
+
+    public enum Status {
+        Published, Unpublished;
+    }
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.Unpublished;
+
+    @Column(name = "closed_day")
+    private LocalDate closed_day;
 
     public SurveyDTO ofDTO() {
         return SurveyDTO.builder()
                 .id(this.id)
                 .question(this.question)
                 .isOpen(this.isOpen)
+                .status(this.status)
+                .closed_day(this.closed_day)
                 .build();
     }
 }

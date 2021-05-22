@@ -14,9 +14,11 @@ public interface SurveyService {
 
     SurveyDTO createSurvey(SurveyDTO surveyDTO, Long user_id);
 
-    SurveyDTO manageSurvey(Long survey_id);
+    SurveyDTO closeSurvey(Long survey_id);
 
     void deleteSurvey(Long survey_id);
 
     List<Survey> findAllFiltered(Long user_id, boolean isOpen);
+
+    SurveyDTO changeStatusSurvey(Long survey_id);
 }

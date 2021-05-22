@@ -41,10 +41,17 @@ public class SurveyController {
     }
 
     @PostMapping("/user/{user_id}/surveys/{survey_id}")
-    public ResponseEntity<SurveyDTO> manageSurvey(
+    public ResponseEntity<SurveyDTO> closeSurvey(
             @PathVariable Long user_id
             , @PathVariable Long survey_id) {
-        return ResponseEntity.ok(surveyService.manageSurvey(survey_id));
+        return ResponseEntity.ok(surveyService.closeSurvey(survey_id));
+    }
+
+    @PostMapping("/user/{user_id}/surveys/{survey_id}/changeStatusSurvey")
+    public ResponseEntity<SurveyDTO> changeStatusSurvey(
+            @PathVariable Long user_id
+            , @PathVariable Long survey_id) {
+        return ResponseEntity.ok(surveyService.changeStatusSurvey(survey_id));
     }
 
     @DeleteMapping("/user/{user_id}/surveys/{survey_id}")
