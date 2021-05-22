@@ -1,8 +1,7 @@
 package com.softserve.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.softserve.app.models.Comment;
-import com.softserve.app.models.SportCategory;
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import lombok.AllArgsConstructor;
@@ -10,14 +9,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Handler;
 import java.util.stream.Collectors;
 
 @Data
@@ -45,10 +42,9 @@ public class UserDTO implements Serializable {
     private User.Role role;
 
     private List<Survey> userSurveys = new ArrayList<>();
-    private List<Comment> userComments = new ArrayList<>();
     private List<SportCategoryDTO> favourites = new ArrayList<>();
 
-    public User ofEntity(){
+    public User ofEntity() {
         return User.builder()
                 .id(this.id)
                 .username(this.username)
@@ -61,7 +57,6 @@ public class UserDTO implements Serializable {
                                 .map(SportCategoryDTO::ofEntity)
                                 .collect(Collectors.toList())
                 ))
-                .userComments(new HashSet<>(this.userComments))
                 .userSurveys(new HashSet<>(this.userSurveys))
                 .build();
     }

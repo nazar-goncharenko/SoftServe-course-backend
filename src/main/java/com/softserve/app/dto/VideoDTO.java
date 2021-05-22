@@ -1,7 +1,6 @@
 package com.softserve.app.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.softserve.app.models.Comment;
 import com.softserve.app.models.Video;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder(toBuilder = true)
@@ -27,7 +27,7 @@ public class VideoDTO implements Serializable {
 
     private String title;
 
-    List<Comment> comments = new ArrayList<>();
+    List<CommentDTO> comments = new ArrayList<>();
 
     private boolean publish;
 
@@ -35,9 +35,12 @@ public class VideoDTO implements Serializable {
 
     private boolean showComments;
 
-    public Video ofEntity(){
+    public Video ofEntity() {
         return Video.builder()
-                .comments(this.comments)
+                .comments(this.comments
+                        .stream()
+                        .map(CommentDTO::ofEntity)
+                        .collect(Collectors.toList()))
                 .id(this.id)
                 .publish(this.publish)
                 .uploaded(this.uploaded)

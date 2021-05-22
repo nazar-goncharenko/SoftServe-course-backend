@@ -1,5 +1,6 @@
 package com.softserve.app.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.app.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,11 +56,13 @@ public class User {
 
     public enum Role implements GrantedAuthority {
         ROLE_ADMIN, ROLE_USER;
+
         @Override
         public String getAuthority() {
             return name();
         }
     }
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -72,9 +76,10 @@ public class User {
 //    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Banner> userBanners = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Singular
-    private Set<Comment> userComments = new HashSet<>();
+    private List<Comment> userComments = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinTable(name = "users_sportCategoties",
@@ -92,9 +97,8 @@ public class User {
                 .role(this.role)
                 .photoUrl(this.photoUrl)
                 .favourites(this.favourites.stream()
-                            .map(SportCategory::ofDTO)
-                            .collect(Collectors.toList()))
-                .userComments(new ArrayList<>(this.userComments))
+                        .map(SportCategory::ofDTO)
+                        .collect(Collectors.toList()))
                 .userSurveys(new ArrayList<>(this.userSurveys))
                 .build();
     }

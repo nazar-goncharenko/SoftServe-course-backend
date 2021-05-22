@@ -3,6 +3,7 @@ package com.softserve.app.service.videoService;
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.VideoDTO;
 import com.softserve.app.exception.SportHubException;
+import com.softserve.app.models.Comment;
 import com.softserve.app.models.Video;
 import com.softserve.app.repository.VideoRepository;
 import com.softserve.app.service.converterService.ConverterService;
@@ -77,6 +78,13 @@ public class VideoServiceImpl implements VideoService{
 
     }
 
+    public void addComment(Long id, Comment comment){
+        Video video = videoRepository.findById(id).orElseThrow(() ->
+                new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404));
+        video.addComment(comment);
+        videoRepository.save(video);
+    }
+
     public VideoDTO update(MultipartFile file, String videoDTO) {
         VideoDTO dto = converterService.convertStringToClass(videoDTO, VideoDTO.class);
 
@@ -88,8 +96,9 @@ public class VideoServiceImpl implements VideoService{
                 .orElseThrow(() ->
                         new SportHubException(SportHubConstant.VIDEO_NOT_FOUND.getMessage(), 404));
 
+        Video updated = video.setFromDTO(dto);
         return videoRepository.save(
-                video.setFromDTO(dto))
+                updated)
                 .ofDTO();
     }
 

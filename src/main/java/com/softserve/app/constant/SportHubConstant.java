@@ -1,6 +1,7 @@
 package com.softserve.app.constant;
 
 
+import antlr.MismatchedCharException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -65,7 +66,7 @@ public enum SportHubConstant {
 
 
     CONVERTER_PROCESS_EXCEPTION("Could not convert to dto"),
-    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation");
-
+    CONVERTER_ANNOTATION_NOT_FOUND("Class haven't @JsonIgnoreProperties annotation"),
+    COMMENT_NOT_FOUND("Can't find comment") ;
     private final String message;
 }

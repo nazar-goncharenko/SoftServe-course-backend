@@ -1,5 +1,6 @@
 package com.softserve.app.controller;
 
+import com.softserve.app.dto.CommentDTO;
 import com.softserve.app.dto.VideoDTO;
 import com.softserve.app.service.videoService.VideoService;
 import lombok.AllArgsConstructor;
