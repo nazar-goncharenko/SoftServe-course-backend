@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -18,17 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ArticleDTO implements Serializable {
-
     private Long id;
-
     private String title;
-
     private String description;
-
     private String imagePath;
-
     private SportCategory category;
-
     private List<Comment> comments;
-
+    private LocalDateTime date;
+//    private Set<HistoryDTO> histories;
 }

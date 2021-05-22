@@ -4,14 +4,18 @@ import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
 import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Article;
+import com.softserve.app.models.SportCategory;
 import com.softserve.app.repository.ArticleRepository;
 import com.softserve.app.service.converterService.ConverterService;
 import com.softserve.app.service.fileService.FileServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,6 +93,26 @@ public class ArticleServiceImpl implements ArticleService {
                 .stream()
                 .map(Article::ofDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Article> getArticlesByDateAndCategoryTreeGroupByHistoriesOrderByCountOfHistoriesDesc(LocalDateTime date, List<SportCategory> categories, Pageable pageable) {
+        return articleRepository.getArticlesByDateAndCategoryTreeGroupByHistoriesOrderByCountOfHistoriesDesc(date, categories, pageable);
+    }
+
+    @Override
+    public List<SportCategory> getAllSportCategoryChild(SportCategory category, List<SportCategory> children){
+        List<SportCategory> childrenTree = new ArrayList<>();
+
+        if (children.isEmpty()) return List.of(category);
+
+        for (int i = 0; i < children.size(); i++) {
+            childrenTree.addAll(getAllSportCategoryChild(children.get(i),
+                    children.get(i).getChildren().stream()
+                            .collect(Collectors.toList())));
+        }
+
+        return childrenTree;
     }
 
 }

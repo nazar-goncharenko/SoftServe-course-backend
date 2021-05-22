@@ -16,7 +16,6 @@ public class AdminController {
 
     @PostMapping
     public PhotoDTO addPhoto(@RequestParam("photoDTO") String photoDTO, @RequestParam("img") MultipartFile image) {
-
         return photoService.savePhoto(photoDTO, image);
     }
 

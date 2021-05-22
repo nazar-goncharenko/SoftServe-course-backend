@@ -16,10 +16,17 @@ public class SportCategoryService {
 
     private final SportCategoryRepository sportCategoryRepo;
 
-
     public List<SportCategoryDTO> getBasicNavigationList() {
         return sportCategoryRepo.getAllByParentEquals(null).stream()
                 .map(SportCategory::ofDTO)
                 .collect(Collectors.toList());
+    }
+
+    public SportCategory getById(Long id){
+        return sportCategoryRepo.getById(id);
+    }
+
+    public List<SportCategory> getAll(){
+        return sportCategoryRepo.getAll();
     }
 }

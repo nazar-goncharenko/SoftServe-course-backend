@@ -43,4 +43,16 @@ public class Comment {
 
     @Column(name = "dislikes", nullable = false)
     private Long dislikes;
+
+//    public CommentDTO ofDTO(){
+//        return CommentDTO.builder()
+//                .id(this.id)
+//                .author(this.author)
+//                .article(this.article)
+//                .comment(this.comment)
+//                .time(this.time)
+//                .likes(this.likes)
+//                .dislikes(this.dislikes)
+//                .build();
+//    }
 }

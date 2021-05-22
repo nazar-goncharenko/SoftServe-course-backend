@@ -19,10 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -37,19 +34,14 @@ public class SportCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     // я parent, і маю багатьох children
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private final List<SportCategory> children = new ArrayList<>();
-
+    private Set<SportCategory> children = new LinkedHashSet<>();
 
     // я один з багатьох children і маю одного parent
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private SportCategory parent;
-
-
-    //////////////////////////
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -87,5 +79,18 @@ public class SportCategory {
                 .favourite(new ArrayList<>(this.favourite))//add stream map UserDTO
                 .description(this.description)
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SportCategory that = (SportCategory) o;
+        return isPredefined == that.isPredefined && showBanners == that.showBanners && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, isPredefined, showBanners);
     }
 }
