@@ -27,6 +27,10 @@ public class ArticleDTO implements Serializable {
 
     private String imagePath;
 
+    private String altImgName;
+
+    private String caption;
+
     private SportCategory category;
 
     private List<Comment> comments;

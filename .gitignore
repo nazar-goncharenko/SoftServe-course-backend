@@ -1,4 +1,5 @@
 .idea
+.DS_STORE
 target
 mvnw.cmd
 mvnw

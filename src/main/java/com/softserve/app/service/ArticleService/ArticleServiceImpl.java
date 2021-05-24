@@ -40,10 +40,12 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         articleRepository.save(Article.builder()
+                .imagePath(articleDTO.getImagePath())
+                .altImgName(articleDTO.getAltImgName())
                 .title(articleDTO.getTitle())
+                .caption(articleDTO.getCaption())
                 .description(articleDTO.getDescription())
                 .category(articleDTO.getCategory())
-                .imagePath(articleDTO.getImagePath())
                 .build()).ofDTO();
     }
 
