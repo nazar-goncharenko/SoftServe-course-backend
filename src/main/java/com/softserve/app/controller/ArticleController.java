@@ -2,7 +2,7 @@ package com.softserve.app.controller;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
-import com.softserve.app.service.articleService.ArticleService;
+import com.softserve.app.service.ArticleService.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -31,6 +31,8 @@ public class ArticleDTO implements Serializable {
 
     private String caption;
 
+    private Boolean showComments;
+
     private SportCategory category;
 
     private List<Comment> comments;

@@ -67,7 +67,8 @@ public class Article {
                 .title(this.title)
                 .caption(this.caption)
                 .description(this.description)
-//                .comments(new ArrayList<>(this.comments))
+                .showComments(this.showComments)
+                .comments(new ArrayList<>(this.comments))
                 .category(this.category)
                 .build();
     }
