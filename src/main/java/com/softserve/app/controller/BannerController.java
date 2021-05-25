@@ -4,7 +4,7 @@ import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.BannerDTO;
 import com.softserve.app.dto.SportCategoryDTO;
 import com.softserve.app.models.Banner;
-import com.softserve.app.service.BannerSevice.BannerServiceInterface;
+import com.softserve.app.service.bannerSevice.BannerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +27,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class BannerController {
 
-    private final BannerServiceInterface bannerService;
+    private final BannerService bannerService;
 
     // TODO should be available only for admins
     @GetMapping()

@@ -3,8 +3,8 @@ package com.softserve.app.controller;
 import com.softserve.app.dto.UserDTO;
 import com.softserve.app.models.ResetPasswordRequest;
 import com.softserve.app.models.User;
-import com.softserve.app.service.ResetService.ResetService;
-import com.softserve.app.service.UserService.UserService;
+import com.softserve.app.service.resetService.ResetService;
+import com.softserve.app.service.userService.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
@@ -33,15 +34,19 @@ public class UserController {
             @PathVariable Long user_id) {
 
         User usr = userService.findById(user_id);
+
         return ResponseEntity.ok(usr.ofDTO());
+
     }
 
 
     @DeleteMapping("/user/{user_id}")
     public ResponseEntity<HttpStatus> deleteUser(
             @PathVariable Long user_id) {
+
         userService.deleteUser(user_id);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
     }
 
 
@@ -94,5 +99,10 @@ public class UserController {
             @RequestBody ResetPasswordRequest resetPasswordRequest) {
         resetService.resetPassword(resetPasswordRequest);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("user/email/{email}")
+    public UserDTO getByEmail(@PathVariable String email){
+        return userService.findByEmail(email).ofDTO();
     }
 }
