@@ -1,4 +1,4 @@
-package com.softserve.app.service.videoService;
+package com.softserve.app.service.VideoService;
 
 import com.softserve.app.dto.VideoDTO;
 import org.springframework.web.multipart.MultipartFile;

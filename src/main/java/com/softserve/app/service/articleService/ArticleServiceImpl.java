@@ -1,4 +1,4 @@
-package com.softserve.app.service.articleService;
+package com.softserve.app.service.ArticleService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.ArticleDTO;
@@ -46,6 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .caption(articleDTO.getCaption())
                 .description(articleDTO.getDescription())
                 .category(articleDTO.getCategory())
+                .showComments(articleDTO.getShowComments())
                 .build()).ofDTO();
     }
 

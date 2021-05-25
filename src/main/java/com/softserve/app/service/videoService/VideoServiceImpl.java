@@ -1,4 +1,4 @@
-package com.softserve.app.service.videoService;
+package com.softserve.app.service.VideoService;
 
 import com.softserve.app.constant.SportHubConstant;
 import com.softserve.app.dto.VideoDTO;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class VideoServiceImpl implements VideoService{
+public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
 

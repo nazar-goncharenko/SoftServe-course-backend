@@ -1,4 +1,4 @@
-package com.softserve.app.service.articleService;
+package com.softserve.app.service.ArticleService;
 
 import com.softserve.app.dto.ArticleDTO;
 import org.springframework.web.multipart.MultipartFile;
