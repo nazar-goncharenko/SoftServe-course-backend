@@ -1,11 +1,7 @@
 package com.softserve.app.models;
 
 import com.softserve.app.dto.ArticleDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,6 +49,7 @@ public class Article {
     @Column(name = "show_comments")
     private Boolean showComments;
 
+    @Singular
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Comment> comments = new HashSet<>();
 

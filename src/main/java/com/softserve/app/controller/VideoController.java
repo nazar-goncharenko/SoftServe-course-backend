@@ -1,7 +1,7 @@
 package com.softserve.app.controller;
 
 import com.softserve.app.dto.VideoDTO;
-import com.softserve.app.service.videoService.VideoService;
+import com.softserve.app.service.VideoService.VideoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
