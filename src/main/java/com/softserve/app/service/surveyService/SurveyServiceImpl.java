@@ -29,12 +29,11 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public List<Survey> findAllByUser(User user) {
-        return surveyRepository.findAllByUser(user);
+    public List<Survey> findAllFiltered(boolean isOpen) {
+        return surveyRepository.findAllByIsOpen(isOpen);
     }
-
     @Override
-    public List<Survey> findAllFiltered(Long user_id, boolean isOpen) {
+    public List<Survey> findAllFilteredAdmin(Long user_id, boolean isOpen) {
         User usr = userService.findById(user_id);
         return surveyRepository.findAllByUserAndIsOpen(usr, isOpen);
     }
@@ -42,7 +41,6 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SurveyDTO createSurvey(SurveyDTO dto, Long user_id) {
         User user = userService.findById(user_id);
-
         Survey survey = new Survey();
         survey.setQuestion(dto.getQuestion());
         survey.setIsOpen(dto.getIsOpen() != null ? dto.getIsOpen() : false);
@@ -56,6 +54,7 @@ public class SurveyServiceImpl implements SurveyService {
         Survey srvFromDb = findById(survey_id);
         srvFromDb.setIsOpen(false);
         srvFromDb.setClosed_day(LocalDate.now());
+        srvFromDb.setStatus(Survey.Status.Unpublished);
         return surveyRepository.save(srvFromDb).ofDTO();
     }
 

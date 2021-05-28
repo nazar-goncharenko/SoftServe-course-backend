@@ -13,4 +13,5 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
     List<Survey> findAllByUser(User user);
     List<Survey> findAllByUserAndIsOpen(User user, Boolean isOpen);
     Optional<Survey> findById(Long id);
+    List<Survey> findAllByIsOpen(Boolean isOpen);
 }
