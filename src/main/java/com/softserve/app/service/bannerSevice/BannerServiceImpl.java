@@ -80,10 +80,8 @@ public class BannerServiceImpl implements BannerService {
                     .filter((b) -> b.getStatus().equals(Banner.Status.PUBLISHED))
                     .map(Banner::convertToDTO)
                     .collect(Collectors.toList());
-            return banners;
         }
-        else
-            return banners;
+        return banners;
     }
 
     @Override
@@ -91,7 +89,6 @@ public class BannerServiceImpl implements BannerService {
         List<SportCategory> predefined = sportCategoryRepository.findByIsPredefinedTrue();
         List<BannerDTO> banners = new ArrayList<BannerDTO>();
         for (SportCategory category: predefined) {
-//                banners.addAll(findAllowedByCategory(category.getName()));
             banners = Stream.of(banners, findAllowedByCategory(category.getName()))
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
