@@ -107,7 +107,7 @@ public class BannerController {
             @RequestParam(value="file", required = false )MultipartFile file){
         if(file==null)
             return ResponseEntity.badRequest().body(SportHubConstant.BANNER_IMAGE_NOT_FOUND.getMessage());
-        if(!bannerService.titleIsValid(title, null))
+        if(!bannerService.titleIsValid(title,null))
             return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
         bannerService.create(title, file);
         return ResponseEntity.ok(SportHubConstant.BANNER_CREATED_SUCCESSFULLY.getMessage());

@@ -156,7 +156,11 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     public boolean titleIsValid(String title, Long bannerId){
-        return (bannerRepository.findByTitleEquals(title).getId()==bannerId && title!= null);
+        if(title.equals("") || title == null)
+            return false;
+        if(bannerId == null)
+            return bannerRepository.findByTitleEquals(title)==null;
+        return (bannerRepository.findByTitleEquals(title)==null || bannerRepository.findByTitleEquals(title).getId().equals(bannerId));
     }
 
     @Override
