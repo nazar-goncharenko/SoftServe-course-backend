@@ -7,16 +7,7 @@ import com.softserve.app.models.Banner;
 import com.softserve.app.service.bannerSevice.BannerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -70,6 +61,11 @@ public class BannerController {
         return bannerService.findAllowedByCategory(categoryName);
     }
 
+    @GetMapping("/userside/{categoryId}")
+    public List<BannerDTO> userside(@PathVariable Long categoryId){
+        return bannerService.getUserSide(categoryId);
+    }
+
     // TODO should be available only for admins
     @GetMapping("/search")
     public List<BannerDTO> searchByTitle(@RequestParam("title") String title){
@@ -99,18 +95,25 @@ public class BannerController {
     @PostMapping()
     public ResponseEntity<String> create(
             @RequestParam("title") String title,
-            @RequestParam("file")MultipartFile file){
+            @RequestParam(value="file", required = false )MultipartFile file){
+        if(file==null)
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_IMAGE_NOT_FOUND.getMessage());
+        if(!bannerService.titleIsValid(title))
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
         bannerService.create(title, file);
         return ResponseEntity.ok(SportHubConstant.BANNER_CREATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
     @PutMapping("/update/{bannerId}")
-    public BannerDTO update(
+    public ResponseEntity<String> update(
             @PathVariable Long bannerId,
             @RequestParam("title") String title,
             @RequestParam(value = "file", required = false)MultipartFile file) {
-        return bannerService.update(title, file, bannerId);
+        if(!bannerService.titleIsValid(title))
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
+        bannerService.update(title, file, bannerId);
+        return ResponseEntity.ok(SportHubConstant.BANNER_UPDATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins

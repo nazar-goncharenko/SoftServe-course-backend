@@ -53,6 +53,8 @@ public enum SportHubConstant {
     BANNER_CONFIGURED_SUCCESSFULLY("Banner was configured successfully"),
     BANNER_DELETED_SUCCESSFULLY("Banner was deleted successfully"),
     BANNER_NOT_FOUND("Banner doesn't exist"),
+    BANNER_TITLE_IS_NOT_VALID("Banner with this title already exists"),
+    BANNER_IMAGE_NOT_FOUND("You can not create banner without image"),
     BANNER_HIDDEN_SUCCESSFULLY("Banners of this category are not visible to users anymore"),
     BANNER_SHOWN_SUCCESSFULLY("Banners of this category are visible to the users now"),
 

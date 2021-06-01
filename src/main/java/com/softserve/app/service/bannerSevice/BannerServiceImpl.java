@@ -15,9 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 
 
 @Service
@@ -71,13 +74,42 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public List<BannerDTO> findAllowedByCategory(String categoryName) {
         SportCategory categoryFromDb = sportCategoryRepository.findByName(categoryName);
-        if(categoryFromDb.isShowBanners())
-            return bannerRepository.findAllByCategoryNameIgnoreCase(categoryName).stream()
-                    .filter((b)-> b.getStatus().equals(Banner.Status.NOT_PUBLISHED) || b.getStatus().equals(Banner.Status.PUBLISHED))
+        List<BannerDTO> banners = new ArrayList<BannerDTO>();
+        if(categoryFromDb.isShowBanners()) {
+            banners = bannerRepository.findAllByCategoryNameIgnoreCase(categoryName).stream()
+                    .filter((b) -> b.getStatus().equals(Banner.Status.PUBLISHED))
                     .map(Banner::convertToDTO)
                     .collect(Collectors.toList());
+            return banners;
+        }
         else
-            return null;
+            return banners;
+    }
+
+    @Override
+    public List<BannerDTO> findShownPredefined(){
+        List<SportCategory> predefined = sportCategoryRepository.findByIsPredefinedTrue();
+        List<BannerDTO> banners = new ArrayList<BannerDTO>();
+        for (SportCategory category: predefined) {
+//                banners.addAll(findAllowedByCategory(category.getName()));
+            banners = Stream.of(banners, findAllowedByCategory(category.getName()))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+        }
+        if(banners.isEmpty())
+            throw new SportHubException(SportHubConstant.BANNER_NOT_FOUND.getMessage(), 400);
+        return banners;
+    }
+
+    // list of banners related to chosen category and shown predefined banners
+    @Override
+    public List<BannerDTO> getUserSide(Long categoryId){
+        SportCategory categoryFromDb = sportCategoryRepository.findByIdEquals(categoryId);
+        if (categoryFromDb.isPredefined())
+            return  findShownPredefined();
+        return Stream.of(findAllowedByCategory(categoryFromDb.getName()), findShownPredefined())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -123,6 +155,11 @@ public class BannerServiceImpl implements BannerService {
         SportCategory categoryFromDb = sportCategoryRepository.findByName(categoryName);
         categoryFromDb.setShowBanners(false);
         sportCategoryRepository.save(categoryFromDb);
+    }
+
+    @Override
+    public boolean titleIsValid(String title){
+        return (bannerRepository.findByTitleEquals(title)==null && title!= null);
     }
 
     @Override
