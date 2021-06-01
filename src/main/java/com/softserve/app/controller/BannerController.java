@@ -107,7 +107,7 @@ public class BannerController {
             @RequestParam(value="file", required = false )MultipartFile file){
         if(file==null)
             return ResponseEntity.badRequest().body(SportHubConstant.BANNER_IMAGE_NOT_FOUND.getMessage());
-        if(!bannerService.titleIsValid(title))
+        if(!bannerService.titleIsValid(title, null))
             return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
         bannerService.create(title, file);
         return ResponseEntity.ok(SportHubConstant.BANNER_CREATED_SUCCESSFULLY.getMessage());
@@ -119,7 +119,7 @@ public class BannerController {
             @PathVariable Long bannerId,
             @RequestParam("title") String title,
             @RequestParam(value = "file", required = false)MultipartFile file) {
-        if(!bannerService.titleIsValid(title))
+        if(!bannerService.titleIsValid(title, bannerId))
             return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
         bannerService.update(title, file, bannerId);
         return ResponseEntity.ok(SportHubConstant.BANNER_UPDATED_SUCCESSFULLY.getMessage());

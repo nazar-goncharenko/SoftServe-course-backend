@@ -41,7 +41,7 @@ public interface BannerService {
 
     void delete(Long bannerId);
 
-    boolean titleIsValid(String title);
+    boolean titleIsValid(String title, Long bannerId);
 
     List<BannerDTO> getUserSide(Long categoryId);
 }
