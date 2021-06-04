@@ -6,12 +6,12 @@ import com.softserve.app.exception.SportHubException;
 import com.softserve.app.models.Survey;
 import com.softserve.app.models.User;
 import com.softserve.app.repository.SurveyRepository;
-import com.softserve.app.service.converterService.ConverterService;
 import com.softserve.app.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,7 +20,6 @@ import java.util.List;
 public class SurveyServiceImpl implements SurveyService {
     private final SurveyRepository surveyRepository;
     private final UserService userService;
-    private final ConverterService converterService;
 
 
     @Override
@@ -30,12 +29,11 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public List<Survey> findAllByUser(User user) {
-        return surveyRepository.findAllByUser(user);
+    public List<Survey> findAllFiltered(boolean isOpen) {
+        return surveyRepository.findAllByIsOpen(isOpen);
     }
-
     @Override
-    public List<Survey> findAllFiltered(Long user_id, boolean isOpen) {
+    public List<Survey> findAllFilteredAdmin(Long user_id, boolean isOpen) {
         User usr = userService.findById(user_id);
         return surveyRepository.findAllByUserAndIsOpen(usr, isOpen);
     }
@@ -43,19 +41,28 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SurveyDTO createSurvey(SurveyDTO dto, Long user_id) {
         User user = userService.findById(user_id);
-
         Survey survey = new Survey();
         survey.setQuestion(dto.getQuestion());
         survey.setIsOpen(dto.getIsOpen() != null ? dto.getIsOpen() : false);
         survey.setUser(user);
+        survey.setStatus(Survey.Status.Unpublished);
         return surveyRepository.save(survey).ofDTO();
     }
 
     @Override
-    public SurveyDTO manageSurvey(Long survey_id) {
+    public SurveyDTO closeSurvey(Long survey_id) {
         Survey srvFromDb = findById(survey_id);
-        srvFromDb.setIsOpen(!srvFromDb.getIsOpen());
+        srvFromDb.setIsOpen(false);
+        srvFromDb.setClosed_day(LocalDate.now());
+        srvFromDb.setStatus(Survey.Status.Unpublished);
+        return surveyRepository.save(srvFromDb).ofDTO();
+    }
 
+    @Override
+    public SurveyDTO changeStatusSurvey(Long survey_id) {
+        Survey srvFromDb = findById(survey_id);
+        srvFromDb.setStatus(srvFromDb.getStatus() == Survey.Status.Unpublished ?
+                Survey.Status.Published : Survey.Status.Unpublished);
         return surveyRepository.save(srvFromDb).ofDTO();
     }
 
