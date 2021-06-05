@@ -70,6 +70,11 @@ public class BannerController {
         return bannerService.findAllowedByCategory(categoryName);
     }
 
+    @GetMapping("/userside/{categoryId}")
+    public List<BannerDTO> userside(@PathVariable Long categoryId){
+        return bannerService.getUserSide(categoryId);
+    }
+
     // TODO should be available only for admins
     @GetMapping("/search")
     public List<BannerDTO> searchByTitle(@RequestParam("title") String title){
@@ -99,18 +104,25 @@ public class BannerController {
     @PostMapping()
     public ResponseEntity<String> create(
             @RequestParam("title") String title,
-            @RequestParam("file")MultipartFile file){
+            @RequestParam(value="file", required = false )MultipartFile file){
+        if(file==null)
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_IMAGE_NOT_FOUND.getMessage());
+        if(!bannerService.titleIsValid(title,null))
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
         bannerService.create(title, file);
         return ResponseEntity.ok(SportHubConstant.BANNER_CREATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins
     @PutMapping("/update/{bannerId}")
-    public BannerDTO update(
+    public ResponseEntity<String> update(
             @PathVariable Long bannerId,
             @RequestParam("title") String title,
             @RequestParam(value = "file", required = false)MultipartFile file) {
-        return bannerService.update(title, file, bannerId);
+        if(!bannerService.titleIsValid(title, bannerId))
+            return ResponseEntity.badRequest().body(SportHubConstant.BANNER_TITLE_IS_NOT_VALID.getMessage());
+        bannerService.update(title, file, bannerId);
+        return ResponseEntity.ok(SportHubConstant.BANNER_UPDATED_SUCCESSFULLY.getMessage());
     }
 
     // TODO should be available only for admins

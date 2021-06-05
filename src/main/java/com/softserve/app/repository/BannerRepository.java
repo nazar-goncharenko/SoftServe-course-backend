@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface BannerRepository extends JpaRepository<Banner, Long> {
     List<Banner> findAllByCategoryNameIgnoreCase (String category);
+    Banner findByTitleEquals(String title);
     List<Banner> findByTitleIgnoreCaseContaining(String keyWord);
     List<Banner> findByStatusEquals(Banner.Status status);
     List<Banner> findByStatusNot(Banner.Status status);
-
 }

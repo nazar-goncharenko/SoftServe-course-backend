@@ -27,6 +27,8 @@ public interface BannerService {
 
     List<BannerDTO> getByStatus(Banner.Status status);
 
+    List<BannerDTO> findShownPredefined();
+
     void showPredefined(String categoryName);
 
     void hidePredefined(String categoryName);
@@ -38,4 +40,8 @@ public interface BannerService {
     void create(String title, MultipartFile img);
 
     void delete(Long bannerId);
+
+    boolean titleIsValid(String title, Long bannerId);
+
+    List<BannerDTO> getUserSide(Long categoryId);
 }
